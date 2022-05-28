@@ -20,6 +20,18 @@
 #define DINODESTART 2*BLOCKSIZ  //i节点起始地址
 #define DATASTART (2+DINODEBLK)*BLOCKSIZ //目录、文件区起始地址
 
+#include <string>
 
+using namespace std;
+
+struct SFD_item{
+	string file_name;	//文件名
+	int file_id;		//索引节点编号ID
+};
+
+struct BFD_item {		//i节点
+	int file_id;
+
+};
 
 #endif
