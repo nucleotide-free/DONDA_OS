@@ -76,10 +76,10 @@ struct MEM_BFD_ITEM {
 struct SPUERBLOCK
 {
 	int iNode_num;		//i节点的数量
-	int free_iNode_num;		//空闲i节点数
+	int free_iNode_num;		                                //空闲i节点数
 	vector<int> free_iNode_id;		//空闲i节点的id数组
 
-	int sfd_item_num;		//目录节点的数量
+	int sfd_item_num;		   //目录节点的数量
 	int free_sfd_item_num;		//空闲目录节点数
 	vector<int> free_sfd_item_id;		//空闲目录节点的id数组
 
@@ -90,7 +90,7 @@ struct SPUERBLOCK
 
 //磁盘文件卷
 struct FILE_SYSTEM {
-	SPUERBLOCK superBlock;		//超级块
+	
 	DISK_BFD_ITEM iNode[DINODEBLK];		//磁盘索引结点区，数量为128块
 	vector<SFD_ITEM> SFD[FILEBLK];		//目录块,数量为512块
 	DISK_BLOCK diskBlock[FILEBLK];		//文件块,数量为512块
