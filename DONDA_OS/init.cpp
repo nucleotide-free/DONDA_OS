@@ -93,7 +93,27 @@ void initSFD() {
 
 //初始化I节点
 void initINode() {
-
+	FILE* stream1;
+	freopen_s(&stream1, "iNode.txt", "r", stdin);//文件重定向
+	for (int i = 0; i < D_INODE_NUM; i++){
+		if (fileSystem.superBlock.iNode_bitmap[i / INODE_BITMAP_COL][i % INODE_BITMAP_COL] == 1) {//该i节点被占用
+			cin >> fileSystem.iNode[i].id;		//i节点的ID
+			cin >> fileSystem.iNode[i].type;	//文件类型
+			cin >> fileSystem.iNode[i].owner;	//文件拥有者
+			for (int j = 0; j < 8; j++)
+				cin >> fileSystem.iNode[i].auth[j];	//authorization
+			cin >> fileSystem.iNode[i].file_len;	//文件长度
+			cin >> fileSystem.iNode[i].link_count;	//文件链接次数
+			cin >> fileSystem.iNode[i].last_visited_time;//最近一次存取时间
+			if (fileSystem.iNode[i].type == 1)		//1-目录文件
+				cin >> fileSystem.iNode[i].sfd_id;	//指向的sfd的ID
+			else									//0-普通文件，存磁盘
+				for (int j = 0; j < ADDR_NUM; j++)
+					cin >> fileSystem.iNode[i].i_addr[j];	//磁盘块号，指向diskBlock
+		}
+	}
+	std::fclose(stdin);//关闭重定向输入
+	cin.clear();
 }
 
 //初始化磁盘块
