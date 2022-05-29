@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlockManagement.cpp" />
     <ClCompile Include="DONDA_OS.cpp" />
     <ClCompile Include="init.cpp" />
     <ClCompile Include="user.cpp" />
