@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="DONDA_OS.cpp" />
     <ClCompile Include="init.cpp" />
+    <ClCompile Include="user.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OS.h" />

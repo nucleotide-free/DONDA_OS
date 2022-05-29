@@ -44,6 +44,12 @@
 
 using namespace std;
 
+struct USER {
+	int user_id;		//用户id
+	string password;		//用户密码
+	string user_name;		//登陆用的用户名
+};
+
 //普通磁盘块，放文件
 struct DISK_BLOCK
 {
@@ -124,6 +130,8 @@ struct FILE_SYSTEM {
 };
 
 extern FILE_SYSTEM fileSystem;		//操作磁盘文件卷的全局变量
+extern FILE* stream;
+extern USER user_list[8];		//8个用户
 
 
 //**************************初始化模块***************************
