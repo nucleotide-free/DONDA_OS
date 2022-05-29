@@ -33,11 +33,12 @@
 #define DATASTART (2+D_INODE_NUM)*BLOCKSIZ //目录、文件区起始地址
 
 #include <iostream>
+#include <stdio.h>
+#include <windows.h>
 #include <string>
 #include <string.h>
 #include <vector>
 #include <stack>
-#include <stdio.h>
 #include <fstream>
 #include <sstream>
 
@@ -141,4 +142,19 @@ void initDiskBlock();       //初始化磁盘块
 void initSFD();             //初始化SFD
 void init();                //初始化
 
+//**************************用户模块*****************************
+void login();               //登录用户名
+void logout();              //登出
+int checkUser(string user); //判断此时用户
+int getInodeNum();            //获得当前目录的i结点号
+int checkFileAuth(string filename); //检查当前用户的读写权限
+int checkDirAuth(string filename);  //检查当前用户对目录的读写权限
+int checkPassword();
+void inputPassword();
+
+//**************************界面模块*****************************
+void dis_help();			//显示帮助
+void display();				//界面主函数，用来实现大部分输入输出功能
+void textcolor(int color);	//设置字体颜色
+int checkIn(string in);		//用来检测命令是否存在以及指令的种类
 #endif

@@ -93,7 +93,6 @@ void initSFD() {
 
 //初始化I节点
 void initINode() {
-
 	freopen_s(&stream, "Data\\iNode.txt", "r", stdin);//文件重定向
 	for (int i = 0; i < D_INODE_NUM; i++){
 		if (fileSystem.superBlock.iNode_bitmap[i / INODE_BITMAP_COL][i % INODE_BITMAP_COL] == 1) {//该i节点被占用
@@ -119,7 +118,6 @@ void initINode() {
 
 //初始化磁盘块
 void initDiskBlock() {
-
 	freopen_s(&stream, "Data\\DiskBlock.txt", "r", stdin);
 	string content;
 	for (int i = 1; i <= 512; i++)
