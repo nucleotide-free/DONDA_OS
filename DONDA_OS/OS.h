@@ -28,7 +28,7 @@ using namespace std;
 //普通磁盘块，放文件
 struct DISK_BLOCK
 {
-	string conten="";		//文件内容
+	string content="";		//文件内容
 	int content_len=0;	//文件大小（在块中占用了多大的空间）
 };
 
