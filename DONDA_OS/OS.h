@@ -11,6 +11,8 @@
 #define SFD_BITMAP_ROW 16	//目录结点位示图的行数 16
 #define SFD_BITMAP_COL 32	//目录结点位示图的列数 32
 
+#define DISKBLOCK_NUM  512	//磁盘块数量 512
+
 #define BLOCKSIZ  512	//每块大小
 #define SYSOPENFILE 40  //系统打开文件表最大项数
 #define DIRNUM  128		//每个目录所包含的最大目录项数（文件数）
@@ -23,7 +25,7 @@
 #define USERNUM  10		//最多允许10个用户登录
 #define DINODESIZ  32	//每个磁盘i节点所占字节
 
-#define FILEBLK  512	//共有512个目录文件物理块
+
 #define NICFREE  50		//超级块中空闲块数组的最大块数
 #define NICINOD  50		//超级块中空闲节点的最大块数
 #define DINODESTART 2*BLOCKSIZ  //i节点起始地址
@@ -33,6 +35,7 @@
 #include <string>
 #include <string.h>
 #include <vector>
+#include <stack>
 #include <stdio.h>
 #include <fstream>
 
@@ -96,15 +99,18 @@ struct SPUERBLOCK
 
 	int diskblock_num;				//磁盘块的数量
 	int free_diskblock_num;			//空闲磁盘块数
-	vector<int> free_diskblock_id;	//空闲磁盘块的id数组，用作超级块放入内存的栈
+	vector<int> free_diskblock_id;	//空闲磁盘块的id数组
+	//超级块的内存栈
+	int stack_size = 1;				//超级块的内存栈深度
+	stack<int> free_block_stack;	//内存栈
 };
 
 //磁盘文件卷
 struct FILE_SYSTEM {
 	SPUERBLOCK superBlock;			//超级块
 	DISK_BFD_ITEM iNode[D_INODE_NUM];	//磁盘索引结点区，数量为128块
-	vector<SFD_ITEM> SFD[FILEBLK];	//目录块,数量为512块
-	DISK_BLOCK diskBlock[FILEBLK];	//文件块,数量为512块
+	vector<SFD_ITEM> SFD[SFD_NUM];	//目录块,数量为512块
+	DISK_BLOCK diskBlock[DISKBLOCK_NUM];	//文件块,数量为512块
 };
 
 extern FILE_SYSTEM fileSystem;		//操作磁盘文件卷的全局变量
