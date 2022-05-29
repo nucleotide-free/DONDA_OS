@@ -94,4 +94,5 @@ struct FILE_SYSTEM {
 	DISK_BLOCK diskBlock[FILEBLK];	//文件块,数量为512块
 };
 
+FILE_SYSTEM fileSystem;		//操作磁盘文件卷的全局变量
 #endif
