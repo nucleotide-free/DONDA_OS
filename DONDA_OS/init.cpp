@@ -1,10 +1,10 @@
 #include "OS.h"
-
+FILE* stream;
 
 //初始化超级块
 void initSuperBlock(){
-	FILE* stream1;
-	freopen_s(&stream1,"superBlock.txt", "r", stdin);//文件重定向
+
+	freopen_s(&stream,"superBlock.txt", "r", stdin);//文件重定向
 	//————————————————————————————————————————
 	fileSystem.superBlock.iNode_num = D_INODE_NUM;	//磁盘i节点数量
 	cin >> fileSystem.superBlock.free_iNode_num;	//空闲i节点数
@@ -52,10 +52,42 @@ void initSuperBlock(){
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
+	cin.clear();
 }
 
 //初始化SFD
 void initSFD() {
+
+	for (int i = 1; i <= 8; i++) {		
+		string tmps;
+		stringstream ss;	
+		ss << i;
+		ss >> tmps;
+		SFD_ITEM sfd_item;	//单目录
+		sfd_item.file_name = "root" + tmps;
+		sfd_item.file_id = i;
+		fileSystem.SFD[0].sfd_list.push_back(sfd_item);   //每个用户的文件目录下生成sfd动态数组
+	}
+
+	freopen_s(&stream, "SFD.txt", "r", stdin);
+	for (int i = 1; i <= 512; i++)
+	{
+		if (fileSystem.superBlock.SFD_bitmap[i / SFD_BITMAP_COL][i % SFD_BITMAP_COL] != 0)//在SFD位示图中找到非空SFD_ITEM的块号
+		{
+			int sfd_num=0;
+			cin >> sfd_num; 
+			fileSystem.SFD[i].sfd_num = sfd_num;
+			for (int j = 0; j < fileSystem.SFD[i].sfd_num; j++) {
+				SFD_ITEM sfd_item;
+				cin >> sfd_item.file_name;
+				cin >> sfd_item.file_id;
+				fileSystem.SFD[i].sfd_list.push_back(sfd_item);		//再读取目录块的文件名
+			}
+		}
+	}
+	std::fclose(stdin);//关闭重定向输入
+	freopen_s(&stream, "CON", "r", stdin);
+	cin.clear();
 
 }
 
@@ -69,7 +101,6 @@ void initDiskBlock() {
 	FILE* stream1;
 	freopen_s(&stream1, "DiskBlock.txt", "r", stdin);
 	string content;
-	int  content_len;
 	for (int i = 1; i <= 512; i++)
 	{
 		if (!count(fileSystem.superBlock.free_diskblock_id.begin(), fileSystem.superBlock.free_diskblock_id.end(), i))//判断i是否存在超级块中的空闲磁盘块vector中，若没有就读文件。
@@ -85,6 +116,8 @@ void initDiskBlock() {
 			}
 		}
 	}
+	std::fclose(stdin);//关闭重定向输入
+	cin.clear();
 }
 
 void init()

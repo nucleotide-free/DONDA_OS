@@ -38,6 +38,8 @@
 #include <stack>
 #include <stdio.h>
 #include <fstream>
+#include <sstream>
+
 
 using namespace std;
 
@@ -52,6 +54,12 @@ struct DISK_BLOCK
 struct SFD_ITEM {
 	string file_name;	//文件名
 	int file_id;		//索引节点编号ID
+};
+
+//目录结构
+struct SFD {
+	int sfd_num;		//SFD_ITEM的数量
+	vector<SFD_ITEM> sfd_list;		//目录下的目录（SFD_ITEM）
 };
 
 //磁盘i节点
@@ -101,7 +109,7 @@ struct SPUERBLOCK
 	int free_diskblock_num;			//空闲磁盘块数
 	vector<int> free_diskblock_id;	//空闲磁盘块的id数组
 	//超级块的内存栈
-	int stack_size = 1;				//超级块的内存栈深度
+	int stack_size = 1;				//超级块的内存栈深度0
 	stack<int> free_block_stack;	//内存栈
 };
 
@@ -109,7 +117,7 @@ struct SPUERBLOCK
 struct FILE_SYSTEM {
 	SPUERBLOCK superBlock;			//超级块
 	DISK_BFD_ITEM iNode[D_INODE_NUM];	//磁盘索引结点区，数量为128块
-	vector<SFD_ITEM> SFD[SFD_NUM];	//目录块,数量为512块
+	SFD SFD[SFD_NUM];	//目录块,数量为512块
 	DISK_BLOCK diskBlock[DISKBLOCK_NUM + 1];	//文件块,数量为512块
 };
 
