@@ -4,7 +4,7 @@ FILE* stream;
 //初始化超级块
 void initSuperBlock(){
 
-	freopen_s(&stream,"superBlock.txt", "r", stdin);//文件重定向
+	freopen_s(&stream,"Data\\superBlock.txt", "r", stdin);//文件重定向
 	//————————————————————————————————————————
 	fileSystem.superBlock.iNode_num = D_INODE_NUM;	//磁盘i节点数量
 	cin >> fileSystem.superBlock.free_iNode_num;	//空闲i节点数
@@ -69,7 +69,7 @@ void initSFD() {
 		fileSystem.SFD[0].sfd_list.push_back(sfd_item);   //每个用户的文件目录下生成sfd动态数组
 	}
 
-	freopen_s(&stream, "SFD.txt", "r", stdin);
+	freopen_s(&stream, "Data\\SFD.txt", "r", stdin);
 	for (int i = 1; i <= 512; i++)
 	{
 		if (fileSystem.superBlock.SFD_bitmap[i / SFD_BITMAP_COL][i % SFD_BITMAP_COL] != 0)//在SFD位示图中找到非空SFD_ITEM的块号
@@ -94,7 +94,7 @@ void initSFD() {
 //初始化I节点
 void initINode() {
 	FILE* stream1;
-	freopen_s(&stream1, "iNode.txt", "r", stdin);//文件重定向
+	freopen_s(&stream1, "Data\\iNode.txt", "r", stdin);//文件重定向
 	for (int i = 0; i < D_INODE_NUM; i++){
 		if (fileSystem.superBlock.iNode_bitmap[i / INODE_BITMAP_COL][i % INODE_BITMAP_COL] == 1) {//该i节点被占用
 			cin >> fileSystem.iNode[i].id;		//i节点的ID
@@ -104,7 +104,8 @@ void initINode() {
 				cin >> fileSystem.iNode[i].auth[j];	//authorization
 			cin >> fileSystem.iNode[i].file_len;	//文件长度
 			cin >> fileSystem.iNode[i].link_count;	//文件链接次数
-			cin >> fileSystem.iNode[i].last_visited_time;//最近一次存取时间
+
+
 			if (fileSystem.iNode[i].type == 1)		//1-目录文件
 				cin >> fileSystem.iNode[i].sfd_id;	//指向的sfd的ID
 			else									//0-普通文件，存磁盘
@@ -119,7 +120,7 @@ void initINode() {
 //初始化磁盘块
 void initDiskBlock() {
 	FILE* stream1;
-	freopen_s(&stream1, "DiskBlock.txt", "r", stdin);
+	freopen_s(&stream1, "Data\\DiskBlock.txt", "r", stdin);
 	string content;
 	for (int i = 1; i <= 512; i++)
 	{
