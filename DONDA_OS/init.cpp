@@ -43,7 +43,7 @@ void initSuperBlock(){
 		}
 		else {//存成组长块，放入磁盘
 			for (int j = 0; j < 50; j++) {
-				fileSystem.diskBlock[i].content += fileSystem.superBlock.free_block_stack.top() + " ";//存入磁盘文件
+				fileSystem.diskBlock[i].content += to_string(fileSystem.superBlock.free_block_stack.top()) + " ";//存入磁盘文件
 				fileSystem.superBlock.free_block_stack.pop();//弹栈
 				fileSystem.diskBlock[i].content_len++;//修改文件长度
 			}
@@ -52,8 +52,6 @@ void initSuperBlock(){
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
-
-
 }
 
 //初始化SFD
@@ -68,10 +66,11 @@ void initINode() {
 
 //初始化磁盘块
 void initDiskBlock() {
-	freopen("DiskBlock.txt", "r", stdin);
+	FILE* stream1;
+	freopen_s(&stream1, "DiskBlock.txt", "r", stdin);
 	string content;
 	int  content_len;
-	for (int i = 0; i < 512; i++)
+	for (int i = 1; i <= 512; i++)
 	{
 		if (!count(fileSystem.superBlock.free_diskblock_id.begin(), fileSystem.superBlock.free_diskblock_id.end(), i))//判断i是否存在超级块中的空闲磁盘块vector中，若没有就读文件。
 		{
@@ -86,4 +85,12 @@ void initDiskBlock() {
 			}
 		}
 	}
+}
+
+void init()
+{
+	initSuperBlock();
+	initSFD();
+	initINode();
+	initDiskBlock();
 }
