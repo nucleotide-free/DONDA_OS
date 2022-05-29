@@ -1,10 +1,10 @@
-﻿
-#include <iostream>
+﻿#include "OS.h"
 
-using namespace std;
+FILE_SYSTEM fileSystem;  //文件系统
+
 int main()
 {
-    std::cout << "Hello World!\n";
+    init();
 }
 
 

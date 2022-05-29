@@ -2,6 +2,15 @@
 #ifndef OS_H
 #define OS_H
 
+
+#define D_INODE_NUM  128	//磁盘i节点，共占128个物理块
+#define INODE_BITMAP_ROW 8	//i结点位示图的行数 8
+#define INODE_BITMAP_COL 16	//i结点位示图的列数 16
+
+#define SFD_NUM  512		//目录节点，共占512个物理块
+#define SFD_BITMAP_ROW 16	//目录结点位示图的行数 16
+#define SFD_BITMAP_COL 32	//目录结点位示图的列数 32
+
 #define BLOCKSIZ  512	//每块大小
 #define SYSOPENFILE 40  //系统打开文件表最大项数
 #define DIRNUM  128		//每个目录所包含的最大目录项数（文件数）
@@ -13,15 +22,19 @@
 #define NHINO  128		//共128个Hash链表，提供索引i节点（必须为2的幂）
 #define USERNUM  10		//最多允许10个用户登录
 #define DINODESIZ  32	//每个磁盘i节点所占字节
-#define DINODEBLK  128	//所有磁盘i节点共占128个物理块
+
 #define FILEBLK  512	//共有512个目录文件物理块
 #define NICFREE  50		//超级块中空闲块数组的最大块数
 #define NICINOD  50		//超级块中空闲节点的最大块数
 #define DINODESTART 2*BLOCKSIZ  //i节点起始地址
-#define DATASTART (2+DINODEBLK)*BLOCKSIZ //目录、文件区起始地址
+#define DATASTART (2+D_INODE_NUM)*BLOCKSIZ //目录、文件区起始地址
 
+#include <iostream>
 #include <string>
-#include<vector>
+#include <string.h>
+#include <vector>
+#include <stdio.h>
+#include <fstream>
 
 using namespace std;
 
@@ -75,11 +88,11 @@ struct SPUERBLOCK
 {
 	int iNode_num;					//i节点的数量
 	int free_iNode_num;				//空闲i节点数
-	vector<int> free_iNode_id;		//空闲i节点的id数组
+	int iNode_bitmap[INODE_BITMAP_ROW][INODE_BITMAP_COL];	//i节点位示图 [16][8]  0--为空闲，1--为被占用
 
 	int sfd_item_num;				//目录节点的数量
 	int free_sfd_item_num;			//空闲目录节点数
-	vector<int> free_sfd_item_id;	//空闲目录节点的id数组
+	int SFD_bitmap[SFD_BITMAP_ROW][SFD_BITMAP_COL];		//目录节点位示图  0--为空闲，1--为被占用
 
 	int diskblock_num;				//磁盘块的数量
 	int free_diskblock_num;			//空闲磁盘块数
@@ -89,10 +102,19 @@ struct SPUERBLOCK
 //磁盘文件卷
 struct FILE_SYSTEM {
 	SPUERBLOCK superBlock;			//超级块
-	DISK_BFD_ITEM iNode[DINODEBLK];	//磁盘索引结点区，数量为128块
+	DISK_BFD_ITEM iNode[D_INODE_NUM];	//磁盘索引结点区，数量为128块
 	vector<SFD_ITEM> SFD[FILEBLK];	//目录块,数量为512块
 	DISK_BLOCK diskBlock[FILEBLK];	//文件块,数量为512块
 };
 
-FILE_SYSTEM fileSystem;		//操作磁盘文件卷的全局变量
+extern FILE_SYSTEM fileSystem;		//操作磁盘文件卷的全局变量
+
+
+//**************************初始化模块***************************
+void initSuperBlock();      //初始化超级块
+void initINode();           //初始化i结点
+void initDiskBlock();       //初始化磁盘块
+void initSFD();             //初始化SFD
+void init();                //初始化
+
 #endif
