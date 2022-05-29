@@ -28,8 +28,8 @@ using namespace std;
 //普通磁盘块，放文件
 struct DISK_BLOCK
 {
-	string content;		//文件内容
-	int content_len;	//文件大小（在块中占用了多大的空间）
+	string conten="";		//文件内容
+	int content_len=0;	//文件大小（在块中占用了多大的空间）
 };
 
 //文件目录项
@@ -75,11 +75,11 @@ struct SPUERBLOCK
 {
 	int iNode_num;					//i节点的数量
 	int free_iNode_num;				//空闲i节点数
-	vector<int> free_iNode_id;		//空闲i节点的id数组
+	int iNode_bitmap[16][8];		//i节点位示图  0--为空闲，1--为被占用
 
 	int sfd_item_num;				//目录节点的数量
 	int free_sfd_item_num;			//空闲目录节点数
-	vector<int> free_sfd_item_id;	//空闲目录节点的id数组
+	int SFD_bitmap[32][16];		//目录节点位示图  0--为空闲，1--为被占用
 
 	int diskblock_num;				//磁盘块的数量
 	int free_diskblock_num;			//空闲磁盘块数
@@ -95,4 +95,5 @@ struct FILE_SYSTEM {
 };
 
 FILE_SYSTEM fileSystem;		//操作磁盘文件卷的全局变量
+
 #endif
