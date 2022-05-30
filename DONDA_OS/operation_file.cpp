@@ -1,7 +1,7 @@
 #include "OS.h"
 
 //为创建文件或目录初始化i结点
-void createInitINode(int useINode, int type, int filelen)
+void createInitINode(int iNode_id, int type, int filelen)
 {
 
 }

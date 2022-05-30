@@ -80,7 +80,7 @@ struct DISK_BFD_ITEM {
 	int file_len;			//文件长度
 	int link_count;			//文件链接计数
 	int last_visited_time;	//最近一次存取时间
-	int i_addr[ADDR_NUM];		//索引数组（物理地址--磁盘块号）
+	int i_addr[ADDR_NUM];	//索引数组（物理地址--磁盘块号）
 	int sfd_id;				//1-目录文件的，指向的SFD的ID
 };
 
