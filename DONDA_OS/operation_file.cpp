@@ -17,7 +17,7 @@ void createInitINode(int iNode_id, int type, int filelen)
 		fileSystem.iNode[iNode_id].i_addr[i] = -1;//使用的磁盘资源
 }
 
-//创建文件
+
 
 
 
