@@ -166,9 +166,9 @@ void FreeABlock(int BlockNo);		//成组链接--回收空闲块
 int createFirstIndexB();        //创建文件的第一个索引块
 int createiNode();              //为新创建的文件分配一个i结点
 int checkExitsfd(string name);  //查询当前目录下一固定名的文件下标
-
+void createSFD(int iNode_id, string name);              //为新创建的文件分配一个i结点
 int createFile(string fileName);    //创建文件
-
+string getTime();
 int* getIaddr(int indexnum);     //得到待删除文件的索引块中的磁盘块号数组
 int freeFile(string fileName);       //删除指定名字的文件
 void deleteINode(int pos);       //删除待删除文件对应的i结点及其指向的磁盘块

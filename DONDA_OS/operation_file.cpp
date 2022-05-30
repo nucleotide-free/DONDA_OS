@@ -17,10 +17,6 @@ void createInitINode(int iNode_id, int type, int filelen)
 		fileSystem.iNode[iNode_id].i_addr[i] = -1;//使用的磁盘资源
 }
 
-
-
-
-
 //为新创建的文件分配一个i结点，返回i节点编号，-1为没找到
 int createiNode()
 {
@@ -46,24 +42,25 @@ int createiNode()
 	return iNode_id;
 }
 
-//创建文件
+//创建文件，1-成功，0-失败
 int createFile(string fileName) 
 {
-	//查询是否重名
-	int flag_fileName = -1;
-
+	int flag_fileName = -1;//查询是否重名
 	for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++)
-	{
 		if (fileName == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name)
-		{
 			flag_fileName = 1;
-		}
-	};
+
 	if (flag_fileName == -1) {//没有重名
 		int iNode_id = createiNode();//分配到一个i节点
+		if (iNode_id == -1) {
+			cout << "内存空间不足，分配i节点失败！\n"; 
+			return 0;
+		}
 		createSFD(iNode_id, fileName);
 		cout << "创建成功！\n";
+		return 1;
 	}
+	cout << "文件名冲突！\n";
 	return 0;
 }
 
@@ -78,8 +75,8 @@ void createSFD(int iNode_id,string name) {
 	fileSystem.SFD[sfd_pointer].sfd_num++;		//当前目录的SFD下的sfd_item数量
 }
 
-int checkExitsfd(string name) {}  //查询当前目录下一固定名的文件下标
-int* getIaddr(int indexnum) {}     //得到待删除文件的索引块中的磁盘块号数组
+//int checkExitsfd(string name) {}  //查询当前目录下一固定名的文件下标
+//int* getIaddr(int indexnum) {}     //得到待删除文件的索引块中的磁盘块号数组
 
 //删除文件
 int freeFile(string fileName) {
