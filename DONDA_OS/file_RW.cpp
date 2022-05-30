@@ -26,9 +26,6 @@ void writeFile(string fileName)
     tempFile.open("Temp\\" + fileName + ".txt", ios::out | ios::app);
     if (tempFile.is_open()) {//新建临时文件成功
         
-        for(int i =0;i<ADDR_NUM;i++)
-        fileSystem.iNode[iNode_id].i_addr
-        tempFile << "111111222";
     }
     tempFile.close();
     string str = "vim Temp\\" + fileName + ".txt";
