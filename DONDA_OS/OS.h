@@ -145,39 +145,40 @@ void initSFD();             //初始化SFD
 void init();                //初始化
 
 //**************************用户模块*****************************
-void login();               //登录用户名
+void login();					//登录
+char* getpassword(char* pasw);	//密码掩码化
 void logout();              //登出
 int getInodeNum();            //获得当前目录的i结点号
 int checkFileAuth(string filename); //检查当前用户的读写权限
 int checkDirAuth(string filename);  //检查当前用户对目录的读写权限
 
 //**************************界面模块*****************************
-void dis_help();			//显示帮助
+void commandCategory();		//显示命令目录
 void display();				//界面主函数，用来实现大部分输入输出功能
-void textcolor(int color);	//设置字体颜色
+void textColor(int color);	//设置字体颜色
 int checkIn(string in);		//用来检测命令是否存在以及指令的种类
 
 //**************************块管理模块*****************************
-int AllocateOneBlock();			//成组链接--分配空闲块
-int ReadABlock(stack<int> free_block_stack, int block_num);
 void FreeABlock(int BlockNo);		//成组链接--回收空闲块
+int AllocateOneBlock();				//成组链接--分配空闲块
+int ReadABlock(stack<int> free_block_stack, int block_num);	//读取组长块
 
 //**************************文件的创建与删除模块*****************************
 void createInitINode(int iNode_id, int type, int filelen);	//为创建文件或目录初始化i结点
-int createiNode(int type);			//为新创建的文件分配一个i结点
-void createSFD(int iNode_id, string name);              //为新创建的文件分配一个i结点
-int createFile(string fileName);    //创建文件
+int createiNode(int type);					//为新创建的文件分配一个i结点
+void createSFD(int iNode_id, string name);  //为新创建的文件分配一个SFD结点
+int createFile(string fileName);			//创建文件
 string getTime();
 
-int* getIaddr(int indexnum);		 //得到待删除文件的索引块中的磁盘块号数组
-int freeFile(string fileName);       //删除指定名字的文件
+int* getIaddr(int indexnum);		//得到待删除文件的索引块中的磁盘块号数组
+int freeFile(string fileName);      //删除指定名字的文件
 void deleteINode(int pos);			//删除待删除文件对应的i结点及其指向的磁盘块
 void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 
 //**************************目录的创建与删除模块*****************************
-int createDir(string fileName);			//创建一个目录
-int deleteDir(string name);		//级联删除一个目录及其子目录和子文件
-void deleteINodeOne(int useINode);			//删除一个i结点
+int createDir(string fileName);		//创建一个目录
+int deleteDir(string name);			//级联删除一个目录及其子目录和子文件
+void deleteINodeOne(int useINode);	//删除一个i结点
 
 
 #endif
