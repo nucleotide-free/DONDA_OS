@@ -104,9 +104,8 @@ void initINode() {
 			cin >> fileSystem.iNode[i].file_len;	//文件长度
 			cin >> fileSystem.iNode[i].link_count;	//文件链接次数
 
-
 			if (fileSystem.iNode[i].type == 1)		//1-目录文件
-				cin >> fileSystem.iNode[i].sfd_id;	//指向的sfd的ID
+				cin >> fileSystem.iNode[i].id;	//指向的sfd的ID
 			else									//0-普通文件，存磁盘
 				for (int j = 0; j < ADDR_NUM; j++)
 					cin >> fileSystem.iNode[i].i_addr[j];	//磁盘块号，指向diskBlock

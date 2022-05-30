@@ -9,7 +9,7 @@ int AllocateOneBlock() {
 			cout << "分配失败,进程等待" << endl;
 		}
 		else {
-			 free_block=ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
+			 free_block= ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
 			return free_block;
 		}
 	}
@@ -34,10 +34,11 @@ int ReadABlock(stack<int> free_block_stack,int block_num) {
 			temp = 0;
 		}
 	}
+	return temp;
 }
 
 //成组链接--回收空闲块
-int FreeABlock(int BlockNo) 
+void FreeABlock(int BlockNo) 
 {
 	if (fileSystem.superBlock.stack_size < 50) {
 		fileSystem.superBlock.stack_size++;

@@ -52,6 +52,8 @@ struct USER {
 	string user_name;	//登陆用的用户名
 };
 
+
+
 //普通磁盘块，放文件
 struct DISK_BLOCK
 {
@@ -79,7 +81,7 @@ struct DISK_BFD_ITEM {
 	int auth[8];			//8个用户的存取权限  0--无权限  1--有权限
 	int file_len;			//文件长度
 	int link_count;			//文件链接计数
-	int last_visited_time;	//最近一次存取时间
+	string last_visited_time;	//最近一次存取时间
 	int i_addr[ADDR_NUM];		//索引数组（物理地址--磁盘块号）
 };
 
@@ -92,7 +94,7 @@ struct MEM_BFD_ITEM {
 	int i_addr[ADDR_NUM];		//索引数组（物理地址--磁盘块号）
 	int file_len;			//文件长度
 	int link_count;			//文件链接计数
-	int last_visited_time;	//最近一次存取时间
+	string last_visited_time;	//最近一次存取时间
 
 	int index_num;			//索引节点编号--hash链表节点号
 	int status_lock;		//0--unlocked，1--locked
@@ -154,6 +156,11 @@ void dis_help();			//显示帮助
 void display();				//界面主函数，用来实现大部分输入输出功能
 void textcolor(int color);	//设置字体颜色
 int checkIn(string in);		//用来检测命令是否存在以及指令的种类
+
+//**************************块管理模块*****************************
+int AllocateOneBlock();			//成组链接--分配空闲块
+int ReadABlock(stack<int> free_block_stack, int block_num);
+void FreeABlock(int BlockNo);		//成组链接--回收空闲块
 
 //**************************文件的创建与删除模块*****************************
 int createFirstIndexB();        //创建文件的第一个索引块
