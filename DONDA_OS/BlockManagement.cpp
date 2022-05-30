@@ -2,18 +2,21 @@
 
 //成组链接--分配空闲块
 int AllocateOneBlock() {
+	int free_block;		//空闲块块号
 	if (fileSystem.superBlock.stack_size == 1)
 	{
 		if (fileSystem.superBlock.free_block_stack.top() == 0) {
 			cout << "分配失败,进程等待" << endl;
 		}
 		else {
-			int free_block=ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
+			 free_block=ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
 			return free_block;
 		}
 	}
 	else {
-		return;
+		free_block=fileSystem.superBlock.free_block_stack.top();
+		fileSystem.superBlock.free_block_stack.pop();
+		return free_block;
 	}
 }
 
