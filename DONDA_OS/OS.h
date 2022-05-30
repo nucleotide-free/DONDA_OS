@@ -133,6 +133,7 @@ struct FILE_SYSTEM {
 
 extern FILE_SYSTEM fileSystem;		//操作磁盘文件卷的全局变量
 extern FILE* stream;
+extern int sfd_pointer;		//sfd指针--指向当前的sfd目录
 extern USER user;			//当前用户
 
 //**************************初始化模块***************************
