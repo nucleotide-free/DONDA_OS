@@ -145,16 +145,26 @@ void init();                //初始化
 //**************************用户模块*****************************
 void login();               //登录用户名
 void logout();              //登出
-int checkUser(string user); //判断此时用户
 int getInodeNum();            //获得当前目录的i结点号
 int checkFileAuth(string filename); //检查当前用户的读写权限
 int checkDirAuth(string filename);  //检查当前用户对目录的读写权限
-int checkPassword();
-void inputPassword();
 
 //**************************界面模块*****************************
 void dis_help();			//显示帮助
 void display();				//界面主函数，用来实现大部分输入输出功能
 void textcolor(int color);	//设置字体颜色
 int checkIn(string in);		//用来检测命令是否存在以及指令的种类
+
+//**************************文件的创建与删除模块*****************************
+int createFirstIndexB();        //创建文件的第一个索引块
+int createiNode();              //为新创建的文件分配一个i结点
+int checkExitsfd(string name);  //查询当前目录下一固定名的文件下标
+
+int createFile(string fileName);    //创建文件
+
+int* getIaddr(int indexnum);     //得到待删除文件的索引块中的磁盘块号数组
+int freeFile(string fileName);       //删除指定名字的文件
+void deleteINode(int pos);       //删除待删除文件对应的i结点及其指向的磁盘块
+void findSinglesfd(int inodeNo); //遍历删除与待删除文件共享的文件目录
+
 #endif
