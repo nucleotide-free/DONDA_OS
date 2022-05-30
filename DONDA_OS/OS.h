@@ -184,7 +184,7 @@ void readFile(string name);     //读文件内容函数
 int writeIndexBlock(int indexnum, int BlockNo);//文件内容的写入
 int getCur_blockNo(int inodeNo);//返回当前文件i节点，所占用的最后磁盘块
 
-int writeFile(string fileName);     //写指定文件名的文件
+void writeFile(string fileName);     //写指定文件名的文件
 
 int transform(int sindex, char s[], string file);
 
