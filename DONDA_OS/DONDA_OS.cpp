@@ -11,6 +11,8 @@ int main()
     login();
     init();
     system("Pause");
+    //system("vim test.txt");
+    //system("Pause");
     display();
     system("Pause");
 }

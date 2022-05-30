@@ -80,6 +80,19 @@ void display() {
 
 		}
 		else if (instruction == "ls") {//显示目录
+			if (fileSystem.SFD[sfd_pointer].sfd_num==0) {
+				cout << "无内容" << endl;
+				return;
+			}
+			for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {		//扫描当前sfd列表中对的sfd_item的filename并显示出来
+				cout << fileSystem.SFD[sfd_pointer].sfd_list[i].file_name+"\t";
+				if(fileSystem.iNode[sfd_pointer].type){		//通过获取iNode[sfd_pointer]的type值来
+					cout << "dir\n";
+				}
+				else {
+					cout << "file\n";
+				}
+			}
 
 		}
 		else if (instruction == "cd") {//切换目录
@@ -105,10 +118,17 @@ void display() {
 
 		}
 		else if (instruction == "cd/") {//返回根目录
+			sfd_pointer = 0;		//根目录sfd的sfd指针
+			sfd_stack.clear();		//清空目录栈
+			sfd_stack.push_back(fileSystem.SFD[sfd_pointer]);	//向栈中压入根目录
 
+			file_list.clear();		//文件显示字符串清空
 		}
 		else if (instruction == "cd..") {//返回上级目录
+			sfd_stack.pop_back();		//弹出目录栈
+			sfd_stack.front();
 
+			file_list.clear();		//文件显示字符串清空
 		}
 		else if (instruction == "deld") {//删除目录
 
