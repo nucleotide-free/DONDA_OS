@@ -62,14 +62,14 @@ int createFile(string fileName)
 		int iNode_id = createiNode(0);//分配到一个i节点
 		if (iNode_id == -1) {
 			cout << "内存空间不足，分配i节点失败！\n"; 
-			return 0;
+			return -1;
 		}
 		createSFD(iNode_id, fileName);
 		cout << "创建成功！\n";
-		return 1;
+		return iNode_id;
 	}
 	cout << "文件名冲突！\n";
-	return 0;
+	return -1;
 }
 
 //int checkExitsfd(string name) {}  //查询当前目录下一固定名的文件下标

@@ -36,6 +36,9 @@
     <ClCompile Include="cmd.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="file_RW.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OS.h">
