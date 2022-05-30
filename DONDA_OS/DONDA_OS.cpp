@@ -10,7 +10,8 @@ int main()
 { 
     login();
     init();
-    commandCategory();
+    system("Pause");
+    display();
     system("Pause");
 }
 
