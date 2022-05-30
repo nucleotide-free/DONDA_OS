@@ -58,7 +58,7 @@ struct USER {
 struct DISK_BLOCK
 {
 	string content = "";	//文件内容
-	int content_len = 0;	//文件大小（在块中占用了多大的空间）
+	int content_len = 0;	//文件大小（在块中占用了多大的空间）块大小为512，因此content_len必须小于512
 };
 
 //文件目录项
