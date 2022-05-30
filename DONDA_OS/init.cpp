@@ -68,6 +68,7 @@ void initSFD() {
 		sfd_item.file_name = "root" + tmps;
 		sfd_item.file_id = i;
 		fileSystem.SFD[0].sfd_list.push_back(sfd_item);   //每个用户的文件目录下生成sfd动态数组
+		fileSystem.SFD[0].sfd_num++;
 	}
 
 	sfd_stack.push_back(fileSystem.SFD[0]);

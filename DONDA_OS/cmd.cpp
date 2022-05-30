@@ -52,8 +52,8 @@ void display() {
 		while (1) {
 			cout << user.user_name << "@DONDA_OS:";
 			cout << file_list << "$ ";
-			input_command(instruction, fileName1, fileName2);//用户输入指令
-			if (command_type != -1)//指令有效
+			//input_command(instruction, fileName1, fileName2);//用户输入指令
+			if (input_command(instruction, fileName1, fileName2) != -1)//指令有效
 				break;
 		}
 		//*********************************  文件操作 ********************************* 
@@ -83,6 +83,25 @@ void display() {
 
 		}
 		else if (instruction == "cd") {//切换目录
+			int fileName_check = 0;		//检查目录中是否存在名为fileName1的目录，1--存在，0--不存在
+			int file_check = 0;		//检查cd的是文件还是目录，0--文件，1--目录
+			for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {
+				if (fileName1 == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name) {
+					fileName_check = 1;		//存在
+					sfd_pointer = fileSystem.SFD[sfd_pointer].sfd_list[i].file_id;		//将当前的目录sfd指针设为将要进入的目录sfd的id
+					break;
+				}
+			}
+			if (fileSystem.iNode[sfd_pointer].type)		//检查iNode中将要cd的文件或目录的type是否为文件
+					file_check = 1;		//存在	
+			if (fileName_check&& file_check) {
+				file_list = file_list + "\\" + fileName1;
+				sfd_stack.push_back(fileSystem.SFD[sfd_pointer]);		//将当前目录sfd推入目录栈
+			}
+			else {
+				cout << "不存在的目录，操作失败！\n";
+			}
+
 
 		}
 		else if (instruction == "cd/") {//返回根目录
