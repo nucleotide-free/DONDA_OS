@@ -18,7 +18,7 @@ void createInitINode(int iNode_id, int type, int filelen)
 }
 
 //为新创建的文件分配一个i结点，返回i节点编号，-1为没找到
-int createiNode()
+int createiNode(int type)
 {
 	if (fileSystem.superBlock.free_diskblock_num == 0) {//没有空闲磁盘块
 		cout << "没有空闲磁盘块！\n";
@@ -38,8 +38,16 @@ int createiNode()
 				fileSystem.superBlock.free_iNode_num--;//空闲i节点数 -1
 				break;
 			}
-	createInitINode(iNode_id, 0, 0);//为创建文件或目录初始化i结点，类型为0，表示文件，长度为0，初始化i结点
+	createInitINode(iNode_id, type, 0);//为创建文件或目录初始化i结点，类型为0，表示文件，长度为0，初始化i结点
 	return iNode_id;
+}
+
+void createSFD(int iNode_id, string name) {
+	SFD_ITEM temp;
+	temp.file_name = name;		//文件名输入
+	temp.file_id = iNode_id;			//SFD_ITEM的id等于i节点的id
+	fileSystem.SFD[sfd_pointer].sfd_list.push_back(temp);		//将这个sfd_item放入当前目录的SFD下的sfd_list当中
+	fileSystem.SFD[sfd_pointer].sfd_num++;		//当前目录的SFD下的sfd_item数量
 }
 
 //创建文件，1-成功，0-失败
@@ -51,7 +59,7 @@ int createFile(string fileName)
 			flag_fileName = 1;
 
 	if (flag_fileName == -1) {//没有重名
-		int iNode_id = createiNode();//分配到一个i节点
+		int iNode_id = createiNode(0);//分配到一个i节点
 		if (iNode_id == -1) {
 			cout << "内存空间不足，分配i节点失败！\n"; 
 			return 0;
@@ -62,17 +70,6 @@ int createFile(string fileName)
 	}
 	cout << "文件名冲突！\n";
 	return 0;
-}
-
-
-
-
-void createSFD(int iNode_id,string name) {
-	SFD_ITEM temp;
-	temp.file_name = name;		//文件名输入
-	temp.file_id = iNode_id;			//SFD_ITEM的id等于i节点的id
-	fileSystem.SFD[sfd_pointer].sfd_list.push_back(temp);		//将这个sfd_item放入当前目录的SFD下的sfd_list当中
-	fileSystem.SFD[sfd_pointer].sfd_num++;		//当前目录的SFD下的sfd_item数量
 }
 
 //int checkExitsfd(string name) {}  //查询当前目录下一固定名的文件下标

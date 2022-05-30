@@ -163,20 +163,19 @@ int ReadABlock(stack<int> free_block_stack, int block_num);
 void FreeABlock(int BlockNo);		//成组链接--回收空闲块
 
 //**************************文件的创建与删除模块*****************************
-int createFirstIndexB();        //创建文件的第一个索引块
-int createiNode();              //为新创建的文件分配一个i结点
-int checkExitsfd(string name);  //查询当前目录下一固定名的文件下标
+void createInitINode(int iNode_id, int type, int filelen);	//为创建文件或目录初始化i结点
+int createiNode(int type);			//为新创建的文件分配一个i结点
 void createSFD(int iNode_id, string name);              //为新创建的文件分配一个i结点
 int createFile(string fileName);    //创建文件
 string getTime();
-int* getIaddr(int indexnum);     //得到待删除文件的索引块中的磁盘块号数组
+
+int* getIaddr(int indexnum);		 //得到待删除文件的索引块中的磁盘块号数组
 int freeFile(string fileName);       //删除指定名字的文件
-void deleteINode(int pos);       //删除待删除文件对应的i结点及其指向的磁盘块
-void findSinglesfd(int inodeNo); //遍历删除与待删除文件共享的文件目录
+void deleteINode(int pos);			//删除待删除文件对应的i结点及其指向的磁盘块
+void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 
 //**************************目录的创建与删除模块*****************************
-void createInitINode(int useINode, int type, int filelen);		//为创建文件或目录初始化i结点
-int createDir(string filename);			//创建一个目录
+int createDir(string fileName);			//创建一个目录
 int deleteDir(string name);		//级联删除一个目录及其子目录和子文件
 void deleteINodeOne(int useINode);			//删除一个i结点
 
