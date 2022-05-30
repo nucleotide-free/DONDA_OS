@@ -52,6 +52,7 @@ void initSuperBlock(){
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
+	freopen_s(&stream, "CON", "r", stdin);
 	cin.clear();
 }
 
@@ -67,6 +68,7 @@ void initSFD() {
 		sfd_item.file_name = "root" + tmps;
 		sfd_item.file_id = i;
 		fileSystem.SFD[0].sfd_list.push_back(sfd_item);   //每个用户的文件目录下生成sfd动态数组
+		fileSystem.SFD[0].sfd_num++;
 	}
 
 	sfd_stack.push_back(fileSystem.SFD[0]);
@@ -111,6 +113,7 @@ void initINode() {
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
+	freopen_s(&stream, "CON", "r", stdin);
 	cin.clear();
 }
 
@@ -134,6 +137,7 @@ void initDiskBlock() {
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
+	freopen_s(&stream, "CON", "r", stdin);
 	cin.clear();
 }
 
