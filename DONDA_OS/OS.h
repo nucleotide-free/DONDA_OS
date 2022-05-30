@@ -174,4 +174,11 @@ int freeFile(string fileName);       //删除指定名字的文件
 void deleteINode(int pos);       //删除待删除文件对应的i结点及其指向的磁盘块
 void findSinglesfd(int inodeNo); //遍历删除与待删除文件共享的文件目录
 
+//**************************目录的创建与删除模块*****************************
+void createInitINode(int useINode, int type, int filelen);		//为创建文件或目录初始化i结点
+int createDir(string filename);			//创建一个目录
+int deleteDir(string name);		//级联删除一个目录及其子目录和子文件
+void deleteINodeOne(int useINode);			//删除一个i结点
+
+
 #endif
