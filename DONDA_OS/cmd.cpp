@@ -4,56 +4,51 @@
 void commandCategory()
 {
 	textColor(10);
-	cout << "--------------------------------------------------------------------------------" << endl;
-	Sleep(20);    //程序延时100ms
-	cout << "-----------                        命令提示                          -----------" << endl;
-	Sleep(20);    //程序延时100ms
-	cout << "---------------------------------文件/目录操作----------------------------------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "-----------  - 更名:     rname <O> <N>#  - 链接: link   <name>      ------------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "-----------  - 查找:     find  <name> #  - 剪切: cut    <name>       -----------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "-----------  - 复制:     copy  <name> #  - 粘贴: paste               -----------" << endl;
-	Sleep(20);    //程序延时100ms
-	cout << "---------------------------------目录操作---------------------------------------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "-----------  - 创建目录: mkdir <name> #  - 显示目录:     ls         ------------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "-----------  - 切换目录: cd    <name> #  - 返回根目录:   cd/        ------------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "-----------  - 删除目录: deld  <name> #  - 返回上级目录: cd..       ------------" << endl;
-	Sleep(20);    //程序延时100ms
-	cout << "----------------------------------文件操作--------------------------------------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "------------  - 创建文件: create <name>#  - 删除文件: delf <name>    -----------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "------------  - 改写文件: write <name> #  - 读取文件: read <name>    -----------" << endl;
-	Sleep(20);    //程序延时100ms
-	cout << "----------------------------------其他操作--------------------------------------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "------------  - 清屏:     cls          #  - 格式化:   format         -----------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "------------  - 注销登录: logout       #  - 位示图:   print          -----------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "------------  - 自动补全: Tab          #  - 关闭系统: exit           -----------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "------------  - 重新输入: ↑           #  - 显示帮助: help           -----------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "------------  - 修改密码: changepass   #  - 显示密码: showpassword   -----------" << endl;
-	Sleep(10);    //程序延时100ms
-	cout << "--------------------------------------------------------------------------------" << endl;
-}
+	cout << "\nCOMMANDS:" << endl;
+	cout << "\t文件操作" << endl;
+	cout << "\t\t更名:\trname [old name] [new name]" << endl;
+	cout << "\t\t链接:\tlink   [name]" << endl;
+	cout << "\t\t查找:\tfind  [name]" << endl;
+	cout << "\t\t剪切:\tcut   [name]" << endl;
+	cout << "\t\t复制:\tcopy [name]" << endl;
+	cout << "\t\t粘贴:\tpaste" << endl;
+	cout << "\t目录操作" << endl;
+	cout << "\t\t创建目录:\tmkdir [name]" << endl;
+	cout << "\t\t显示目录:\tls" << endl;
+	cout << "\t\t切换目录:\tcd		[name]" << endl;
+	cout << "\t\t返回根目录:\tcd/" << endl;
+	cout << "\t\t删除目录:\tdeld  [name]" << endl;
+	cout << "\t\t返回上级目录:\tcd.." << endl;
+	cout << "\t文件读写" << endl;
+	cout << "\t\t创建文件:\tcreate [name]" << endl;
+	cout << "\t\t删除文件:\tdelf [name]" << endl;
+	cout << "\t\t改写文件:\twrite [name]" << endl;
+	cout << "\t\t读取文件:\tread [name]" << endl;
+	cout << "\t其他操作" << endl;
+	cout << "\t\t清屏:	\tcls" << endl;
+	cout << "\t\t格式化:\tformat" << endl;
+	cout << "\t\t注销登录:\tlogout" << endl;
+	cout << "\t\t位示图:\tbitmap" << endl;
+	cout << "\t\t关闭系统:\texit" << endl;
+	cout << "\t\t显示帮助:\thelp" << endl;
+	cout << "\t\t修改密码:\tchangepass" << endl;
+	cout << "\t\t显示密码:\tshowpassword" << endl;
+};
 
 //界面主函数，用来实现大部分输入输出功能
 void display() {
+	string file_list;		//用于记录用户所打开的文件或目录的列表，组成链条，显示到输入前
+	cout << user.user_name << "@File System\\>";
+	if (file_list != " ") {
+		cout << file_list << ">";
+	}
 
 }
 
 //用来检测命令是否存在以及指令的种类
 int checkIn(string in)
 {
-
+	return 1;
 }
 
 //设置字体颜色

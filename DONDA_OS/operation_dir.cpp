@@ -38,7 +38,7 @@ int createDir(string fileName) {
 
 //级联删除一个目录及其子目录和子文件
 int deleteDir(string name) {
-	
+	return 1;
 }
 
 
