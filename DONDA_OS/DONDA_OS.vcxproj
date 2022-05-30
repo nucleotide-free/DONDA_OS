@@ -142,6 +142,7 @@
     <ClCompile Include="BlockManagement.cpp" />
     <ClCompile Include="cmd.cpp" />
     <ClCompile Include="DONDA_OS.cpp" />
+    <ClCompile Include="file_RW.cpp" />
     <ClCompile Include="init.cpp" />
     <ClCompile Include="operation_dir.cpp" />
     <ClCompile Include="operation_file.cpp" />

@@ -114,8 +114,6 @@ void display() {
 			else {
 				cout << "不存在的目录，操作失败！\n";
 			}
-
-
 		}
 		else if (instruction == "cd/") {//返回根目录
 			sfd_pointer = 0;		//根目录sfd的sfd指针
@@ -135,7 +133,28 @@ void display() {
 		}
 		//********************************* 文件读写 ********************************
 		else if (instruction == "create") {//创建文件
+			if (fileSystem.iNode[sfd_pointer].auth[user.user_id] == 0) {
+				cout << "创建失败！该用户权限不足！\n";
+				continue;
+			}
+			int iNode_id = createFile(fileName1);
+			if( iNode_id > -1){//创建成功
+				cout << "是否要向文件里写入东西[Y,N]？";
+				while (1) {
+					char ch = _getch();//用户输入
+					cout << ch << endl;
+					if (ch == 'N' || ch == 'n')
+						break;//不写，直接退出
+					else if (ch == 'Y' || ch == 'y') {//写文件
 
+						cout << "done";
+						break;
+					}
+					else
+						cout << "输入不合法，请重新输入[Y,N]：";
+				}
+				
+			}	
 		}
 		else if (instruction == "delf") {//删除文件
 
