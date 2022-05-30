@@ -3,7 +3,18 @@
 //为创建文件或目录初始化i结点
 void createInitINode(int iNode_id, int type, int filelen)
 {
+	fileSystem.iNode[iNode_id].id = iNode_id;//i节点的id，即在数组里的id
+	fileSystem.iNode[iNode_id].type = type;	 //文件类型 0-普通 1-目录
+	fileSystem.iNode[iNode_id].owner = user.user_id;//文件创立者
+	for (int i = 1; i <= 8; i++) 
+		fileSystem.iNode[iNode_id].auth[i] = 0;//全部user都无权限
+	fileSystem.iNode[iNode_id].auth[user.user_id] = 1;//仅创立者有权限
 
+	fileSystem.iNode[iNode_id].file_len = filelen;//文件长度
+	fileSystem.iNode[iNode_id].link_count = 0;//链接次数 = 0
+	fileSystem.iNode[iNode_id].last_visited_time = 0;//最后一次存取时间（当前时间）
+	for (int i = 0; i < ADDR_NUM; i++)
+		fileSystem.iNode[iNode_id].i_addr[i] = -1;//使用的磁盘资源
 }
 
 //创建文件
@@ -12,10 +23,6 @@ int createFile(string fileName)
 
 }
 
-//创建文件的第一个索引块
-int createFirstIndexBlock() {        
-
-}
 
 //为新创建的文件分配一个i结点
 int createiNode() 
