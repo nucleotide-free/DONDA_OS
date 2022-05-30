@@ -8,11 +8,11 @@ vector<SFD> sfd_stack;	//目录栈
 
 int main()
 { 
+    writeFile("1");
     login();
     init();
     system("Pause");
-    //system("vim test.txt");
-    //system("Pause");
+    
     display();
     system("Pause");
 }

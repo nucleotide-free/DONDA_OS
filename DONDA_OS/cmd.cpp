@@ -146,8 +146,7 @@ void display() {
 					if (ch == 'N' || ch == 'n')
 						break;//不写，直接退出
 					else if (ch == 'Y' || ch == 'y') {//写文件
-
-						cout << "done";
+						writeFile(fileName1);
 						break;
 					}
 					else
@@ -160,7 +159,7 @@ void display() {
 
 		}
 		else if (instruction == "write") {//改写文件
-
+			writeFile(fileName1);
 		}
 		else if (instruction == "read") {//读取文件
 
