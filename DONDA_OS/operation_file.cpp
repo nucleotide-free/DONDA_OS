@@ -12,33 +12,26 @@ void createInitINode(int iNode_id, int type, int filelen)
 
 	fileSystem.iNode[iNode_id].file_len = filelen;//文件长度
 	fileSystem.iNode[iNode_id].link_count = 0;//链接次数 = 0
-	fileSystem.iNode[iNode_id].last_visited_time = 0;//最后一次存取时间（当前时间）
+	fileSystem.iNode[iNode_id].last_visited_time = getTime();//最后一次存取时间（当前时间）
 	for (int i = 0; i < ADDR_NUM; i++)
 		fileSystem.iNode[iNode_id].i_addr[i] = -1;//使用的磁盘资源
 }
 
-//创建文件
-int createFile(string fileName) 
-{
-	return 0;
-}
-
-
 //为新创建的文件分配一个i结点，返回i节点编号，-1为没找到
-int createiNode() 
-{              
+int createiNode()
+{
 	if (fileSystem.superBlock.free_diskblock_num == 0) {//没有空闲磁盘块
 		cout << "没有空闲磁盘块！\n";
 		return -1;
 	}
 	if (fileSystem.superBlock.free_iNode_num == 0) {//没有空闲i节点
-		cout << "没有空闲磁盘块！\n";
+		cout << "没有空闲i节点！\n";
 		return -1;
 	}
-	
+
 	int iNode_id = -1;//新的i节点编号
-	for(int i =0;i< INODE_BITMAP_ROW;i++)
-		for(int j=0;j< INODE_BITMAP_COL;j++)
+	for (int i = 0; i < INODE_BITMAP_ROW; i++)
+		for (int j = 0; j < INODE_BITMAP_COL; j++)
 			if (fileSystem.superBlock.iNode_bitmap[i][j] == 0) {//查位示图，找到一个空闲的i节点
 				fileSystem.superBlock.iNode_bitmap[i][j] = 1;//设置为被占用
 				iNode_id = i * INODE_BITMAP_COL + j;
@@ -49,10 +42,27 @@ int createiNode()
 	return iNode_id;
 }
 
-void createSFD(DISK_BFD_ITEM iNode,string name) {
+//创建文件
+int createFile(string fileName) 
+{
+	//查询是否重名
+	int flag_fileName = -1;
+
+	if (flag_fileName == -1) {//没有重名
+		int iNode_id = createiNode();//分配到一个i节点
+		createSFD(iNode_id, fileName);
+		cout << "创建成功！\n";
+	}
+	return 0;
+}
+
+
+
+
+void createSFD(int iNode_id,string name) {
 	SFD_ITEM temp;
 	temp.file_name = name;		//文件名输入
-	temp.file_id = iNode.id;			//SFD_ITEM的id等于i节点的id
+	temp.file_id = iNode_id;			//SFD_ITEM的id等于i节点的id
 	fileSystem.SFD[sfd_pointer].sfd_list.push_back(temp);		//将这个sfd_item放入当前目录的SFD下的sfd_list当中
 	fileSystem.SFD[sfd_pointer].sfd_num++;		//当前目录的SFD下的sfd_item数量
 }
@@ -83,5 +93,5 @@ string getTime() {
 	ss << now_time.tm_year + 1900 << "-" << now_time.tm_mon + 1 << "-"
 		<< now_time.tm_mday << "," << now_time.tm_hour << ":"
 		<< now_time.tm_min << ":" << now_time.tm_hour;
-	std::cout << ss.str() << std::endl;
+	return ss.str();
 }
