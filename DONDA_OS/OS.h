@@ -75,7 +75,7 @@ struct SFD {
 
 //磁盘i节点
 struct DISK_BFD_ITEM {		
-	int id;					//文件主标识符,指向的SFD的ID
+	int id;					//文件主标识符，指向的SFD的ID
 	int type;				//文件类型 0--普通 1--目录
 	int owner;				//文件创建者id
 	int auth[8];			//8个用户的存取权限  0--无权限  1--有权限

@@ -1,23 +1,30 @@
 #include "OS.h"
 
-//为创建文件或目录初始化i结点
-void createInitINode(int useINode, int type, int filelen)
+//为创建文件或目录 初始化i结点
+void createInitINode(int iNode_id, int type, int filelen)
 {
+	fileSystem.iNode[iNode_id].id = iNode_id;//i节点的id，即在数组里的id
+	fileSystem.iNode[iNode_id].type = type;	 //文件类型 0-普通 1-目录
+	fileSystem.iNode[iNode_id].owner = user.user_id;//文件创立者
+	for (int i = 1; i <= 8; i++) 
+		fileSystem.iNode[iNode_id].auth[i] = 0;//全部user都无权限
+	fileSystem.iNode[iNode_id].auth[user.user_id] = 1;//仅创立者有权限
 
+	fileSystem.iNode[iNode_id].file_len = filelen;//文件长度
+	fileSystem.iNode[iNode_id].link_count = 0;//链接次数 = 0
+	fileSystem.iNode[iNode_id].last_visited_time = 0;//最后一次存取时间（当前时间）
+	for (int i = 0; i < ADDR_NUM; i++)
+		fileSystem.iNode[iNode_id].i_addr[i] = -1;//使用的磁盘资源
 }
 
 //创建文件
 int createFile(string fileName) 
 {
-
+	return 0;
 }
 
-//创建文件的第一个索引块
-int createFirstIndexBlock() {        
 
-}
-
-//为新创建的文件分配一个i结点
+//为新创建的文件分配一个i结点，返回i节点编号，-1为没找到
 int createiNode() 
 {              
 	if (fileSystem.superBlock.free_diskblock_num == 0) {//没有空闲磁盘块
@@ -28,8 +35,18 @@ int createiNode()
 		cout << "没有空闲磁盘块！\n";
 		return -1;
 	}
-	//分配一个i节点
-
+	
+	int iNode_id = -1;//新的i节点编号
+	for(int i =0;i< INODE_BITMAP_ROW;i++)
+		for(int j=0;j< INODE_BITMAP_COL;j++)
+			if (fileSystem.superBlock.iNode_bitmap[i][j] == 0) {//查位示图，找到一个空闲的i节点
+				fileSystem.superBlock.iNode_bitmap[i][j] = 1;//设置为被占用
+				iNode_id = i * INODE_BITMAP_COL + j;
+				fileSystem.superBlock.free_iNode_num--;//空闲i节点数 -1
+				break;
+			}
+	createInitINode(iNode_id, 0, 0);//为创建文件或目录初始化i结点，类型为0，表示文件，长度为0，初始化i结点
+	return iNode_id;
 }
 
 void createSFD(DISK_BFD_ITEM iNode,string name) {
@@ -45,7 +62,7 @@ int* getIaddr(int indexnum) {}     //得到待删除文件的索引块中的磁盘块号数组
 
 //删除文件
 int freeFile(string fileName) {
-
+	return 0;
 }
 //删除待删除文件对应的i结点及其指向的磁盘块
 void deleteiNode(int pos)      
