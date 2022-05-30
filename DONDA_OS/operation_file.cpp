@@ -12,7 +12,7 @@ void createInitINode(int iNode_id, int type, int filelen)
 
 	fileSystem.iNode[iNode_id].file_len = filelen;//文件长度
 	fileSystem.iNode[iNode_id].link_count = 0;//链接次数 = 0
-	fileSystem.iNode[iNode_id].last_visited_time = 0;//最后一次存取时间（当前时间）
+	fileSystem.iNode[iNode_id].last_visited_time = getTime();//最后一次存取时间（当前时间）
 	for (int i = 0; i < ADDR_NUM; i++)
 		fileSystem.iNode[iNode_id].i_addr[i] = -1;//使用的磁盘资源
 }
@@ -20,6 +20,14 @@ void createInitINode(int iNode_id, int type, int filelen)
 //创建文件
 int createFile(string fileName) 
 {
+	int name_fileName = -1;
+	for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++)
+	{
+		if (fileName == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name)
+		{
+			name_fileName = 1;
+		}
+	};
 	return 0;
 }
 
@@ -74,7 +82,8 @@ void findSinglesfd(int inodeNo) {
 
 }
 
-string getTime() {
+//获取当前时间
+string getTime() {		
 	time_t time_seconds = time(0);
 	tm now_time;
 	localtime_s(&now_time, &time_seconds);
@@ -83,5 +92,5 @@ string getTime() {
 	ss << now_time.tm_year + 1900 << "-" << now_time.tm_mon + 1 << "-"
 		<< now_time.tm_mday << "," << now_time.tm_hour << ":"
 		<< now_time.tm_min << ":" << now_time.tm_hour;
-	std::cout << ss.str() << std::endl;
+	return  ss.str();
 }
