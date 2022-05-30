@@ -52,6 +52,7 @@ void initSuperBlock(){
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
+	freopen_s(&stream, "CON", "r", stdin);
 	cin.clear();
 }
 
@@ -112,6 +113,7 @@ void initINode() {
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
+	freopen_s(&stream, "CON", "r", stdin);
 	cin.clear();
 }
 
@@ -135,6 +137,7 @@ void initDiskBlock() {
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
+	freopen_s(&stream, "CON", "r", stdin);
 	cin.clear();
 }
 
