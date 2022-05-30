@@ -162,7 +162,7 @@ void display() {
 			writeFile(fileName1);
 		}
 		else if (instruction == "read") {//读取文件
-
+			readFile(fileName1);
 		}
 		//********************************* 其他操作 ********************************
 		else if (instruction == "cls") {//清屏

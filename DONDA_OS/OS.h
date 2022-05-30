@@ -178,15 +178,10 @@ void deleteINode(int pos);			//删除待删除文件对应的i结点及其指向的磁盘块
 void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 
 //**************************文件的读写模块*****************************
-void writeiaddr(int BlockNo, int* iaddr);//将数组中的索引内容写回到相应的索引块中，磁盘文件中
-void outputBlock(int blockNO);  //输出文件磁盘块内容
-void readFile(string name);     //读文件内容函数
-int writeIndexBlock(int indexnum, int BlockNo);//文件内容的写入
-int getCur_blockNo(int inodeNo);//返回当前文件i节点，所占用的最后磁盘块
-
+int findiNodeByName(string fileName);		//通过文件名，找它的i节点
+string contentBuffer(int iNode_id);		//将索引块指向的磁盘块的内容写入buffer
 void writeFile(string fileName);     //写指定文件名的文件
-
-int transform(int sindex, char s[], string file);
+void readFile(string fileName);     //读文件内容函数
 
 //**************************目录的创建与删除模块*****************************
 int createDir(string fileName);		//创建一个目录
