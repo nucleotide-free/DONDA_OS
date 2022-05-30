@@ -32,6 +32,14 @@ int createiNode()
 
 }
 
+int createSFD(DISK_BFD_ITEM iNode,string name) {
+	SFD_ITEM temp;
+	temp.file_name = name;		//文件名输入
+	temp.file_id = iNode.id;			//SFD_ITEM的id等于i节点的id
+	fileSystem.SFD[sfd_pointer].sfd_list.push_back(temp);		//将这个sfd_item放入当前目录的SFD下的sfd_list当中
+	fileSystem.SFD[sfd_pointer].sfd_num++;		//当前目录的SFD下的sfd_item数量++
+}
+
 int checkExitsfd(string name) {}  //查询当前目录下一固定名的文件下标
 int* getIaddr(int indexnum) {}     //得到待删除文件的索引块中的磁盘块号数组
 
