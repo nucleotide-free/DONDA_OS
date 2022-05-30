@@ -1,6 +1,6 @@
 #include "OS.h"
 
-//为创建文件或目录初始化i结点
+//为创建文件或目录 初始化i结点
 void createInitINode(int iNode_id, int type, int filelen)
 {
 	fileSystem.iNode[iNode_id].id = iNode_id;//i节点的id，即在数组里的id
@@ -20,11 +20,11 @@ void createInitINode(int iNode_id, int type, int filelen)
 //创建文件
 int createFile(string fileName) 
 {
-
+	return 0;
 }
 
 
-//为新创建的文件分配一个i结点
+//为新创建的文件分配一个i结点，返回i节点编号，-1为没找到
 int createiNode() 
 {              
 	if (fileSystem.superBlock.free_diskblock_num == 0) {//没有空闲磁盘块
@@ -35,8 +35,18 @@ int createiNode()
 		cout << "没有空闲磁盘块！\n";
 		return -1;
 	}
-	//分配一个i节点
-
+	
+	int iNode_id = -1;//新的i节点编号
+	for(int i =0;i< INODE_BITMAP_ROW;i++)
+		for(int j=0;j< INODE_BITMAP_COL;j++)
+			if (fileSystem.superBlock.iNode_bitmap[i][j] == 0) {//查位示图，找到一个空闲的i节点
+				fileSystem.superBlock.iNode_bitmap[i][j] = 1;//设置为被占用
+				iNode_id = i * INODE_BITMAP_COL + j;
+				fileSystem.superBlock.free_iNode_num--;//空闲i节点数 -1
+				break;
+			}
+	createInitINode(iNode_id, 0, 0);//为创建文件或目录初始化i结点，类型为0，表示文件，长度为0，初始化i结点
+	return iNode_id;
 }
 
 int createSFD(DISK_BFD_ITEM iNode,string name) {
@@ -52,7 +62,7 @@ int* getIaddr(int indexnum) {}     //得到待删除文件的索引块中的磁盘块号数组
 
 //删除文件
 int freeFile(string fileName) {
-
+	return 0;
 }
 //删除待删除文件对应的i结点及其指向的磁盘块
 void deleteiNode(int pos)      
