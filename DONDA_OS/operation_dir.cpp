@@ -19,11 +19,20 @@ int createDir(string fileName) {
 			cout << "内存空间不足，分配i节点失败！\n";
 			return 0;
 		}
+		int sfd_id = -1;//新的i节点编号
+		for (int i = 0; i < SFD_BITMAP_ROW; i++)
+			for (int j = 0; j < SFD_BITMAP_COL; j++)
+				if (fileSystem.superBlock.SFD_bitmap[i][j] == 0) {//查位示图，找到一个空闲的i节点
+					fileSystem.superBlock.SFD_bitmap[i][j] = 1;//设置为被占用
+					sfd_id = i * SFD_BITMAP_COL + j;
+					fileSystem.superBlock.free_sfd_item_num--;//空闲i节点数 -1
+					break;
+				}
 		createSFD(iNode_id, fileName);
 		cout << "创建成功！\n";
 		return 1;
 	}
-	cout << "文件名冲突！\n";
+	cout << "目录名冲突！\n";
 	return 0;
 }
 
