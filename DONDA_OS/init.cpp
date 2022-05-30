@@ -88,7 +88,6 @@ void initSFD() {
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
-	freopen_s(&stream, "CON", "r", stdin);
 	cin.clear();
 
 }
@@ -144,4 +143,6 @@ void init()
 	initSFD();
 	initINode();
 	initDiskBlock();
+	freopen_s(&stream, "CON", "r", stdin);
+	cin.clear();
 }

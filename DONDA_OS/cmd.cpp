@@ -52,8 +52,8 @@ void display() {
 		while (1) {
 			cout << user.user_name << "@DONDA_OS:";
 			cout << file_list << "$ ";
-			input_command(instruction, fileName1, fileName2);//用户输入指令
-			if (command_type != -1)//指令有效
+			//input_command(instruction, fileName1, fileName2);//用户输入指令
+			if (input_command(instruction, fileName1, fileName2) != -1)//指令有效
 				break;
 		}
 		//*********************************  文件操作 ********************************* 
@@ -109,34 +109,86 @@ void display() {
 		}
 		//********************************* 其他操作 ********************************
 		else if (instruction == "cls") {//清屏
-
+			system("cls");
 		}
 		else if (instruction == "format") {//格式化
 
 		}
 		else if (instruction == "logout") {//注销登录
-
+			cout << "注销成功！\n";
+			login();
 		}
 		else if (instruction == "bitmap") {//位示图
-
+			cout << "\t[ i节点位示图 ]\n" << endl;
+			for (int i = 0; i < INODE_BITMAP_ROW; i++) {
+				for (int j = 0; j < INODE_BITMAP_COL; j++) 
+					cout << fileSystem.superBlock.iNode_bitmap[i][j] << " ";
+				cout << endl;
+			}
+			cout << "\n\t[ SFD位示图 ]\n" << endl;
+			for (int i = 0; i < SFD_BITMAP_ROW; i++) {
+				for (int j = 0; j < SFD_BITMAP_COL; j++)
+					cout << fileSystem.superBlock.SFD_bitmap[i][j] << " ";
+				cout << endl;
+			}
+			cout << "\n\n";
 		}
 		else if (instruction == "exit") {//关闭系统
-
+			return;
 		}
 		else if (instruction == "help") {//显示帮助
 			commandCategory();
 		}
 		else if (instruction == "changepass") {//修改密码
-
+			char temp[30];
+			char* temp1 = temp;
+			cout << "用户名：" << user.user_name << endl;
+			while (1) {
+				cout << "当前密码：";
+				string psw = getpassword(temp1);
+				if (psw != user.password) {
+					cout << "密码错误！是否继续输入[Y,N]? ";
+					char ch = _getch();
+					cout << ch << endl;
+					if (ch == 'Y' || ch == 'y')
+						continue;
+					else if (ch == 'N'|| ch == 'n')
+						break;
+				}
+				else {//旧密码正确
+					while (1) {
+						cout << "新密码：";
+						psw = getpassword(temp1);
+						cout << "确认密码：";
+						string psw2 = getpassword(temp1);
+						if (psw == psw2) { //两次输入的密码一致
+							cout << "修改成功！\n";
+							user.password = psw;
+							break;
+						}
+						else {//输入的密码不一致
+							cout << "两次输入的密码不一致！是否继续输入[Y,N]? ";
+							char ch = _getch();
+							cout << ch << endl;
+							if (ch == 'Y' || ch == 'y')
+								continue;
+							else if (ch == 'N' || ch == 'n')
+								break;
+						}
+					}
+					break;
+				}
+			}
 		}
 		else if (instruction == "showpassword") {//显示密码
-
+			cout << "用户名：" << user.user_name << endl;
+			cout << "密码：" << user.password << endl;
 		}
-
 	}
 }
 
-int input_command(string& instruction, string& fileName1, string& fileName2)//用户输入命令，及判断
+//用户输入命令，及判断
+int input_command(string& instruction, string& fileName1, string& fileName2)
 {
 	cin >> instruction;//输入指令
 	int command_type = -1;//判断指令的类型
@@ -165,7 +217,6 @@ int input_command(string& instruction, string& fileName1, string& fileName2)//用
 	}
 	return command_type;
 }
-
 
 //设置字体颜色
 void textColor(int color) {
