@@ -16,11 +16,12 @@ int AllocateOneBlock() {
 	else {
 		free_block=fileSystem.superBlock.free_block_stack.top();
 		fileSystem.superBlock.free_block_stack.pop();
+		fileSystem.diskBlock[free_block].content_len--;//修改文件长度
 		return free_block;
 	}
 }
 
-int ReadABlock(stack<int> free_block_stack,int block_num) {
+int ReadABlock(stack<int> free_block_stack,int block_num) {		//读组长块中的内容
 	int temp=0;
 	fileSystem.superBlock.free_block_stack.pop();
 	for (int i = 0; i < fileSystem.diskBlock[block_num].content.size(); i++) {

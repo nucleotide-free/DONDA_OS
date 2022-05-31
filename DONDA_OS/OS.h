@@ -58,7 +58,7 @@ struct USER {
 struct DISK_BLOCK
 {
 	string content = "";	//文件内容
-	int content_len = 0;	//文件大小（在块中占用了多大的空间）
+	int content_len = 0;	//文件大小（在块中占用了多大的空间）块大小为512，因此content_len必须小于512
 };
 
 //文件目录项
@@ -78,7 +78,7 @@ struct DISK_BFD_ITEM {
 	int id;					//文件主标识符，指向的SFD的ID
 	int type;				//文件类型 0--普通 1--目录
 	int owner;				//文件创建者id
-	int auth[8];			//8个用户的存取权限  0--无权限  1--有权限
+	int auth[9];			//8个用户的存取权限  0--无权限  1--有权限
 	int file_len;			//文件长度
 	int link_count;			//文件链接计数
 	string last_visited_time;	//最近一次存取时间
@@ -178,15 +178,10 @@ void deleteINode(int pos);			//删除待删除文件对应的i结点及其指向的磁盘块
 void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 
 //**************************文件的读写模块*****************************
-void writeiaddr(int BlockNo, int* iaddr);//将数组中的索引内容写回到相应的索引块中，磁盘文件中
-void outputBlock(int blockNO);  //输出文件磁盘块内容
-void readFile(string name);     //读文件内容函数
-int writeIndexBlock(int indexnum, int BlockNo);//文件内容的写入
-int getCur_blockNo(int inodeNo);//返回当前文件i节点，所占用的最后磁盘块
-
+int findiNodeByName(string fileName);		//通过文件名，找它的i节点
+string contentBuffer(int iNode_id);		//将索引块指向的磁盘块的内容写入buffer
 void writeFile(string fileName);     //写指定文件名的文件
-
-int transform(int sindex, char s[], string file);
+void readFile(string fileName);     //读文件内容函数
 
 //**************************目录的创建与删除模块*****************************
 int createDir(string fileName);		//创建一个目录

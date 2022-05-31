@@ -8,7 +8,11 @@ vector<SFD> sfd_stack;	//目录栈
 
 int main()
 { 
-
+    login();
+    init();
+    system("Pause");
+    display();
+    system("Pause");
 }
 
 
