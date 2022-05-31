@@ -20,15 +20,6 @@ void createInitINode(int iNode_id, int type, int filelen)
 //为新创建的文件分配一个i结点，返回i节点编号，-1为没找到
 int createiNode(int type)
 {
-	if (fileSystem.superBlock.free_diskblock_num == 0) {//没有空闲磁盘块
-		cout << "没有空闲磁盘块！\n";
-		return -1;
-	}
-	if (fileSystem.superBlock.free_iNode_num == 0) {//没有空闲i节点
-		cout << "没有空闲i节点！\n";
-		return -1;
-	}
-
 	int iNode_id = -1;//新的i节点编号
 	for (int i = 0; i < INODE_BITMAP_ROW; i++)
 		for (int j = 0; j < INODE_BITMAP_COL; j++)
@@ -51,25 +42,19 @@ void createSFD(int iNode_id, string name) {
 }
 
 //创建文件，1-成功，0-失败
-int createFile(string fileName) 
+int createFile(string fileName)
 {
-	int flag_fileName = -1;//查询是否重名
-	for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++)
-		if (fileName == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name)
-			flag_fileName = 1;
-
-	if (flag_fileName == -1) {//没有重名
-		int iNode_id = createiNode(0);//分配到一个i节点
-		if (iNode_id == -1) {
-			cout << "内存空间不足，分配i节点失败！\n"; 
-			return -1;
-		}
-		createSFD(iNode_id, fileName);
-		cout << "创建成功！\n";
-		return iNode_id;
+	if (fileSystem.superBlock.free_diskblock_num == 0 || fileSystem.superBlock.free_iNode_num == 0) {
+		return 1;//没有空闲磁盘块或者空闲i节点！
 	}
-	cout << "文件名冲突！\n";
-	return -1;
+	for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {//查询是否重名
+		if (fileName == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name) {
+			return 2;//文件名冲突
+		}
+	}
+	int iNode_id = createiNode(0);//分配到一个i节点
+	createSFD(iNode_id, fileName);
+	return 0;
 }
 
 //int checkExitsfd(string name) {}  //查询当前目录下一固定名的文件下标
@@ -96,8 +81,8 @@ string getTime() {
 	localtime_s(&now_time, &time_seconds);
 
 	std::stringstream ss;
-	ss << now_time.tm_year + 1900 << "-" << now_time.tm_mon + 1 << "-"
+	ss << now_time.tm_year + 1900 << "/" << now_time.tm_mon + 1 << "/"
 		<< now_time.tm_mday << "," << now_time.tm_hour << ":"
-		<< now_time.tm_min << ":" << now_time.tm_hour;
+		<< now_time.tm_min ;
 	return  ss.str();
 }

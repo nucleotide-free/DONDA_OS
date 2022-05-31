@@ -146,6 +146,7 @@
     <ClCompile Include="init.cpp" />
     <ClCompile Include="operation_dir.cpp" />
     <ClCompile Include="operation_file.cpp" />
+    <ClCompile Include="save.cpp" />
     <ClCompile Include="user.cpp" />
   </ItemGroup>
   <ItemGroup>

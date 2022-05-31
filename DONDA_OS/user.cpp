@@ -22,13 +22,12 @@ char* getpassword(char* pasw)
 	return pasw;
 }
 
-void login() {
-	USER user_list[9];      //8个用户
-	freopen_s(&stream, "Data\\USER.txt", "r", stdin);
+void login() {    
+	freopen_s(&stream, "Data\\USER.txt", "r", stdin);//读取8个用户的信息
 	for (int i = 1; i <= 8; i++) {
-		user_list[i].user_id = i;
-		cin >> user_list[i].user_name;
-		cin >> user_list[i].password;
+		userList[i].user_id = i;
+		cin >> userList[i].user_name;
+		cin >> userList[i].password;
 	}
 	std::fclose(stdin);//关闭重定向输入
 	cin.clear();
@@ -45,9 +44,9 @@ void login() {
 		cout << "\n\t\t请登录文件系统：";
 		cin >> user.user_name;	//输入用户名
 		for (int i = 1; i < 9; i++) {
-			if(user.user_name == user_list[i].user_name){//输入的用户名存在
-				user.user_id = user_list[i].user_id;
-				user.password = user_list[i].password;
+			if(user.user_name == userList[i].user_name){//输入的用户名存在
+				user.user_id = userList[i].user_id;
+				user.password = userList[i].password;
 			}
 		}
 		if (user.user_id == 0) {

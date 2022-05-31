@@ -6,10 +6,11 @@ int AllocateOneBlock() {
 	if (fileSystem.superBlock.stack_size == 1)
 	{
 		if (fileSystem.superBlock.free_block_stack.top() == 0) {
-			cout << "分配失败,进程等待" << endl;
+			//cout << "分配失败,进程等待" << endl;
+			return -1;
 		}
 		else {
-			 free_block= ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
+			free_block= ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
 			return free_block;
 		}
 	}

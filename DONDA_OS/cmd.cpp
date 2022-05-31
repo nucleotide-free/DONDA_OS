@@ -42,9 +42,8 @@ void commandCategory()
 //界面主函数，用来实现大部分输入输出功能
 void display() {
 	system("cls");
-	commandCategory();
+	commandCategory();//输入提示信息（目录help）
 	string file_list;		//用于记录用户所打开的文件或目录的列表，组成链条，显示到输入前
-
 	int command_type = -1;//指令类型
 	string instruction, fileName1, fileName2;//输入的 指令、文件名1、文件名2
 	while (1)
@@ -52,7 +51,6 @@ void display() {
 		while (1) {
 			cout << user.user_name << "@DONDA_OS:";
 			cout << file_list << "$ ";
-			//input_command(instruction, fileName1, fileName2);//用户输入指令
 			if (input_command(instruction, fileName1, fileName2) != -1)//指令有效
 				break;
 		}
@@ -77,6 +75,20 @@ void display() {
 		}
 		//*********************************目录操作 ********************************* 
 		else if (instruction == "mkdir") {//创建目录
+			if (fileSystem.iNode[sfd_pointer].auth[user.user_id] == 0) {
+				cout << "创建失败！该用户权限不足！\n";
+				continue;
+			}
+			int tips = createDir(fileName1);//返回创建情况的提示信息
+			if (tips == 1)
+				cout << "i节点或目录空间不足，创建失败！\n";
+			else if (tips == 2)
+				cout << "目录名冲突！\n";
+			else if (tips == 3)
+				cout << "内存空间不足，分配i节点失败！\n";
+			else
+				cout << "创建成功！\n";
+			//进入到改目录下
 
 		}
 		else if (instruction == "ls") {//显示目录
@@ -84,16 +96,19 @@ void display() {
 				cout << "无内容" << endl;
 				return;
 			}
+			cout << "名称\t\t修改日期\t\t类型\t大小\n";
 			for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {		//扫描当前sfd列表中对的sfd_item的filename并显示出来
-				cout << fileSystem.SFD[sfd_pointer].sfd_list[i].file_name+"\t";
-				if(fileSystem.iNode[sfd_pointer].type){		//通过获取iNode[sfd_pointer]的type值来
-					cout << "dir\n";
+				cout << fileSystem.SFD[sfd_pointer].sfd_list[i].file_name+"\t\t";//文件名
+				int file_id = fileSystem.SFD[sfd_pointer].sfd_list[i].file_id;	//文件id(指向iNode)
+				cout << fileSystem.iNode[file_id].last_visited_time + "\t";		//修改日期
+				if(fileSystem.iNode[file_id].type){//获取文件类型
+					cout << "dir\n";	//目录文件
 				}
 				else {
-					cout << "file\n";
+					cout << "file\t";	//文本文档
+					cout << fileSystem.iNode[file_id].file_len + "\n";//文件长度
 				}
 			}
-
 		}
 		else if (instruction == "cd") {//切换目录
 			int fileName_check = 0;		//检查目录中是否存在名为fileName1的目录，1--存在，0--不存在
@@ -134,17 +149,21 @@ void display() {
 		//********************************* 文件读写 ********************************
 		else if (instruction == "create") {//创建文件
 			if (fileSystem.iNode[sfd_pointer].auth[user.user_id] == 0) {
-				cout << "创建失败！该用户权限不足！\n";
+				cout << "该用户权限不足，创建失败！\n";
 				continue;
 			}
-			int iNode_id = createFile(fileName1);
-			if( iNode_id > -1){//创建成功
-				cout << "是否要向文件里写入东西[Y,N]？";
+			int tips = createFile(fileName1);//返回创建情况的提示信息
+			if (tips == 1)
+				cout << "没有空闲磁盘块或者空闲i节点！\n";
+			else if (tips == 2)
+				cout << "文件名冲突！\n";
+			else {
+				cout << "创建成功！是否要向文件里写入内容[Y,N]？";
 				while (1) {
 					char ch = _getch();//用户输入
 					cout << ch << endl;
-					if (ch == 'N' || ch == 'n')
-						break;//不写，直接退出
+					if (ch == 'N' || ch == 'n')//不写，直接退出
+						break;
 					else if (ch == 'Y' || ch == 'y') {//写文件
 						writeFile(fileName1);
 						break;
@@ -152,7 +171,6 @@ void display() {
 					else
 						cout << "输入不合法，请重新输入[Y,N]：";
 				}
-				
 			}	
 		}
 		else if (instruction == "delf") {//删除文件
@@ -191,6 +209,7 @@ void display() {
 			cout << "\n\n";
 		}
 		else if (instruction == "exit") {//关闭系统
+			saveFileSystem();
 			return;
 		}
 		else if (instruction == "help") {//显示帮助
@@ -221,6 +240,7 @@ void display() {
 						if (psw == psw2) { //两次输入的密码一致
 							cout << "修改成功！\n";
 							user.password = psw;
+							userList[user.user_id].password = user.password;//修改全部用户列表中的密码
 							break;
 						}
 						else {//输入的密码不一致

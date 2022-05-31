@@ -12,8 +12,8 @@
 #define SFD_BITMAP_COL 32	//目录结点位示图的列数 32
 
 #define DISKBLOCK_NUM  512	//磁盘块数量 512
-
 #define BLOCKSIZ  512	//每块大小
+
 #define SYSOPENFILE 40  //系统打开文件表最大项数
 #define DIRNUM  128		//每个目录所包含的最大目录项数（文件数）
 #define DIRSIZ  14		//每个目录项名字部分所占字节数，另加i节点号2个字节
@@ -46,13 +46,12 @@
 
 using namespace std;
 
+//用户
 struct USER {
 	int user_id;		//用户id
 	string password;	//用户密码
 	string user_name;	//登陆用的用户名
 };
-
-
 
 //普通磁盘块，放文件
 struct DISK_BLOCK
@@ -132,10 +131,11 @@ struct FILE_SYSTEM {
 	DISK_BLOCK diskBlock[DISKBLOCK_NUM + 1];	//文件块,数量为512块
 };
 
-extern FILE_SYSTEM fileSystem;		//操作磁盘文件卷的全局变量
+extern FILE_SYSTEM fileSystem;	//操作磁盘文件卷的全局变量
 extern FILE* stream;
-extern int sfd_pointer;		//sfd指针--指向当前的sfd目录
-extern USER user;			//当前用户
+extern int sfd_pointer;			//sfd指针--指向当前的sfd目录
+extern USER user;				//当前用户
+extern USER userList[9];		//所有用户
 extern vector<SFD> sfd_stack;	//目录栈
 
 //**************************初始化模块***************************
@@ -188,5 +188,12 @@ int createDir(string fileName);		//创建一个目录
 int deleteDir(string name);			//级联删除一个目录及其子目录和子文件
 void deleteINodeOne(int useINode);	//删除一个i结点
 
+//************************** 保存文件系统 *****************************
+void saveFileSystem();	//保存文件系统
+void saveUser();		//保存用户信息
+void saveSuperBlcok();	//保存超级块的信息
+void saveiNode();		//保存i节点信息
+void saveSFD();			//保存SFD
+void saveDiskBlock();	//保存磁盘块
 
 #endif
