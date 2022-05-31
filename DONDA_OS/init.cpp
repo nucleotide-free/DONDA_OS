@@ -102,7 +102,7 @@ void initINode() {
 			cin >> fileSystem.iNode[i].id;		//i节点的ID
 			cin >> fileSystem.iNode[i].type;	//文件类型
 			cin >> fileSystem.iNode[i].owner;	//文件拥有者
-			for (int j = 0; j < 8; j++)
+			for (int j = 1; j <= 8; j++)
 				cin >> fileSystem.iNode[i].auth[j];	//authorization
 			cin >> fileSystem.iNode[i].file_len;	//文件长度
 			cin >> fileSystem.iNode[i].link_count;	//文件链接次数

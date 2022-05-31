@@ -30,7 +30,7 @@ void writeFile(string fileName)
         tempFile << buffer;
     }
     tempFile.close();
-    string str = "vim Temp\\" + fileName + ".txt";      //vim - M file :以只读的方式打开文件，不可以强制保存
+    string str = "vim Temp\\" + fileName + ".txt";      //vim 
     system(str.data());
 }
 
