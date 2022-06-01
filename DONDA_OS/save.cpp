@@ -83,7 +83,7 @@ void saveSFD()
 		cout << "保存SFD文件失败！";
 		exit(0);
 	}
-	for (int i = 0; i < SFD_NUM; i++) {
+	for (int i = 1; i < SFD_NUM; i++) {
 		if (fileSystem.superBlock.SFD_bitmap[i / SFD_BITMAP_COL][i % SFD_BITMAP_COL] == 1) {//该i节点被占用
 			file << fileSystem.SFD[i].sfd_num;
 			for (int j = 0; j < fileSystem.SFD[i].sfd_num; j++) {
