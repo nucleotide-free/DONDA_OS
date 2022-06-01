@@ -10,29 +10,29 @@ void commandCategory()
 	textColor(15);
 	cout << "\nCOMMANDS:" << endl;
 	cout << "\t文件操作" << endl;
-	cout << "\t\t更名:\trname [old name] [new name]" << endl;
-	cout << "\t\t链接:\tlink   [name]" << endl;
+	cout << "\t\t更名:\trename  [old name]  [new name]" << endl;
+	cout << "\t\t链接:\tlink  [name]" << endl;
 	cout << "\t\t查找:\tfind  [name]" << endl;
 	cout << "\t\t剪切:\tcut   [name]" << endl;
-	cout << "\t\t复制:\tcopy [name]" << endl;
+	cout << "\t\t复制:\tcopy  [name]" << endl;
 	cout << "\t\t粘贴:\tpaste" << endl;
 	cout << "\t目录操作" << endl;
 	cout << "\t\t创建目录:\tmkdir [name]" << endl;
 	cout << "\t\t显示目录:\tls" << endl;
-	cout << "\t\t切换目录:\tcd		[name]" << endl;
+	cout << "\t\t切换目录:\tcd    [name]" << endl;
 	cout << "\t\t返回根目录:\tcd/" << endl;
 	cout << "\t\t删除目录:\tdeld  [name]" << endl;
 	cout << "\t\t返回上级目录:\tcd.." << endl;
 	cout << "\t文件读写" << endl;
 	cout << "\t\t创建文件:\tcreate [name]" << endl;
-	cout << "\t\t删除文件:\tdelf [name]" << endl;
-	cout << "\t\t改写文件:\twrite [name]" << endl;
-	cout << "\t\t读取文件:\tread [name]" << endl;
+	cout << "\t\t删除文件:\tdelf   [name]" << endl;
+	cout << "\t\t改写文件:\twrite  [name]" << endl;
+	cout << "\t\t读取文件:\tread   [name]" << endl;
 	cout << "\t其他操作" << endl;
-	cout << "\t\t清屏:	\tcls" << endl;
-	cout << "\t\t格式化:\tformat" << endl;
+	cout << "\t\t清屏:\t\tcls" << endl;
+	cout << "\t\t格式化:\t\tformat" << endl;
 	cout << "\t\t注销登录:\tlogout" << endl;
-	cout << "\t\t位示图:\tbitmap" << endl;
+	cout << "\t\t位示图:\t\tbitmap" << endl;
 	cout << "\t\t关闭系统:\texit" << endl;
 	cout << "\t\t显示帮助:\thelp" << endl;
 	cout << "\t\t修改密码:\tchangepass" << endl;
@@ -55,7 +55,7 @@ void display() {
 				break;
 		}
 		//*********************************  文件操作 ********************************* 
-		if (instruction == "rname") {//重命名
+		if (instruction == "rename") {//重命名
 			renameFile(fileName1, fileName2);
 		}
 		else if (instruction == "link") {//链接
