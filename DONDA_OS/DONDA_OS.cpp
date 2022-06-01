@@ -7,7 +7,7 @@ USER userList[9];       //所有用户
 int sfd_pointer;		//sfd指针--指向当前的sfd目录
 vector<int> sfd_stack;	//目录栈
 
-int main()
+void main()
 { 
     init();
     login();

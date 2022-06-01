@@ -302,7 +302,7 @@ int input_command(string& instruction, string& fileName1, string& fileName2)
 	{
 	case 1:cin >> fileName1; getchar(); break;//输入文件名1
 	case 2:cin >> fileName1 >> fileName2; getchar(); break;//输入文件名1、2
-	case -1:cout << "无效指令，输入help获取帮助！\n";
+	case -1:cout << "无效指令，输入help获取帮助！\n"; break;
 	}
 	return command_type;
 }

@@ -52,19 +52,16 @@ void initSuperBlock(){
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
-	cin.clear();
+	freopen_s(&stream, "CON", "r", stdin);//重定向到控制台
+	cin.clear();//清空缓冲区
 }
 
 //初始化SFD
 void initSFD() {
 
 	for (int i = 1; i <= 8; i++) {		
-		string tmps;
-		stringstream ss;	
-		ss << i;
-		ss >> tmps;
 		SFD_ITEM sfd_item;	//单目录
-		sfd_item.file_name = "root" + tmps;
+		sfd_item.file_name = "root" + to_string(i);
 		sfd_item.file_id = i;
 		fileSystem.SFD[0].sfd_list.push_back(sfd_item);   //每个用户的文件目录下生成sfd动态数组
 		fileSystem.SFD[0].sfd_num++;
@@ -73,7 +70,7 @@ void initSFD() {
 	sfd_stack.push_back(sfd_pointer);
 
 	freopen_s(&stream, "Data\\SFD.txt", "r", stdin);
-	for (int i = 1; i <= 512; i++)
+	for (int i = 0; i < 512; i++)
 	{
 		if (fileSystem.superBlock.SFD_bitmap[i / SFD_BITMAP_COL][i % SFD_BITMAP_COL] != 0)//在SFD位示图中找到非空SFD_ITEM的块号
 		{
@@ -89,7 +86,8 @@ void initSFD() {
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
-	cin.clear();
+	freopen_s(&stream, "CON", "r", stdin);//重定向到控制台
+	cin.clear();//清空缓冲区
 }
 
 //初始化I节点
@@ -111,7 +109,8 @@ void initINode() {
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
-	cin.clear();
+	freopen_s(&stream, "CON", "r", stdin);//重定向到控制台
+	cin.clear();//清空缓冲区
 }
 
 //初始化磁盘块
@@ -149,16 +148,15 @@ void initUsers()
 		cin >> userList[i].password;
 	}
 	std::fclose(stdin);//关闭重定向输入
-	cin.clear();
+	freopen_s(&stream, "CON", "r", stdin);//重定向到控制台
+	cin.clear();//清空缓冲区
 }
 
 void init()
 {
+	initUsers();
 	initSuperBlock();
 	initSFD();
 	initINode();
 	initDiskBlock();
-	initUsers();
-	freopen_s(&stream, "CON", "r", stdin);//重定向到控制台
-	cin.clear();//清空缓冲区
 }
