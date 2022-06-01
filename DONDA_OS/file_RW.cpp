@@ -45,12 +45,12 @@ void tempToDiskBlock(string fileName)
     if (tempFile.is_open()) {//新建临时文件成功
         stringstream s;
         s << tempFile.rdbuf();
-        string content = s.str();       //读文件
+        content = s.str();       //读文件
     }
     tempFile.close();
 
     int block_num;      //文件内容需要申请的磁盘块数量
-    block_num = (content.length() - 1) / 512 + 1;
+    block_num = (content.size() - 1) / 512 + 1;
     for (int i = 0; i < block_num; i++)     //给文件分配磁盘快
     {
         int block_id=AllocateOneBlock();        //分配的磁盘块号

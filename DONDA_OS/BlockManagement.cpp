@@ -11,6 +11,14 @@ int AllocateOneBlock() {
 		}
 		else {
 			free_block= ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
+			int index = 0;
+			for (int i = 0; i < fileSystem.superBlock.free_diskblock_id.size(); i++) {
+				if (free_block == fileSystem.superBlock.free_diskblock_id[i]) {
+					index = i;
+				}
+			}
+			fileSystem.superBlock.free_diskblock_id.erase(fileSystem.superBlock.free_diskblock_id.begin() + index);//删除该元素		fileSystem.superBlock.free_block_stack.pop();
+
 			return free_block;
 		}
 	}
@@ -18,7 +26,7 @@ int AllocateOneBlock() {
 		free_block=fileSystem.superBlock.free_block_stack.top();
 		fileSystem.superBlock.free_diskblock_num--;		//空闲块数量--
 
-		int index;
+		int index=0;
 		for (int i = 0; i < fileSystem.superBlock.free_diskblock_id.size(); i++) {
 			if (free_block== fileSystem.superBlock.free_diskblock_id[i]) {
 				index = i;
