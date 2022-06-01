@@ -174,7 +174,8 @@ void display() {
 			}	
 		}
 		else if (instruction == "delf") {//删除文件
-
+			deleteFile(fileName1);
+			cout << "删除成功！";
 		}
 		else if (instruction == "write") {//改写文件
 			writeFile(fileName1);

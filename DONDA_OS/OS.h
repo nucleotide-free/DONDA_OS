@@ -169,7 +169,7 @@ int createFile(string fileName);			//创建文件
 string getTime();
 
 int* getIaddr(int indexnum);		//得到待删除文件的索引块中的磁盘块号数组
-int freeFile(string fileName);      //删除指定名字的文件
+int deleteFile(string fileName);      //删除指定名字的文件
 void deleteINode(int pos);			//删除待删除文件对应的i结点及其指向的磁盘块
 void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 
@@ -177,6 +177,7 @@ void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 int findiNodeByName(string fileName);		//通过文件名，找它的i节点
 void tempToDiskBlock(string fileName);		//把temp文件里的内容写到磁盘块中
 string contentBuffer(int iNode_id);		//将索引块指向的磁盘块的内容写入buffer
+vector<int> ReadIndexBlock(string content);	//一级索引读取索引块
 void writeFile(string fileName);     //写指定文件名的文件
 void readFile(string fileName);     //读文件内容函数
 void renameFile(string fileName1, string fileName2);	//文件重命名
