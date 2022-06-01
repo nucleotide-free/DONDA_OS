@@ -25,7 +25,7 @@ void writeFile(string fileName)
     }
     buffer = contentBuffer(iNode_id);
     ofstream tempFile;
-    tempFile.open("Temp\\" + fileName + ".txt", ios::out | ios::app);
+    tempFile.open("Temp\\" + fileName + ".txt", ios::out | ios::trunc);
     if (tempFile.is_open()) {//新建临时文件成功
         tempFile << buffer;
     }
@@ -41,7 +41,7 @@ void tempToDiskBlock(string fileName)
 {
     string content;
     ifstream tempFile;
-    tempFile.open("Temp\\"+fileName+".txt", ios::in | ios::app);
+    tempFile.open("Temp\\"+fileName+".txt", ios::in);
     if (tempFile.is_open()) {//新建临时文件成功
         stringstream s;
         s << tempFile.rdbuf();
@@ -79,7 +79,7 @@ void readFile(string fileName)
 
     buffer = contentBuffer(iNode_id);
     ofstream tempFile;
-    tempFile.open("Temp\\" + fileName + ".txt", ios::out | ios::app);
+    tempFile.open("Temp\\" + fileName + ".txt", ios::out | ios::trunc);
     if (tempFile.is_open()) {//新建临时文件成功
         tempFile << buffer;
     }
