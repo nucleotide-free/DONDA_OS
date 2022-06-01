@@ -168,10 +168,11 @@ void createSFD(int iNode_id, string name);  //为新创建的文件分配一个SFD结点
 int createFile(string fileName);			//创建文件
 string getTime();
 
-int* getIaddr(int indexnum);		//得到待删除文件的索引块中的磁盘块号数组
-int deleteFile(string fileName);      //删除指定名字的文件
-void deleteINode(int pos);			//删除待删除文件对应的i结点及其指向的磁盘块
-void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
+void deleteDiskBlock(int iNode_id);	//回收磁盘块
+void deleteSFD(int file_id);		//回收SFD子项
+void deleteiNode(int iNode_id);			//回收i结点
+void deleteFile(string fileName);	//删除文件
+//void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 
 //**************************文件的读写模块*****************************
 int findiNodeByName(string fileName);		//通过文件名，找它的i节点

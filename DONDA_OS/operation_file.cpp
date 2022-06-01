@@ -61,13 +61,12 @@ int createFile(string fileName)
 }
 
 //删除文件
-int deleteFile(string fileName) 
+void deleteFile(string fileName) 
 {
 	int iNode_id = findiNodeByName(fileName);
 	deleteDiskBlock(iNode_id);//回收磁盘块
 	deleteiNode(iNode_id);//回收i节点
 	deleteSFD(iNode_id);//回收SFD子项
-	return 0;
 }
 
 //回收磁盘块
@@ -133,6 +132,7 @@ void deleteiNode(int iNode_id)
 	fileSystem.superBlock.iNode_bitmap[iNode_id / INODE_BITMAP_COL][iNode_id % INODE_BITMAP_COL] = 0;//释放位示图资源
 }
 
+//回收SFD子项
 void deleteSFD(int file_id)
 {
 	for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {
