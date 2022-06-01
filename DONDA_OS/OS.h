@@ -128,7 +128,7 @@ struct FILE_SYSTEM {
 	SPUERBLOCK superBlock;			//超级块
 	DISK_BFD_ITEM iNode[D_INODE_NUM];	//磁盘索引结点区，数量为128块
 	SFD SFD[SFD_NUM];	//目录块,数量为512块
-	DISK_BLOCK diskBlock[DISKBLOCK_NUM + 1];	//文件块,数量为512块
+	DISK_BLOCK diskBlock[DISKBLOCK_NUM];	//文件块,数量为512块 ,因为成组链接最后一个是-1
 };
 
 extern FILE_SYSTEM fileSystem;	//操作磁盘文件卷的全局变量

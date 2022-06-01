@@ -5,7 +5,7 @@ int AllocateOneBlock() {
 	int free_block;		//¿ÕÏÐ¿é¿éºÅ
 	if (fileSystem.superBlock.stack_size == 1)
 	{
-		if (fileSystem.superBlock.free_block_stack.top() == 0) {
+		if (fileSystem.superBlock.free_block_stack.top() == -1) {
 			//cout << "·ÖÅäÊ§°Ü,½ø³ÌµÈ´ý" << endl;
 			return -1;
 		}

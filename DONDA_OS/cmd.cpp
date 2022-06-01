@@ -10,7 +10,7 @@ void commandCategory()
 	textColor(15);
 	cout << "\nCOMMANDS:" << endl;
 	cout << "\t文件操作" << endl;
-	cout << "\t\t更名:\trname [old name] [new name]" << endl;
+	cout << "\t\t更名:\trename [old name] [new name]" << endl;
 	cout << "\t\t链接:\tlink   [name]" << endl;
 	cout << "\t\t查找:\tfind  [name]" << endl;
 	cout << "\t\t剪切:\tcut   [name]" << endl;
@@ -55,7 +55,7 @@ void display() {
 				break;
 		}
 		//*********************************  文件操作 ********************************* 
-		if (instruction == "rname") {//重命名
+		if (instruction == "rename") {//重命名
 			renameFile(fileName1, fileName2);
 		}
 		else if (instruction == "link") {//链接

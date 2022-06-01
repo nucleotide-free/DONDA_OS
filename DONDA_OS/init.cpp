@@ -31,7 +31,7 @@ void initSuperBlock(){
 	fileSystem.superBlock.diskblock_num = DISKBLOCK_NUM;//磁盘块数量
 	cin >> fileSystem.superBlock.free_diskblock_num;	//空闲磁盘块数量
 	fileSystem.superBlock.stack_size = 1;			//初始化栈内空闲块数量
-	fileSystem.superBlock.free_block_stack.push(0);	//最后一个组长块，底层元素为 0（没有更多空闲资源）
+	fileSystem.superBlock.free_block_stack.push(-1);	//最后一个组长块，底层元素为 -1（没有更多空闲资源）
 	for (int i = 0; i < fileSystem.superBlock.free_diskblock_num; i++) {//成组链接
 		int block_id;	//磁盘块号
 		cin >> block_id;
@@ -116,25 +116,27 @@ void initINode() {
 
 //初始化磁盘块
 void initDiskBlock() {
-	freopen_s(&stream, "Data\\DiskBlock.txt", "r", stdin);
+	ifstream file;
+	file.open("Data\\DiskBlock.txt", ios::in);
+	if (!file.is_open()) {//打开文件成功
+		cout << "打开DiskBlock文件失败！";
+		exit(0);
+	}
 	string content;
-	for (int i = 1; i <= 512; i++)
+	for (int i = 0; i < 512; i++)
 	{
 		if (!count(fileSystem.superBlock.free_diskblock_id.begin(), fileSystem.superBlock.free_diskblock_id.end(), i))//判断i是否存在超级块中的空闲磁盘块vector中，若没有就读文件。
 		{
-			cin >> fileSystem.diskBlock[i].content_len;		//先读取文件的大小
-			{
-				string content;
-				for (int j = 0; j < fileSystem.diskBlock[i].content_len; j++)
-				{
-					cin >> content;//再获取文件内容。
-					fileSystem.diskBlock[i].content = " " + fileSystem.diskBlock[i].content + " " + content + " ";  //文件内容
-				}
-			}
+			file >> fileSystem.diskBlock[i].content_len;		//先读取文件的大小
+			char content;
+			content = file.get();
+			while((content = file.get()) != '$')
+			 {
+				fileSystem.diskBlock[i].content +=  content;  //文件内容
+			 }
 		}
 	}
-	std::fclose(stdin);//关闭重定向输入
-	cin.clear();
+	file.close();
 }
 
 //初始化用户信息列表
