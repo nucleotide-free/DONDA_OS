@@ -80,7 +80,22 @@ void saveiNode()
 //保存SFD
 void saveSFD()
 {
-
+	ofstream file;
+	file.open("Data\\SFD.txt", ios::out | ios::trunc);
+	if (!file.is_open()) {//打开文件成功
+		cout << "保存SFD文件失败！";
+		exit(0);
+	}
+	for (int i = 0; i < SFD_NUM; i++) {
+		if (fileSystem.superBlock.SFD_bitmap[i / SFD_BITMAP_COL][i % SFD_BITMAP_COL] == 1) {//该i节点被占用
+			file << fileSystem.SFD[i].sfd_num;
+			for (int j = 0; j < fileSystem.SFD[i].sfd_num; j++) {
+				file << " " << fileSystem.SFD[i].sfd_list[j].file_name << " ";
+				file << " " << fileSystem.SFD[i].sfd_list[j].file_id << " ";
+			}
+		}
+	}
+	file.close();
 }
 
 //保存磁盘块

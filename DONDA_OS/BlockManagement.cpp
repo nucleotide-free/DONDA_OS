@@ -16,6 +16,7 @@ int AllocateOneBlock() {
 	}
 	else {
 		free_block=fileSystem.superBlock.free_block_stack.top();
+		fileSystem.superBlock.free_diskblock_num--;		//空闲块数量--
 		fileSystem.superBlock.free_block_stack.pop();
 		fileSystem.diskBlock[free_block].content_len--;//修改文件长度
 		return free_block;
