@@ -104,7 +104,7 @@ void saveDiskBlock()
 	ofstream file;
 	file.open("Data\\DiskBlock.txt", ios::out | ios::trunc);
 	if (!file.is_open()) {//打开文件成功
-		cout << "保存iNode文件失败！";
+		cout << "保存DiskBlock文件失败！";
 		exit(0);
 	}
 
@@ -113,13 +113,11 @@ void saveDiskBlock()
 	{
 		if (!count(fileSystem.superBlock.free_diskblock_id.begin(), fileSystem.superBlock.free_diskblock_id.end(), i))//判断i是否存在超级块中的空闲磁盘块vector中，若没有就读文件。
 		{
-			file << fileSystem.diskBlock[i].content_len << " ";		//先读取文件的大小
+			file << fileSystem.diskBlock[i].content_len << " ";		//先保存文件占用磁盘块的大小
 			{
-				string content;
 				for (int j = 0; j < fileSystem.diskBlock[i].content_len; j++)
 				{
-					file << content;//再获取文件内容。
-					fileSystem.diskBlock[i].content = " " + fileSystem.diskBlock[i].content + " " + content + " ";  //文件内容
+					file << " " <<fileSystem.diskBlock[i].content << " " ;//再获取文件内容。
 				}
 			}
 		}
