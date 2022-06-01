@@ -77,7 +77,7 @@ void readFile(string fileName)
         return;
     }
 
-       = contentBuffer(iNode_id);
+    buffer = contentBuffer(iNode_id);
     ofstream tempFile;
     tempFile.open("Temp\\" + fileName + ".txt", ios::out | ios::trunc);
     if (tempFile.is_open()) {//新建临时文件成功
