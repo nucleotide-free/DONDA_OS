@@ -23,6 +23,7 @@ char* getpassword(char* pasw)
 }
 
 void login() {    
+	init();
 	system("cls");
 	textColor(11);
 	cout << "\t\t-------------------------------------------------------------------------------" << endl;

@@ -175,6 +175,7 @@ void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 
 //**************************文件的读写模块*****************************
 int findiNodeByName(string fileName);		//通过文件名，找它的i节点
+void tempToDiskBlock(string fileName);		//把temp文件里的内容写到磁盘块中
 string contentBuffer(int iNode_id);		//将索引块指向的磁盘块的内容写入buffer
 void writeFile(string fileName);     //写指定文件名的文件
 void readFile(string fileName);     //读文件内容函数
