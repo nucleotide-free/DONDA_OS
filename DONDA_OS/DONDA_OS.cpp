@@ -10,9 +10,9 @@ vector<SFD> sfd_stack;	//目录栈
 void main()
 { 
     init();
-    //login();
-    //system("cls");
-    //cout << "已成功退出 DONDA_OS 文件系统！";
+    login();
+    system("cls");
+    cout << "已成功退出 DONDA_OS 文件系统！";
 }
 
 

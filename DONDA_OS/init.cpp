@@ -154,9 +154,9 @@ void initUsers()
 
 void init()
 {
-	//initUsers();
+	initUsers();
 	initSuperBlock();
 	initSFD();
-	//initINode();
-	//initDiskBlock();
+	initINode();
+	initDiskBlock();
 }
