@@ -160,3 +160,58 @@ void init()
 	initINode();
 	initDiskBlock();
 }
+
+//格式化
+void format()
+{
+	ofstream file;
+	file.open("Data\\USER.txt", ios::out | ios::trunc);	//用户 - 格式化
+	if (file.is_open()) {//打开文件成功
+		for (int i = 1; i <= 8; i++) {
+			file << "user" << i << " ";
+			file << i << endl;
+		}
+	}
+	file.close();
+
+	file.open("Data\\iNode.txt", ios::out | ios::trunc);	//格式化iNode
+	if (file.is_open()) {//打开文件成功
+		for (int i = 0; i < 9; i++) {
+			file << i << " 1 " << i << "  ";//ID、文件类型、文件拥有着
+			for (int j = 1; j <= 8; j++)
+				file << fileSystem.iNode[i].auth[j] << " ";//authorization
+			file << " 0 0 2022-5-30,23:0" << i << endl;	//文件长度、文件链接次数、最近一次存取时间
+		}
+	}
+	file.close();
+
+	file.open("Data\\superBlock.txt", ios::out | ios::trunc);	//超级块 - 格式化
+	if (file.is_open()) {//打开文件成功
+		file << "119\n";
+		for (int i = 9; i < D_INODE_NUM; i++)//空闲i节点
+			file << i << "    ";
+		file << "\n503\n";
+		for (int i = 9; i < 512; i++)//空闲SFD
+			file << i << "    ";
+		file << "\n512\n";
+		for (int i = 0; i < 512; i++)//空闲磁盘块
+			file << i << "    ";
+	}
+	file.close();
+
+	file.open("Data\\DiskBlock.txt", ios::out | ios::trunc);	//磁盘块 - 格式化
+	if (!file.is_open()) {//打开文件成功
+		cout << "格式化磁盘文件出错！";
+		exit(0);
+	}
+	file.close();
+
+	file.open("Data\\SFD.txt", ios::out | ios::trunc);	//SFD - 格式化
+	if (!file.is_open()) {//打开文件成功
+		cout << "格式化SFD文件出错！";
+		exit(0);
+	}
+	file.close();
+
+
+}

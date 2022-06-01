@@ -145,6 +145,7 @@ void initDiskBlock();   //初始化磁盘块
 void initSFD();         //初始化SFD
 void initUsers();		//初始化用户信息
 void init();            //初始化
+void format();			//格式化
 
 //************************** 用户模块 *****************************
 void login();					//登录

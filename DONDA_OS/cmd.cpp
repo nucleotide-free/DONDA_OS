@@ -175,7 +175,7 @@ void display() {
 		}
 		else if (instruction == "delf") {//删除文件
 			deleteFile(fileName1);
-			cout << "删除成功！";
+			cout << "删除成功！\n";
 		}
 		else if (instruction == "write") {//改写文件
 			writeFile(fileName1);
@@ -188,7 +188,9 @@ void display() {
 			system("cls");
 		}
 		else if (instruction == "format") {//格式化
-
+			format();
+			init();
+			cout << "格式化成功！\n";
 		}
 		else if (instruction == "logout") {//注销登录
 			cout << "注销成功！\n";
