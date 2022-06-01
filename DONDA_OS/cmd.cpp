@@ -53,6 +53,7 @@ void display() {
 			cout << file_list << "$ ";
 			if (input_command(instruction, fileName1, fileName2) != -1)//指令有效
 				break;
+			instruction = "";//清理字符串
 		}
 		//*********************************  文件操作 ********************************* 
 		if (instruction == "rename") {//重命名
@@ -270,7 +271,14 @@ void display() {
 //用户输入命令，及判断
 int input_command(string& instruction, string& fileName1, string& fileName2)
 {
-	cin >> instruction;//输入指令
+	char ch;
+	int i = 0;
+	while (ch = getchar()) {//输入指令
+		if (i==0 && ch == '\n')return -1;//第一个字符读到回车？
+		else if (ch == ' ' || ch == '\n')break;
+		else instruction += ch;
+		i++;
+	}
 	int command_type = -1;//判断指令的类型
 	for (int i = 0; i < command_0.size(); i++) {
 		if (command_0[i] == instruction) {//指令 没有操作数
