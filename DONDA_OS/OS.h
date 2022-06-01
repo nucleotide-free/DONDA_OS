@@ -88,7 +88,7 @@ struct DISK_BFD_ITEM {
 struct MEM_BFD_ITEM {
 	int id;					//文件主标识符
 	int type;				//文件类型 0--普通 1--目录
-	int auth[8];			//8个用户的存取权限  0--无权限  1--有权限
+	int auth[9];			//8个用户的存取权限  0--无权限  1--有权限
 	int owner;				//文件创建者id
 	int i_addr[ADDR_NUM];		//索引数组（物理地址--磁盘块号）
 	int file_len;			//文件长度
