@@ -169,7 +169,7 @@ int createFile(string fileName);			//创建文件
 string getTime();
 
 int* getIaddr(int indexnum);		//得到待删除文件的索引块中的磁盘块号数组
-int freeFile(string fileName);      //删除指定名字的文件
+int deleteFile(string fileName);      //删除指定名字的文件
 void deleteINode(int pos);			//删除待删除文件对应的i结点及其指向的磁盘块
 void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 

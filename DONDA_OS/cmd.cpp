@@ -139,8 +139,8 @@ void display() {
 		}
 		else if (instruction == "cd..") {//返回上级目录
 			sfd_stack.pop_back();		//弹出目录栈
-			sfd_stack.front();
-
+			sfd_stack.back().sfd_list;
+			
 			file_list.clear();		//文件显示字符串清空
 		}
 		else if (instruction == "deld") {//删除目录

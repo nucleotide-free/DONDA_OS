@@ -64,7 +64,7 @@ int createFile(string fileName)
 //int* getIaddr(int indexnum) {}     //得到待删除文件的索引块中的磁盘块号数组
 
 //删除文件
-int freeFile(string fileName) {
+int deleteFile(string fileName) {
 	return 0;
 }
 //删除待删除文件对应的i结点及其指向的磁盘块
