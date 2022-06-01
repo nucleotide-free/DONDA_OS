@@ -53,7 +53,6 @@ void display() {
 			cout << file_list << "$ ";
 			if (input_command(instruction, fileName1, fileName2) != -1)//指令有效
 				break;
-			instruction = "";//清理字符串
 		}
 		//*********************************  文件操作 ********************************* 
 		if (instruction == "rename") {//重命名
@@ -273,6 +272,7 @@ int input_command(string& instruction, string& fileName1, string& fileName2)
 {
 	char ch;
 	int i = 0;
+	instruction = "";//清理字符串
 	while (ch = getchar()) {//输入指令
 		if (i==0 && ch == '\n')return -1;//第一个字符读到回车？
 		else if (ch == ' ' || ch == '\n')break;
@@ -299,8 +299,8 @@ int input_command(string& instruction, string& fileName1, string& fileName2)
 		}
 	switch (command_type)
 	{
-	case 1:cin >> fileName1; break;//输入文件名1
-	case 2:cin >> fileName1 >> fileName2; break;//输入文件名1、2
+	case 1:cin >> fileName1; getchar(); break;//输入文件名1
+	case 2:cin >> fileName1 >> fileName2; getchar(); break;//输入文件名1、2
 	case -1:cout << "无效指令，输入help获取帮助！\n";
 	}
 	return command_type;
