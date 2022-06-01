@@ -88,7 +88,8 @@ void readFile(string fileName)
     system(str.data());
 }
 
-vector<int> ReadIndexBlock(string content) {        //一级索引读取索引块
+//一级索引读取索引块
+vector<int> ReadIndexBlock(string content) {        
     vector<int> Index_block;
     int temp;
     //从流（cin）中输出东西到字符串s中

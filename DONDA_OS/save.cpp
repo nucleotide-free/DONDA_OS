@@ -3,15 +3,15 @@
 //保存用户信息
 void saveUser()
 {
-	freopen_s(&stream, "Data\\USER.txt", "w", stdin);
-	for (int i = 1; i <= 8; i++) {
-		userList[i].user_id = i;
-		cout << userList[i].user_name << " ";
-		cout << userList[i].password << endl;
+	ofstream file;
+	file.open("Data\\USER.txt", ios::out | ios::trunc);
+	if (file.is_open()) {//打开文件成功
+		for (int i = 1; i <= 8; i++) {
+			file << userList[i].user_name << " ";
+			file << userList[i].password << endl;
+		}
 	}
-	std::fclose(stdin);//关闭重定向输入
-	cin.clear();
-	freopen_s(&stream, "CON", "r", stdin);
+	file.close();
 }
 
 //保存超级块的信息

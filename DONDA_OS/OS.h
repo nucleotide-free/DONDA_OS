@@ -139,12 +139,12 @@ extern USER userList[9];		//所有用户
 extern vector<SFD> sfd_stack;	//目录栈
 
 //**************************初始化模块***************************
-void initSuperBlock();      //初始化超级块
-void initINode();           //初始化i结点
-void initDiskBlock();       //初始化磁盘块
-void initSFD();             //初始化SFD
-void initUsers();			//初始化用户信息
-void init();                //初始化
+void initSuperBlock();	//初始化超级块
+void initINode();       //初始化i结点
+void initDiskBlock();   //初始化磁盘块
+void initSFD();         //初始化SFD
+void initUsers();		//初始化用户信息
+void init();            //初始化
 
 //************************** 用户模块 *****************************
 void login();					//登录
