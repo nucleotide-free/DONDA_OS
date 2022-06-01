@@ -88,7 +88,7 @@ void saveSFD()
 			file << fileSystem.SFD[i].sfd_num;
 			for (int j = 0; j < fileSystem.SFD[i].sfd_num; j++) {
 				file << " " << fileSystem.SFD[i].sfd_list[j].file_name << " ";
-				file << " " << fileSystem.SFD[i].sfd_list[j].file_id << " ";
+				file << " " << fileSystem.SFD[i].sfd_list[j].file_id << "\n";
 			}
 		}
 	}
@@ -111,7 +111,7 @@ void saveDiskBlock()
 		if (!count(fileSystem.superBlock.free_diskblock_id.begin(), fileSystem.superBlock.free_diskblock_id.end(), i))//判断i是否存在超级块中的空闲磁盘块vector中，若没有就读文件。
 		{
 			file << fileSystem.diskBlock[i].content_len << " ";		//先保存文件占用磁盘块的大小
-					file << " " <<fileSystem.diskBlock[i].content << " " ;//再获取文件内容。
+			file << " " <<fileSystem.diskBlock[i].content << "\n" ;//再获取文件内容。
 		}
 	}
 	file.close();
