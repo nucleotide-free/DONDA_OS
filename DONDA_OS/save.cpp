@@ -111,12 +111,7 @@ void saveDiskBlock()
 		if (!count(fileSystem.superBlock.free_diskblock_id.begin(), fileSystem.superBlock.free_diskblock_id.end(), i))//判断i是否存在超级块中的空闲磁盘块vector中，若没有就读文件。
 		{
 			file << fileSystem.diskBlock[i].content_len << " ";		//先保存文件占用磁盘块的大小
-			{
-				for (int j = 0; j < fileSystem.diskBlock[i].content_len; j++)
-				{
 					file << " " <<fileSystem.diskBlock[i].content << " " ;//再获取文件内容。
-				}
-			}
 		}
 	}
 	file.close();
