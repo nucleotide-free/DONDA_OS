@@ -52,7 +52,6 @@ void initSuperBlock(){
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
-	freopen_s(&stream, "CON", "r", stdin);
 	cin.clear();
 }
 
@@ -91,7 +90,6 @@ void initSFD() {
 	}
 	std::fclose(stdin);//关闭重定向输入
 	cin.clear();
-
 }
 
 //初始化I节点
@@ -113,7 +111,6 @@ void initINode() {
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
-	freopen_s(&stream, "CON", "r", stdin);
 	cin.clear();
 }
 
@@ -137,7 +134,19 @@ void initDiskBlock() {
 		}
 	}
 	std::fclose(stdin);//关闭重定向输入
-	freopen_s(&stream, "CON", "r", stdin);
+	cin.clear();
+}
+
+//初始化用户信息列表
+void initUsers()
+{
+	freopen_s(&stream, "Data\\USER.txt", "r", stdin);//读取8个用户的信息
+	for (int i = 1; i <= 8; i++) {
+		userList[i].user_id = i;
+		cin >> userList[i].user_name;
+		cin >> userList[i].password;
+	}
+	std::fclose(stdin);//关闭重定向输入
 	cin.clear();
 }
 
@@ -147,6 +156,7 @@ void init()
 	initSFD();
 	initINode();
 	initDiskBlock();
-	freopen_s(&stream, "CON", "r", stdin);
-	cin.clear();
+	initUsers();
+	freopen_s(&stream, "CON", "r", stdin);//重定向到控制台
+	cin.clear();//清空缓冲区
 }

@@ -143,24 +143,20 @@ void initSuperBlock();      //初始化超级块
 void initINode();           //初始化i结点
 void initDiskBlock();       //初始化磁盘块
 void initSFD();             //初始化SFD
+void initUsers();			//初始化用户信息
 void init();                //初始化
 
-//**************************用户模块*****************************
+//************************** 用户模块 *****************************
 void login();					//登录
 char* getpassword(char* pasw);	//密码掩码化
-void logout();              //登出
-int getInodeNum();            //获得当前目录的i结点号
-int checkFileAuth(string filename); //检查当前用户的读写权限
-int checkDirAuth(string filename);  //检查当前用户对目录的读写权限
 
-//**************************界面模块*****************************
+//************************** 界面模块 *****************************
 void commandCategory();		//显示命令目录
 void display();				//界面主函数，用来实现大部分输入输出功能
 void textColor(int color);	//设置字体颜色
-int checkIn(string in);		//用来检测命令是否存在以及指令的种类
 int input_command(string& instruction, string& fileName1, string& fileName2);//用户输入命令，及判断
 
-//**************************块管理模块*****************************
+//************************** 块管理模块 *****************************
 void FreeABlock(int BlockNo);		//成组链接--回收空闲块
 int AllocateOneBlock();				//成组链接--分配空闲块
 int ReadABlock(stack<int> free_block_stack, int block_num);	//读取组长块

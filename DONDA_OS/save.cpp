@@ -40,8 +40,11 @@ void saveSuperBlcok()
 
 		file << fileSystem.superBlock.free_diskblock_num << endl;//空闲磁盘块数量
 		int block_id;
-		while ((block_id = AllocateOneBlock()) != -1)//分配所有空闲块，并输出块号到文件
+		fileSystem.superBlock.free_diskblock_id.clear();
+		while ((block_id = AllocateOneBlock()) != -1) {//分配所有空闲块，并输出块号到文件
 			file << block_id << " ";
+			fileSystem.superBlock.free_diskblock_id.push_back(block_id);
+		}
 	}
 	file.close();
 }
@@ -83,7 +86,30 @@ void saveSFD()
 //保存磁盘块
 void saveDiskBlock()
 {
+	ofstream file;
+	file.open("Data\\DiskBlock.txt", ios::out | ios::trunc);
+	if (!file.is_open()) {//打开文件成功
+		cout << "保存iNode文件失败！";
+		exit(0);
+	}
 
+	string content;
+	for (int i = 1; i <= 512; i++)
+	{
+		if (!count(fileSystem.superBlock.free_diskblock_id.begin(), fileSystem.superBlock.free_diskblock_id.end(), i))//判断i是否存在超级块中的空闲磁盘块vector中，若没有就读文件。
+		{
+			file << fileSystem.diskBlock[i].content_len << " ";		//先读取文件的大小
+			{
+				string content;
+				for (int j = 0; j < fileSystem.diskBlock[i].content_len; j++)
+				{
+					file << content;//再获取文件内容。
+					fileSystem.diskBlock[i].content = " " + fileSystem.diskBlock[i].content + " " + content + " ";  //文件内容
+				}
+			}
+		}
+	}
+	file.close();
 }
 
 //保存文件系统
