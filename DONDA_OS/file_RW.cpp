@@ -109,7 +109,8 @@ string contentBuffer(int iNode_id) {
 
     //一级索引
     if (fileSystem.iNode[iNode_id].file_len > BLOCKSIZ * 10) {
-        vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[10].content);       //读取一级索引中的磁盘块块号
+        int block_addr = fileSystem.iNode[iNode_id].i_addr[10];
+        vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[block_addr].content);       //读取一级索引中的磁盘块块号
         for (int i = 0; i < index_block_level1.size(); i++) {
             buffer += fileSystem.diskBlock[index_block_level1[i]].content;     //向buffer中不断加入索引块指向的磁盘块的内容
         }
@@ -117,9 +118,10 @@ string contentBuffer(int iNode_id) {
     }
     //二级索引
     if (fileSystem.iNode[iNode_id].file_len > BLOCKSIZ * BLOCKSIZ / 4 + 10 * BLOCKSIZ) {
-        vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[11].content);       //读取二级索引中的索引块号
+        int block_addr = fileSystem.iNode[iNode_id].i_addr[11];
+        vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[block_addr].content);       //读取二级索引中的索引块号
         for (int i = 0; i < index_block_level1.size(); i++) {
-            vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[i].content);       //读取二级索引中的一级索引中的磁盘块块号
+            vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[index_block_level1[i]].content);       //读取二级索引中的一级索引中的磁盘块块号
             for (int j = 0; j < index_block_level2.size(); j++) {
                 buffer += fileSystem.diskBlock[index_block_level2[j]].content;     //向buffer中不断加入索引块指向的磁盘块的内容
             }
@@ -127,11 +129,12 @@ string contentBuffer(int iNode_id) {
     }
     //三级索引
     if (fileSystem.iNode[iNode_id].file_len > BLOCKSIZ * BLOCKSIZ * BLOCKSIZ / 16 + BLOCKSIZ * BLOCKSIZ / 4 + 10 * BLOCKSIZ) {
-        vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[12].content);       //读取二级索引中的索引块号
+        int block_addr = fileSystem.iNode[iNode_id].i_addr[12];
+        vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[block_addr].content);       //读取二级索引中的索引块号
         for (int i = 0; i < index_block_level1.size(); i++) {
-            vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[i].content);       //读取二级索引中的一级索引中的磁盘块块号
+            vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[index_block_level1[i]].content);       //读取二级索引中的一级索引中的磁盘块块号
             for (int j = 0; j < index_block_level2.size(); j++) {
-                vector<int> index_block_level3 = ReadIndexBlock(fileSystem.diskBlock[j].content);       //读取三级索引中的二级索引中的一级索引中的磁盘块块号
+                vector<int> index_block_level3 = ReadIndexBlock(fileSystem.diskBlock[index_block_level2[j]].content);       //读取三级索引中的二级索引中的一级索引中的磁盘块块号
                 for (int k = 0; k < index_block_level3.size(); k++) {
                     buffer += fileSystem.diskBlock[index_block_level3[k]].content;     //向buffer中不断加入索引块指向的磁盘块的内容
                 }
