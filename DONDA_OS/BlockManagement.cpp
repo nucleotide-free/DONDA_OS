@@ -17,8 +17,15 @@ int AllocateOneBlock() {
 	else {
 		free_block=fileSystem.superBlock.free_block_stack.top();
 		fileSystem.superBlock.free_diskblock_num--;		//空闲块数量--
-		fileSystem.superBlock.free_block_stack.pop();
-		fileSystem.diskBlock[free_block].content_len--;//修改文件长度
+
+		int index;
+		for (int i = 0; i < fileSystem.superBlock.free_diskblock_id.size(); i++) {
+			if (free_block== fileSystem.superBlock.free_diskblock_id[i]) {
+				index = i;
+			}
+		}
+		fileSystem.superBlock.free_diskblock_id.erase(fileSystem.superBlock.free_diskblock_id.begin() + index);//删除该元素		fileSystem.superBlock.free_block_stack.pop();
+
 		return free_block;
 	}
 }
