@@ -24,7 +24,7 @@ void saveSuperBlcok()
 		for (int i = 0; i < INODE_BITMAP_ROW; i++) {//遍历i节点位示图
 			for (int j = 0; j < INODE_BITMAP_COL; j++) {
 				if (fileSystem.superBlock.iNode_bitmap[i][j] == 0)//写入空闲i节点的ID
-					file << i * INODE_BITMAP_COL + j << " ";
+					file << i * INODE_BITMAP_COL + j << "    ";
 			}
 		}
 		file << endl;
@@ -33,17 +33,14 @@ void saveSuperBlcok()
 		for (int i = 0; i < SFD_BITMAP_ROW; i++) {//遍历目录节点位示图
 			for (int j = 0; j < SFD_BITMAP_COL; j++) {
 				if (fileSystem.superBlock.SFD_bitmap[i][j] == 0)//写入空闲目录节点的ID
-					file << i * SFD_BITMAP_COL + j << " ";
+					file << i * SFD_BITMAP_COL + j << "    ";
 			}
 		}
 		file << endl;
 
 		file << fileSystem.superBlock.free_diskblock_num << endl;//空闲磁盘块数量
-		int block_id;
-		fileSystem.superBlock.free_diskblock_id.clear();
-		while ((block_id = AllocateOneBlock()) != -1) {//分配所有空闲块，并输出块号到文件
-			file << block_id << " ";
-			fileSystem.superBlock.free_diskblock_id.push_back(block_id);
+		for (int i = 0; i < fileSystem.superBlock.free_diskblock_id.size(); i++) {//输出块号到文件
+			file << fileSystem.superBlock.free_diskblock_id[i] << "    ";
 		}
 	}
 	file.close();
