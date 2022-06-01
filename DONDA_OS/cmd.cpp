@@ -7,7 +7,7 @@ vector<string> command_2 = { "rename" };
 //显示命令目录
 void commandCategory()
 {
-	textColor(10);
+	textColor(15);
 	cout << "\nCOMMANDS:" << endl;
 	cout << "\t文件操作" << endl;
 	cout << "\t\t更名:\trname [old name] [new name]" << endl;
@@ -56,7 +56,7 @@ void display() {
 		}
 		//*********************************  文件操作 ********************************* 
 		if (instruction == "rname") {//重命名
-
+			renameFile(fileName1, fileName2);
 		}
 		else if (instruction == "link") {//链接
 

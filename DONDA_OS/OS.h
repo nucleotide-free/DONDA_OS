@@ -178,6 +178,7 @@ int findiNodeByName(string fileName);		//通过文件名，找它的i节点
 string contentBuffer(int iNode_id);		//将索引块指向的磁盘块的内容写入buffer
 void writeFile(string fileName);     //写指定文件名的文件
 void readFile(string fileName);     //读文件内容函数
+void renameFile(string fileName1, string fileName2);	//文件重命名
 
 //**************************目录的创建与删除模块*****************************
 int createDir(string fileName);		//创建一个目录
