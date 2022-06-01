@@ -191,6 +191,7 @@ void display() {
 		}
 		else if (instruction == "logout") {//注销登录
 			cout << "注销成功！\n";
+			sfd_pointer = 0;
 			saveFileSystem();
 			login();
 		}
@@ -210,6 +211,7 @@ void display() {
 			cout << "\n\n";
 		}
 		else if (instruction == "exit") {//关闭系统
+		sfd_pointer = 0;
 			saveFileSystem();
 			return;
 		}
