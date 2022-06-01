@@ -33,8 +33,40 @@ void writeFile(string fileName)
     string str = "vim Temp\\" + fileName + ".txt";      //vim 
     system(str.data());     
 
+    tempToDiskBlock(fileName);
 }
 
+//把temp文件里的内容写到磁盘块中
+void tempToDiskBlock(string fileName)
+{
+    string content;
+    ifstream tempFile;
+    tempFile.open("Temp\\temp.txt", ios::in | ios::app);
+    if (tempFile.is_open()) {//新建临时文件成功
+        stringstream s;
+        s << tempFile.rdbuf();
+        string content = s.str();       //读文件
+    }
+    tempFile.close();
+
+    int block_num;      //文件内容需要申请的磁盘块数量
+    block_num = content.length() / 512;
+    for (int i = 0; i < block_num; i++)     //给文件分配磁盘快
+    {
+        int block_id=AllocateOneBlock();        //分配的磁盘块号
+        fileSystem.iNode[findiNodeByName(fileName)].i_addr[i] = block_id;     //通过文件名找到将分配的磁盘块号写入该文件iNode的索引数组
+        if (i != block_num - 1) {
+            fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ, BLOCKSIZ);        //每个磁盘块的内容都来自于content对应位置的子串
+            fileSystem.diskBlock[block_id].content_len = BLOCKSIZ;        //每个磁盘块的内容大小都512，因为已经写满了
+        }
+        else {
+            fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ);      //最后一个磁盘块的内容都来自于content对应位置的子串
+            fileSystem.diskBlock[block_id].content_len = content.length()-(i * BLOCKSIZ);      //最后一个磁盘块的内容大小不是512
+        }
+    }
+
+
+}
 //读指定文件名的文件
 void readFile(string fileName)
 {
