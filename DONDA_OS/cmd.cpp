@@ -94,19 +94,19 @@ void display() {
 		else if (instruction == "ls") {//显示目录
 			if (fileSystem.SFD[sfd_pointer].sfd_num==0) {
 				cout << "无内容" << endl;
-				return;
+				continue;
 			}
 			cout << "名称\t\t修改日期\t\t类型\t大小\n";
 			for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {		//扫描当前sfd列表中对的sfd_item的filename并显示出来
 				cout << fileSystem.SFD[sfd_pointer].sfd_list[i].file_name+"\t\t";//文件名
 				int file_id = fileSystem.SFD[sfd_pointer].sfd_list[i].file_id;	//文件id(指向iNode)
-				cout << fileSystem.iNode[file_id].last_visited_time + "\t";		//修改日期
+				cout << fileSystem.iNode[file_id].last_visited_time + "\t\t";		//修改日期
 				if(fileSystem.iNode[file_id].type){//获取文件类型
 					cout << "dir\n";	//目录文件
 				}
 				else {
 					cout << "file\t";	//文本文档
-					cout << fileSystem.iNode[file_id].file_len + "\n";//文件长度
+					cout << fileSystem.iNode[file_id].file_len << endl;//文件长度
 				}
 			}
 		}

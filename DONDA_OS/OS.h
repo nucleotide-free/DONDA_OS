@@ -162,7 +162,7 @@ int AllocateOneBlock();				//成组链接--分配空闲块
 int ReadABlock(stack<int> free_block_stack, int block_num);	//读取组长块
 
 //**************************文件的创建与删除模块*****************************
-void createInitINode(int iNode_id, int type, int filelen);	//为创建文件或目录初始化i结点
+void createInitINode(int iNode_id, int type);	//为创建文件或目录初始化i结点
 int createiNode(int type);					//为新创建的文件分配一个i结点
 void createSFD(int iNode_id, string name);  //为新创建的文件分配一个SFD结点
 int createFile(string fileName);			//创建文件

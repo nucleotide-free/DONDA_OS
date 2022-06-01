@@ -1,7 +1,7 @@
 #include "OS.h"
 
 //为创建文件或目录 初始化i结点
-void createInitINode(int iNode_id, int type, int filelen)
+void createInitINode(int iNode_id, int type)
 {
 	fileSystem.iNode[iNode_id].id = iNode_id;//i节点的id，即在数组里的id
 	fileSystem.iNode[iNode_id].type = type;	 //文件类型 0-普通 1-目录
@@ -10,7 +10,7 @@ void createInitINode(int iNode_id, int type, int filelen)
 		fileSystem.iNode[iNode_id].auth[i] = 0;//全部user都无权限
 	fileSystem.iNode[iNode_id].auth[user.user_id] = 1;//仅创立者有权限
 
-	fileSystem.iNode[iNode_id].file_len = filelen;//文件长度
+	fileSystem.iNode[iNode_id].file_len = 0;//文件长度
 	fileSystem.iNode[iNode_id].link_count = 0;//链接次数 = 0
 	fileSystem.iNode[iNode_id].last_visited_time = getTime();//最后一次存取时间（当前时间）
 	for (int i = 0; i < ADDR_NUM; i++)
@@ -32,7 +32,7 @@ int createiNode(int type)
 		}
 		if (iNode_id != -1)break;
 	}
-	createInitINode(iNode_id, type, 0);//为创建文件或目录初始化i结点，类型为0，表示文件，长度为0，初始化i结点
+	createInitINode(iNode_id, type);//为创建文件或目录初始化i结点，类型为0，表示文件，长度为0，初始化i结点
 	return iNode_id;
 }
 

@@ -85,10 +85,10 @@ void saveSFD()
 	}
 	for (int i = 1; i < SFD_NUM; i++) {
 		if (fileSystem.superBlock.SFD_bitmap[i / SFD_BITMAP_COL][i % SFD_BITMAP_COL] == 1) {//该i节点被占用
-			file << fileSystem.SFD[i].sfd_num;
+			file << fileSystem.SFD[i].sfd_num << endl;	//目录项个数
 			for (int j = 0; j < fileSystem.SFD[i].sfd_num; j++) {
-				file << " " << fileSystem.SFD[i].sfd_list[j].file_name << " ";
-				file << " " << fileSystem.SFD[i].sfd_list[j].file_id << " ";
+				file << " " << fileSystem.SFD[i].sfd_list[j].file_name << " ";//目录名
+				file << " " << fileSystem.SFD[i].sfd_list[j].file_id << endl;//指向的id
 			}
 		}
 	}
