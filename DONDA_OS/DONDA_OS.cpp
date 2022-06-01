@@ -9,10 +9,12 @@ vector<SFD> sfd_stack;	//目录栈
 
 int main()
 { 
-    init();
+    for (int i = 0; i < 512; i++)
+        cout << i << "    ";
+    /*init();
     login();
     system("cls");
-    cout << "已成功退出 DONDA_OS 文件系统！";
+    cout << "已成功退出 DONDA_OS 文件系统！";*/
 }
 
 
