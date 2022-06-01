@@ -69,8 +69,8 @@ void initSFD() {
 		fileSystem.SFD[0].sfd_list.push_back(sfd_item);   //每个用户的文件目录下生成sfd动态数组
 		fileSystem.SFD[0].sfd_num++;
 	}
-
-	sfd_stack.push_back(fileSystem.SFD[0]);
+	sfd_pointer = 0;
+	sfd_stack.push_back(sfd_pointer);
 
 	freopen_s(&stream, "Data\\SFD.txt", "r", stdin);
 	for (int i = 1; i <= 512; i++)

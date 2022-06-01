@@ -1,5 +1,2 @@
-4
- hsy  9
- wry  10
- dir1  11
- dir2  12
+1
+ dir1  9

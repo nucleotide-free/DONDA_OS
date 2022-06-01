@@ -60,18 +60,89 @@ int createFile(string fileName)
 	return 0;
 }
 
-//int checkExitsfd(string name) {}  //查询当前目录下一固定名的文件下标
-//int* getIaddr(int indexnum) {}     //得到待删除文件的索引块中的磁盘块号数组
-
 //删除文件
-int deleteFile(string fileName) {
-	return 0;
-}
-//删除待删除文件对应的i结点及其指向的磁盘块
-void deleteiNode(int pos)      
+void deleteFile(string fileName) 
 {
-
+	int iNode_id = findiNodeByName(fileName);
+	deleteDiskBlock(iNode_id);//回收磁盘块
+	deleteiNode(iNode_id);//回收i节点
+	deleteSFD(iNode_id);//回收SFD子项
 }
+
+//回收磁盘块
+void deleteDiskBlock(int iNode_id)
+{
+	for (int i = 0; i < 10; i++) {//回收直接地址的磁盘块
+		if (fileSystem.iNode[iNode_id].i_addr[i] != -1) {//磁盘块被用了
+			int diskBlock_id = fileSystem.iNode[iNode_id].i_addr[i];
+			fileSystem.diskBlock[diskBlock_id].content = "";//清空磁盘块内容
+			fileSystem.diskBlock[diskBlock_id].content_len = 0;
+			FreeABlock(diskBlock_id);//回收磁盘块
+		}
+	}
+	int diskBlock_id;
+	if ((diskBlock_id = fileSystem.iNode[iNode_id].i_addr[10]) != -1) {//一级索引
+		vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[diskBlock_id].content);//读取一级索引中的磁盘块块号
+		for (int i = 0; i < index_block_level1.size(); i++) {//每一个块号
+			fileSystem.diskBlock[index_block_level1[i]].content = "";//清空磁盘块内容
+			fileSystem.diskBlock[index_block_level1[i]].content_len = 0;
+			FreeABlock(index_block_level1[i]);	//回收磁盘块
+			
+		}
+	}
+	if ((diskBlock_id = fileSystem.iNode[iNode_id].i_addr[11]) != -1) {//二级索引
+		vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[diskBlock_id].content);//读取一级索引中的磁盘块块号
+		for (int i = 0; i < index_block_level1.size(); i++) {//每一个块号
+			vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[index_block_level1[i]].content);//读取二级索引中的磁盘块块号
+			for (int j = 0; j < index_block_level2.size(); j++) {
+				fileSystem.diskBlock[index_block_level2[j]].content = "";//清空磁盘块内容
+				fileSystem.diskBlock[index_block_level2[j]].content_len = 0;
+				FreeABlock(index_block_level2[j]);	//回收磁盘块
+			}
+		}
+	}
+	if ((diskBlock_id = fileSystem.iNode[iNode_id].i_addr[12]) != -1) {//三级索引
+		vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[diskBlock_id].content);//读取一级索引中的磁盘块块号
+		for (int i = 0; i < index_block_level1.size(); i++) {//每一个块号
+			vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[index_block_level1[i]].content);//读取二级索引中的磁盘块块号
+			for (int j = 0; j < index_block_level2.size(); j++) {
+				vector<int> index_block_level3 = ReadIndexBlock(fileSystem.diskBlock[index_block_level1[i]].content);//读取三级索引中的磁盘块块号
+				for (int k = 0; k < index_block_level3.size(); k++) {
+					fileSystem.diskBlock[index_block_level3[k]].content = "";//清空磁盘块内容
+					fileSystem.diskBlock[index_block_level3[k]].content_len = 0;
+					FreeABlock(index_block_level3[k]);	//回收磁盘块
+				}
+			}
+		}
+	}
+}
+
+//删除待删除文件对应的i结点及其指向的磁盘块
+void deleteiNode(int iNode_id)      
+{	
+	
+	createInitINode(iNode_id, 0);
+	fileSystem.iNode[iNode_id].id = 0;//i节点的id，即在数组里的id
+	fileSystem.iNode[iNode_id].owner = 0;//文件创立者
+	for (int i = 1; i <= 8; i++)
+		fileSystem.iNode[iNode_id].auth[i] = 0;//全部user都无权限
+	fileSystem.iNode[iNode_id].last_visited_time = "";//最后一次存取时间（当前时间）
+
+	fileSystem.superBlock.free_iNode_num++;//空闲节点++
+	fileSystem.superBlock.iNode_bitmap[iNode_id / INODE_BITMAP_COL][iNode_id % INODE_BITMAP_COL] = 0;//释放位示图资源
+}
+
+//回收SFD子项
+void deleteSFD(int file_id)
+{
+	for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {
+		if (fileSystem.SFD[sfd_pointer].sfd_list[i].file_id == file_id) {
+			fileSystem.SFD[sfd_pointer].sfd_list.erase(fileSystem.SFD[sfd_pointer].sfd_list.begin() + i);//删除该sfd项
+			fileSystem.SFD[sfd_pointer].sfd_num--;
+		}
+	}
+}
+
 //遍历删除与待删除文件共享的文件目录
 void findSinglesfd(int inodeNo) {
 

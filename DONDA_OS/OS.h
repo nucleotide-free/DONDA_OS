@@ -136,7 +136,7 @@ extern FILE* stream;
 extern int sfd_pointer;			//sfd指针--指向当前的sfd目录
 extern USER user;				//当前用户
 extern USER userList[9];		//所有用户
-extern vector<SFD> sfd_stack;	//目录栈
+extern vector<int> sfd_stack;	//目录栈
 
 //**************************初始化模块***************************
 void initSuperBlock();	//初始化超级块
@@ -168,15 +168,17 @@ void createSFD(int iNode_id, string name);  //为新创建的文件分配一个SFD结点
 int createFile(string fileName);			//创建文件
 string getTime();
 
-int* getIaddr(int indexnum);		//得到待删除文件的索引块中的磁盘块号数组
-int deleteFile(string fileName);      //删除指定名字的文件
-void deleteINode(int pos);			//删除待删除文件对应的i结点及其指向的磁盘块
-void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
+void deleteDiskBlock(int iNode_id);	//回收磁盘块
+void deleteSFD(int file_id);		//回收SFD子项
+void deleteiNode(int iNode_id);			//回收i结点
+void deleteFile(string fileName);	//删除文件
+//void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 
 //**************************文件的读写模块*****************************
 int findiNodeByName(string fileName);		//通过文件名，找它的i节点
 void tempToDiskBlock(string fileName);		//把temp文件里的内容写到磁盘块中
 string contentBuffer(int iNode_id);		//将索引块指向的磁盘块的内容写入buffer
+vector<int> ReadIndexBlock(string content);	//一级索引读取索引块
 void writeFile(string fileName);     //写指定文件名的文件
 void readFile(string fileName);     //读文件内容函数
 void renameFile(string fileName1, string fileName2);	//文件重命名

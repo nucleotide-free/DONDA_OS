@@ -124,7 +124,7 @@ void display() {
 					file_check = 1;		//存在	
 			if (fileName_check&& file_check) {
 				file_list = file_list + "\\" + fileName1;
-				sfd_stack.push_back(fileSystem.SFD[sfd_pointer]);		//将当前目录sfd推入目录栈
+				sfd_stack.push_back(sfd_pointer);		//将当前目录sfd推入目录栈
 			}
 			else {
 				cout << "不存在的目录，操作失败！\n";
@@ -133,15 +133,15 @@ void display() {
 		else if (instruction == "cd/") {//返回根目录
 			sfd_pointer = 0;		//根目录sfd的sfd指针
 			sfd_stack.clear();		//清空目录栈
-			sfd_stack.push_back(fileSystem.SFD[sfd_pointer]);	//向栈中压入根目录
+			sfd_stack.push_back(sfd_pointer);	//向栈中压入根目录
 
 			file_list.clear();		//文件显示字符串清空
 		}
 		else if (instruction == "cd..") {//返回上级目录
-			sfd_stack.pop_back();		//弹出目录栈
-			sfd_stack.back().sfd_list;
-			
-			file_list.clear();		//文件显示字符串清空
+			if(sfd_stack.size()!=1)
+				sfd_stack.pop_back();		//弹出目录栈
+			sfd_pointer = sfd_stack.back();
+			file_list.erase(file_list.find_last_of("\\"), file_list.length());		//文件显示字符串清空
 		}
 		else if (instruction == "deld") {//删除目录
 
@@ -174,7 +174,8 @@ void display() {
 			}	
 		}
 		else if (instruction == "delf") {//删除文件
-
+			deleteFile(fileName1);
+			cout << "删除成功！";
 		}
 		else if (instruction == "write") {//改写文件
 			writeFile(fileName1);
