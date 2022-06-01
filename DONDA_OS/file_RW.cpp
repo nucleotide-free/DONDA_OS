@@ -31,7 +31,8 @@ void writeFile(string fileName)
     }
     tempFile.close();
     string str = "vim Temp\\" + fileName + ".txt";      //vim 
-    system(str.data());
+    system(str.data());     
+
 }
 
 //读指定文件名的文件
