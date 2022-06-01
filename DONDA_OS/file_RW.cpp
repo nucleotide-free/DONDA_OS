@@ -107,3 +107,28 @@ string contentBuffer(int iNode_id) {
     }
     return buffer;
 }
+
+//文件重命名
+void renameFile(string fileName1, string fileName2)
+{
+    for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {//检查文件是否重名
+        if (fileName2 == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name) {
+            cout << "错误！文件名" + fileName2 + "已存在！";
+            return;//文件名冲突
+        }
+    }
+
+    for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) { //查找该文件
+        if (fileName1 == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name) {
+            int iNode_id = fileSystem.SFD[sfd_pointer].sfd_list[i].file_id;     //获取iNode_id
+            if (fileSystem.iNode[iNode_id].auth[user.user_id] == 0) {   //检查用户权限
+                cout << "权限不足，无法修改文件！\n";
+                return;
+            }
+            fileSystem.SFD[sfd_pointer].sfd_list[i].file_name = fileName2;//文件重命名成功
+            return;
+        }
+    }
+    cout << "文件不存在！\n";
+    return;
+}
