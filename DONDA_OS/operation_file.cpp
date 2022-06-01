@@ -66,7 +66,7 @@ void deleteFile(string fileName)
 	int iNode_id = findiNodeByName(fileName);
 	deleteDiskBlock(iNode_id);//回收磁盘块
 	deleteiNode(iNode_id);//回收i节点
-	deleteSFD(iNode_id);//回收SFD子项
+	deleteSFD_ITEM(iNode_id);//回收SFD子项
 }
 
 //回收磁盘块
@@ -133,7 +133,7 @@ void deleteiNode(int iNode_id)
 }
 
 //回收SFD子项
-void deleteSFD(int file_id)
+void deleteSFD_ITEM(int file_id)
 {
 	for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {
 		if (fileSystem.SFD[sfd_pointer].sfd_list[i].file_id == file_id) {

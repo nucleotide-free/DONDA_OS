@@ -10,6 +10,15 @@ int findiNodeByName(string fileName)
     return -1;
 }
 
+int findiNodeById(int sfd_pointer,string fileName)
+{
+    for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {
+        if (fileName == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name)
+            return fileSystem.SFD[sfd_pointer].sfd_list[i].file_id;
+    }
+    return -1;
+}
+
 //写指定文件名的文件
 void writeFile(string fileName)
 {

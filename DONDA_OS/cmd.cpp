@@ -144,7 +144,8 @@ void display() {
 			file_list.erase(file_list.find_last_of("\\"), file_list.length());		//文件显示字符串清空
 		}
 		else if (instruction == "deld") {//删除目录
-
+			
+			deleteDir(findiNodeByName(fileName1));
 		}
 		//********************************* 文件读写 ********************************
 		else if (instruction == "create") {//创建文件
