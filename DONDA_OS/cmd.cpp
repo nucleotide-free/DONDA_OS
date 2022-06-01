@@ -191,6 +191,7 @@ void display() {
 		}
 		else if (instruction == "logout") {//注销登录
 			cout << "注销成功！\n";
+			saveFileSystem();
 			login();
 		}
 		else if (instruction == "bitmap") {//位示图

@@ -41,7 +41,7 @@ void tempToDiskBlock(string fileName)
 {
     string content;
     ifstream tempFile;
-    tempFile.open("Temp\\temp.txt", ios::in | ios::app);
+    tempFile.open("Temp\\"+fileName+".txt", ios::in | ios::app);
     if (tempFile.is_open()) {//新建临时文件成功
         stringstream s;
         s << tempFile.rdbuf();
