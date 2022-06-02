@@ -179,12 +179,12 @@ void openFile(string fileName)
 }
 
 //检查文件是否被打开
-int checkOpen(int iNode_id)		
+int checkOpen(int iNode_id)
 {
-		if (iNode_id == mem_iNode[iNode_id % NHINO].id)
-		{
-			return 1;
-		}
+	if (iNode_id == mem_iNode[iNode_id % NHINO].id)
+	{
+		return 1;
+	}
 	return 0;
 }
 
@@ -228,5 +228,23 @@ void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName)
 //关闭文件
 void closeFIle(string fileName)
 {
+	int diNode_id = findiNodeByName(fileName);//找到磁盘iNode_id
+	if (fileSystem.iNode[diNode_id].type == 1)
+	{
+		cout << "目录文件不可关闭" << endl;
+		return;
+	}
+	MEM_BFD_ITEM m_iNode = mem_iNode[diNode_id % NHINO];//找到该iNode_id对应的hash表中的内存iNode
 
+	//放入磁盘，更新磁盘i Node的数据
+	fileSystem.iNode[diNode_id].last_visited_time = m_iNode.last_visited_time;//最后一次访问时间
+
+	for (int i = 0; i < file_opend_list.size(); i++) {//更新系统打开表
+		if (file_opend_list[i].fileName == fileName) {
+			file_opend_list.erase(file_opend_list.begin() + i);
+			break;
+		}
+	}
+
+	mem_iNode[diNode_id % NHINO].id = 0;//清除hash表中的该数据
 }
