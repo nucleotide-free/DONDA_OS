@@ -22,20 +22,29 @@ char* getpassword(char* pasw)
 	return pasw;
 }
 
-
+void RGBColor(int i) {
+	switch (i)
+	{
+	case 1:cout << "\x1B[38;2;108;141;183m"; break;//蓝色
+	case 2:cout << "\x1B[38;2;108;141;183m"; break;
+	default:
+		break;
+	}
+	
+}
 
 void login() {    
 	system("cls");
-	textColor(11);
-	cout << "\t\t-------------------------------------------------------------------------------" << endl;
-	cout << "\t\t-----------               \x1B[38;2;108;141;183m欢迎使用 DONDA_OS 文件系统                -----------" << endl;
+	RGBColor(1);
+	cout << "\n\t\t-------------------------------------------------------------------------------" << endl;
+	cout << "\t\t-----------               欢迎使用 DONDA_OS 文件系统                -----------" << endl;
 	cout << "\t\t-------------------------------------------------------------------------------" << endl;
 
 	while (1) {
 		user.user_id = 0;//用户初始化
 		user.password = "";
 		user.file_Uopened.clear();
-		textColor(11);
+
 		cout << "\n\t\t请登录文件系统：";
 		textColor(7);
 		cin >> user.user_name;	//输入用户名

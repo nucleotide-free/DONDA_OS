@@ -396,16 +396,6 @@ int input_command(string& instruction, string& fileName1, string& fileName2)
 	return command_type;
 }
 
-//char ch;
-//int i = 0;
-//instruction = "";//清理字符串
-//while (ch = getchar()) {//输入指令
-//	if (i==0 && ch == '\n')return -1;//第一个字符读到回车？
-//	else if (ch == ' ' || ch == '\n')break;
-//	else instruction += ch;
-//	i++;
-//}
-//设置字体颜色
 void textColor(int color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 } 
