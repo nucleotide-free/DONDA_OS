@@ -232,10 +232,8 @@ void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName)
 {
 	user.file_Uopened.push_back(m_iNode.id);//当前用户打开文件表，里面放的是iNode_id
 	userList[user.user_id].file_Uopened.push_back(m_iNode.id);//全体用户打开文件表，里面放的是iNode_id
-	FILE_OPEND file_opened;	//系统打开表
-	file_opened.fileName = fileName;//文件名
-	int f_count = 0;//访问次数 = 0
-	file_opened.f_inode = m_iNode.id;//储存内存i节点的地址
+
+	FILE_OPEND file_opened = { fileName ,0,m_iNode.id };	//系统打开表
 	file_opend_list.push_back(file_opened);
 }
 

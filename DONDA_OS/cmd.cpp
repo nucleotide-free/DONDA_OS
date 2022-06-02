@@ -181,10 +181,10 @@ void display() {
 			cout << "删除成功！\n";
 		}
 		else if (instruction == "open") {//打开文件
-		openFile(fileName1);
+			openFile(fileName1);
 		}
 		else if (instruction == "close") {//关闭文件
-		closeFIle(fileName1);
+			closeFIle(fileName1);
 		}
 		else if (instruction == "write") {//改写文件
 			writeFile(fileName1);
