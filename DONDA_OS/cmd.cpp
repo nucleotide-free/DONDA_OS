@@ -1,6 +1,6 @@
 #include "OS.h"
 
-vector<string> command_0 = { "paste", "ls", "cd/", "cd..", "cls", "format", "logout", "bitmap", "exit", "help", "ushow","fshow","changepass", "showpassword"};
+vector<string> command_0 = { "paste","lpaste", "ls", "cd/", "cd..", "cls", "format", "logout", "bitmap", "exit", "help", "ushow","fshow","changepass", "showpassword"};
 vector<string> command_1 = { "link","find","cut","copy","mkdir","cd","deld","create","delf","write","read","open","close"};
 vector<string> command_2 = { "rename" };
 
@@ -62,19 +62,25 @@ void display() {
 			renameFile(fileName1, fileName2);
 		}
 		else if (instruction == "link") {//链接
-
+			if (checkValid(fileName1))continue;//文件失效
+			createLink(fileName1);
 		}
 		else if (instruction == "find") {//查找
 
 		}
 		else if (instruction == "cut") {//剪切
+			if (checkValid(fileName1))continue;//文件失效
 			cut(fileName1);
 		}
 		else if (instruction == "copy") {//复制
+			if (checkValid(fileName1))continue;//文件失效
 			copy(fileName1);
 		}
 		else if (instruction == "paste") {//粘贴
 			paste();
+		}
+		else if (instruction == "paste") {//粘贴链接
+			pasteLink();
 		}
 		//*********************************目录操作 ********************************* 
 		else if (instruction == "mkdir") {//创建目录
@@ -183,6 +189,12 @@ void display() {
 			}	
 		}
 		else if (instruction == "delf") {//删除文件
+			int iNode_id = findiNodeByName(fileName1);
+			if (iNode_id == -1) {
+				cout << "文件不存在！\n";
+				continue;
+			}
+			deleteLink(fileName1);//删除链接文件（含判断）
 			deleteFile(fileName1);
 			cout << "删除成功！\n";
 		}
@@ -192,6 +204,7 @@ void display() {
 				cout << "文件不存在！\n";
 				continue;
 			}
+			if (checkValid(fileName1))continue;//文件失效
 			openFile(fileName1);
 		}
 		else if (instruction == "close") {//关闭文件
@@ -203,9 +216,11 @@ void display() {
 			closeFIle(fileName1);
 		}
 		else if (instruction == "write") {//改写文件
+			if (checkValid(fileName1))continue;//文件失效
 			writeFile(fileName1);
 		}
 		else if (instruction == "read") {//读取文件
+			if (checkValid(fileName1))continue;//文件失效
 			readFile(fileName1);
 		}
 		//********************************* 其他操作 ********************************
@@ -254,23 +269,20 @@ void display() {
 			commandCategory();
 		}
 		else if (instruction == "ushow") {//显示帮助
-		for (int i = 1; i < 9; i++)
-			{
-			cout << userList[i].user_name << ":\n";
-			for (int j = 0; j < userList[i].file_Uopened.size(); j++)
-				{
-				for (int k = 0; k < file_opend_list.size(); k++)
-				{
-					if (userList[i].file_Uopened[j] == file_opend_list[k].f_inode) {
-						cout << file_opend_list[k].fileName << " ";
+			for (int i = 1; i < 9; i++){
+				cout << userList[i].user_name << ":\n";
+				for (int j = 0; j < userList[i].file_Uopened.size(); j++){
+					for (int k = 0; k < file_opend_list.size(); k++){
+						if (userList[i].file_Uopened[j] == file_opend_list[k].f_inode) {
+							cout << file_opend_list[k].fileName << " ";
+						}
 					}
 				}
-				}
-			cout <<"\n";
+				cout << "\n";
 			}
 		}
 		else if (instruction == "fshow") {//显示帮助
-		showSystemFileOpen();
+			showSystemFileOpen();
 		}
 		else if (instruction == "changepass") {//修改密码
 			char temp[30];
