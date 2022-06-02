@@ -79,7 +79,7 @@ void display() {
 		else if (instruction == "paste") {//粘贴
 			paste();
 		}
-		else if (instruction == "l  paste") {//粘贴链接
+		else if (instruction == "lpaste") {//粘贴链接
 			pasteLink();
 		}
 		//*********************************目录操作 ********************************* 
@@ -194,8 +194,8 @@ void display() {
 				cout << "文件不存在！\n";
 				continue;
 			}
-			deleteLink(fileName1);//删除链接文件（含判断）
-			deleteFile(fileName1);
+			if(deleteLink(fileName1))//删除链接文件（含判断）
+				deleteFile(fileName1);
 			cout << "删除成功！\n";
 		}
 		else if (instruction == "open") {//打开文件
@@ -262,8 +262,7 @@ void display() {
 			saveFileSystem();
 			system("cls");
 			cout << "\n已成功退出 DONDA_OS 文件系统！\n";
-			system("rd Temp");
-			system("md Temp");
+
 			exit(0);
 		}
 		else if (instruction == "help") {//显示帮助

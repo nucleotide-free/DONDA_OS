@@ -39,17 +39,18 @@ int findSFD_item_idByName(string fileName)
 }
 
 //删除连接，判断是否是链接文件
-void deleteLink(string fileName)
+int deleteLink(string fileName)
 {
 	int iNode_id = findiNodeByName(fileName);
 	int sfd_item_id = findSFD_item_idByName(fileName);
 	if (fileSystem.SFD[sfd_pointer].sfd_list[sfd_item_id].type != 0) {//是一个链接文件、失效文件
 		for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {
-			if (fileSystem.SFD[sfd_pointer].sfd_list[i].file_id == iNode_id && fileSystem.SFD[sfd_pointer].sfd_list[i].type == 1) {
+			if (fileSystem.SFD[sfd_pointer].sfd_list[i].file_id == iNode_id && fileSystem.SFD[sfd_pointer].sfd_list[i].type != 0) {
 				fileSystem.SFD[sfd_pointer].sfd_list.erase(fileSystem.SFD[sfd_pointer].sfd_list.begin() + i);//删除该sfd项
 				fileSystem.SFD[sfd_pointer].sfd_num--;
 			}
 		}
+		return 0;
 	}
 	else {//普通文件
 		for (int i = 1; i < SFD_NUM; i++) {
@@ -62,6 +63,7 @@ void deleteLink(string fileName)
 				}
 			}
 		}
+		return 1;
 	}
 }
 

@@ -224,7 +224,7 @@ void paste();					//粘贴文件
 //************************* link ******************************
 void createLink(string fileName);//新建连接
 void pasteLink();//粘贴链接文件到当前目录
-void deleteLink(string fileName);	//删除连接，判断是否是链接文件
+int deleteLink(string fileName);	//删除连接，判断是否是链接文件
 int checkValid(string fileName);	//检查文件是否失效,1-失效，0-正常
 
 //************************** 保存文件系统 *****************************
