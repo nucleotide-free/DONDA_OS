@@ -159,6 +159,7 @@ void init()
 	initSFD();
 	initINode();
 	initDiskBlock();
+	initMEM_iNode_list();
 }
 
 //格式化
@@ -218,4 +219,15 @@ void format()
 	file.close();
 
 
+}
+
+void initMEM_iNode_list() {
+	for (int i = 0; i < NHINO; i++) {
+		MEM_BFD_ITEM m_iNode;
+		m_iNode.id = 0;
+		m_iNode.type = 99;		//文件类型 0-普通 1-目录
+		m_iNode.next = NULL;
+		m_iNode.prev = NULL;
+		mem_iNode[i] = &m_iNode;
+	}
 }

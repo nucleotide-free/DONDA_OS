@@ -59,7 +59,7 @@ void display() {
 			renameFile(fileName1, fileName2);
 		}
 		else if (instruction == "link") {//¡¥Ω”
-
+			openFile(fileName1);
 		}
 		else if (instruction == "find") {//≤È’“
 
