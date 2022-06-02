@@ -188,7 +188,9 @@ void deleteiNode(int iNode_id);			//回收i结点
 
 void openFile(string fileName);			//打开文件
 void closeFIle(string fileName);		//关闭文件
-void initMEM_iNode(MEM_BFD_ITEM& m_iNode, int iNode_id);	//磁盘iNode放入内存，初始化内存iNode
+int checkOpen(int iNode_id);			//检查文件是否被打开
+void initMEM_iNode(MEM_BFD_ITEM m_iNode, int iNode_id); 	 //磁盘iNode放入内存，初始化内存iNode
+void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName);//修改用户打开文件表和系统打开文件表
 
 //************************** 文件的读写模块 *****************************
 int findiNodeByName(string fileName);		//通过文件名，找它的i节点
@@ -196,10 +198,10 @@ int findiNodeByName(int std_pointer,string fileName);  //通过iNode_id，找它的i节
 
 void writeFile(string fileName);			//写指定文件名的文件
 void readFile(string fileName);				//读文件内容函数
-void renameFile(string fileName1, string fileName2);	//文件重命名
 void tempToDiskBlock(string fileName);		//把temp文件里的内容写到磁盘块中
 string contentBuffer(int iNode_id);			//将索引块指向的磁盘块的内容写入buffer
 vector<int> ReadIndexBlock(string content);	//一级索引读取索引块
+void renameFile(string fileName1, string fileName2);	//文件重命名
 
 //************************** 目录的创建与删除模块 *****************************
 int createDir(string fileName);		//创建一个目录

@@ -166,6 +166,10 @@ string getTime() {
 void openFile(string fileName) 
 {
 	int diNode_id = findiNodeByName(fileName);		//找到磁盘iNode_id
+	if (checkOpen(diNode_id)) {
+		cout << "文件已经被打开" << endl;
+		return;
+	}
 	if (fileSystem.iNode[diNode_id].type == 1)
 	{
 		cout << "目录文件不可打开" << endl;
@@ -173,7 +177,7 @@ void openFile(string fileName)
 	}
 	MEM_BFD_ITEM m_iNode;
 	initMEM_iNode(m_iNode, diNode_id);		//初始化内存i节点
-	MEM_BFD_ITEM* m_iNode_pointer;		//内存i节点指针
+	MEM_BFD_ITEM* m_iNode_pointer = (MEM_BFD_ITEM*)malloc(sizeof(MEM_BFD_ITEM) * 1); //内存i节点指针	//内存i节点指针
 	m_iNode_pointer = &mem_iNode[m_iNode.id % NHINO];		//指向要插入的iNode的hash链表中
 
 	while(m_iNode_pointer->next)
@@ -182,12 +186,27 @@ void openFile(string fileName)
 	}
 	m_iNode_pointer->next = &m_iNode;		//插入iNode
 	m_iNode.prev = m_iNode_pointer;		//双向链表插入prev指针
-
+	free(m_iNode_pointer);
 }
 
-void checkOpen()
+//检查文件是否被打开
+int checkOpen(int iNode_id)		
 {
-
+	MEM_BFD_ITEM* temp = NULL;
+	MEM_BFD_ITEM* m_iNode_pointer= (MEM_BFD_ITEM*)malloc(sizeof(MEM_BFD_ITEM) * 1); //内存i节点指针
+	temp = m_iNode_pointer;
+	m_iNode_pointer = &mem_iNode[iNode_id % NHINO];		//指向要插入的iNode的hash链表中
+	while (m_iNode_pointer->next)
+	{
+		if (iNode_id == m_iNode_pointer->id)
+		{
+			free(temp);
+			return 1;
+		}
+		m_iNode_pointer = m_iNode_pointer->next;		//遍历到链表的最后
+	}
+	free(temp);
+	return 0;
 }
 
 
