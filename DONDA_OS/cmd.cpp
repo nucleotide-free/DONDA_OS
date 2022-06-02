@@ -243,10 +243,11 @@ void display() {
 			cout << userList[i].user_name << ":\n";
 			for (int j = 0; j < userList[i].file_Uopened.size(); j++)
 				{
-				for (int k = 0; i < file_opend_list.size(); k++)
+				for (int k = 0; k < file_opend_list.size(); k++)
 				{
-					if (userList[i].file_Uopened[j] == file_opend_list[k].f_inode)
+					if (userList[i].file_Uopened[j] == file_opend_list[k].f_inode) {
 						cout << file_opend_list[k].fileName << " ";
+					}
 				}
 				}
 			cout <<"\n";

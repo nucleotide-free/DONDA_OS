@@ -59,6 +59,7 @@ void login() {
 		else {
 			cout << "\t\t登录成功！\n";
 			getchar();//吸收回车
+			user.file_Uopened = userList[user.user_id].file_Uopened;
 			display();//登录成功后，进入系统界面
 		}
 	}
