@@ -166,16 +166,17 @@ string getTime() {
 void openFile(string fileName) 
 {
 	int diNode_id = findiNodeByName(fileName);		//找到磁盘iNode_id
-
-	if (fileSystem.iNode[diNode_id].type == 1)
-	{
+	if (fileSystem.iNode[diNode_id].type == 1){
 		cout << "目录文件不可打开" << endl;
 		return;
 	}
 	MEM_BFD_ITEM m_iNode = initMEM_iNode(diNode_id);	//初始化内存i节点;
 	mem_iNode[m_iNode.id % NHINO]= m_iNode;		//指向要插入的iNode的hash链表中
 
-	updateFileOpened(m_iNode, fileName);//修改用户打开文件表和系统打开文件表
+	user.file_Uopened.push_back(m_iNode.id);//当前用户打开文件表，里面放的是iNode_id
+	userList[user.user_id].file_Uopened.push_back(m_iNode.id);//全体用户打开文件表，里面放的是iNode_id
+	FILE_OPEND file_opened = { fileName ,0,m_iNode.id };	//修改系统打开文件表
+	file_opend_list.push_back(file_opened);
 }
 
 //检查文件是否被打开
@@ -225,16 +226,6 @@ MEM_BFD_ITEM  initMEM_iNode(int iNode_id) {
 	m_iNode.shared_count = 0;//共享次数=0
 
 	return m_iNode;
-}
-
-//修改用户打开文件表和系统打开文件表
-void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName)
-{
-	user.file_Uopened.push_back(m_iNode.id);//当前用户打开文件表，里面放的是iNode_id
-	userList[user.user_id].file_Uopened.push_back(m_iNode.id);//全体用户打开文件表，里面放的是iNode_id
-
-	FILE_OPEND file_opened = { fileName ,0,m_iNode.id };	//系统打开表
-	file_opend_list.push_back(file_opened);
 }
 
 
