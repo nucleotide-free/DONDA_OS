@@ -177,15 +177,16 @@ void openFile(string fileName)
 	}
 	MEM_BFD_ITEM m_iNode;
 	initMEM_iNode(m_iNode, diNode_id);		//初始化内存i节点
-	MEM_BFD_ITEM* m_iNode_pointer = (MEM_BFD_ITEM*)malloc(sizeof(MEM_BFD_ITEM) * 1); //内存i节点指针	//内存i节点指针
+	MEM_BFD_ITEM* m_iNode_pointer = (MEM_BFD_ITEM*)malloc(sizeof(MEM_BFD_ITEM) * 1); //内存i节点指针
 	m_iNode_pointer = &mem_iNode[m_iNode.id % NHINO];		//指向要插入的iNode的hash链表中
 
-	while(m_iNode_pointer->next)
-	{
+	while(m_iNode_pointer->next){
 		m_iNode_pointer = m_iNode_pointer->next;		//遍历到链表的最后
 	}
-	m_iNode_pointer->next = &m_iNode;		//插入iNode
+	m_iNode_pointer->next = &m_iNode;	//插入iNode
 	m_iNode.prev = m_iNode_pointer;		//双向链表插入prev指针
+
+	updateFileOpened(m_iNode, fileName);//修改用户打开文件表和系统打开文件表
 	free(m_iNode_pointer);
 }
 
@@ -209,12 +210,6 @@ int checkOpen(int iNode_id)
 	return 0;
 }
 
-
-//关闭文件
-void closeFIle(string fileName) 
-{		
-	 
-}
 
 //初始化内存i节点
 void initMEM_iNode(MEM_BFD_ITEM m_iNode, int iNode_id) {
@@ -248,4 +243,11 @@ void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName)
 	int f_count = 0;//访问次数 = 0
 	file_opened.f_inode = &m_iNode;//储存内存i节点的地址
 	file_opend_list.push_back(file_opened);
+}
+
+
+//关闭文件
+void closeFIle(string fileName)
+{
+
 }
