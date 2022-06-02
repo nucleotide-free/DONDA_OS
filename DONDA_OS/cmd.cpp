@@ -247,8 +247,7 @@ void display() {
 			saveFileSystem();
 			system("cls");
 			cout << "\n已成功退出 DONDA_OS 文件系统！\n";
-			system("rd Temp");
-			system("md Temp");
+
 			exit(0);
 		}
 		else if (instruction == "help") {//显示帮助
