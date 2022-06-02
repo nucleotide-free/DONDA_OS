@@ -26,6 +26,8 @@ void commandCategory()
 	cout << "\t文件读写" << endl;
 	cout << "\t\t创建文件:\tcreate [name]" << endl;
 	cout << "\t\t删除文件:\tdelf   [name]" << endl;
+	cout << "\t\t打开文件:\topen   [name]" << endl;
+	cout << "\t\t关闭文件:\tclose  [name]" << endl;
 	cout << "\t\t改写文件:\twrite  [name]" << endl;
 	cout << "\t\t读取文件:\tread   [name]" << endl;
 	cout << "\t其他操作" << endl;
@@ -177,6 +179,12 @@ void display() {
 		else if (instruction == "delf") {//删除文件
 			deleteFile(fileName1);
 			cout << "删除成功！\n";
+		}
+		else if (instruction == "open") {//打开文件
+		openFile(fileName1);
+		}
+		else if (instruction == "close") {//关闭文件
+		closeFile(fileName1);
 		}
 		else if (instruction == "write") {//改写文件
 			writeFile(fileName1);

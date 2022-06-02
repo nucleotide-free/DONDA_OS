@@ -228,6 +228,6 @@ void initMEM_iNode_list() {
 		m_iNode.type = 99;		//文件类型 0-普通 1-目录
 		m_iNode.next = NULL;
 		m_iNode.prev = NULL;
-		mem_iNode[i] = &m_iNode;
+		mem_iNode[i] = m_iNode;
 	}
 }

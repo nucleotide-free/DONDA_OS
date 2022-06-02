@@ -171,7 +171,7 @@ void openFile(string fileName) {		//打开文件
 	MEM_BFD_ITEM m_iNode;
 	initMEM_iNode(m_iNode, diNode_id);		//初始化内存i节点
 	MEM_BFD_ITEM* m_iNode_pointer;		//内存i节点指针
-	m_iNode_pointer = mem_iNode[m_iNode.id % NHINO];		//指向要插入的iNode的hash链表中
+	m_iNode_pointer = &mem_iNode[m_iNode.id % NHINO];		//指向要插入的iNode的hash链表中
 
 	while(m_iNode_pointer->next)
 	{
@@ -179,7 +179,6 @@ void openFile(string fileName) {		//打开文件
 	}
 	m_iNode_pointer->next = &m_iNode;		//插入iNode
 	m_iNode.prev = m_iNode_pointer;		//双向链表插入prev指针
-
 
 }
 void closeFIle(string fileName) {		//关闭文件
