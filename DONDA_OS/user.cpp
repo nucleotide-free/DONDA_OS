@@ -60,7 +60,6 @@ void login() {
 			cout << "\t\t登录成功！\n";
 			getchar();//吸收回车
 			display();//登录成功后，进入系统界面
-			break;
 		}
 	}
 }

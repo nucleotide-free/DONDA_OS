@@ -225,7 +225,9 @@ void display() {
 		else if (instruction == "exit") {//关闭系统
 		sfd_pointer = 0;
 			saveFileSystem();
-			return;
+			system("cls");
+			cout << "\n已成功退出 DONDA_OS 文件系统！\n";
+			exit(0);
 		}
 		else if (instruction == "help") {//显示帮助
 			commandCategory();
@@ -277,6 +279,7 @@ void display() {
 			cout << "密码：" << user.password << endl;
 		}
 	}
+
 }
 
 //用户输入命令，及判断
