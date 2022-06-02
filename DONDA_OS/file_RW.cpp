@@ -1,6 +1,6 @@
 #include "OS.h"
 
-//通过文件名，找它的i节点
+//通过文件名，找它的i节点，在当前SFD查找
 int findiNodeByName(string fileName)
 {
     for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {
@@ -10,7 +10,8 @@ int findiNodeByName(string fileName)
     return -1;
 }
 
-int findiNodeById(int sfd_pointer,string fileName)
+//通过文件名，找它的i节点，并且制定当前所在的SFD的ID
+int findiNodeByName(int sfd_pointer,string fileName)
 {
     for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {
         if (fileName == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name)
@@ -76,6 +77,7 @@ void tempToDiskBlock(string fileName)
 
 
 }
+
 //读指定文件名的文件
 void readFile(string fileName)
 {

@@ -173,36 +173,37 @@ int AllocateOneBlock();				//成组链接--分配空闲块
 int ReadABlock(stack<int> free_block_stack, int block_num);	//读取组长块
 
 //**************************文件的创建与删除模块*****************************
-void createInitINode(int iNode_id, int type);	//为创建文件或目录初始化i结点
-int createiNode(int type);					//为新创建的文件分配一个i结点
-void createSFD(int iNode_id, string name);  //为新创建的文件分配一个SFD结点
-int createFile(string fileName);			//创建文件
-string getTime();
+int createFile(string fileName);				//创建文件
+void createInitINode(int iNode_id, int type);	//初始化i结点
+int createiNode(int type);						//分配一个i结点
+void createSFD(int iNode_id, string name);		//分配一个SFD结点
+string getTime();								//获取当前时间
 
-void deleteDiskBlock(int iNode_id);	//回收磁盘块
+void deleteFile(string fileName);		//删除文件
+void deleteDiskBlock(int iNode_id);		//回收磁盘块
 void deleteSFD_ITEM(int file_id);		//回收SFD子项
 void deleteiNode(int iNode_id);			//回收i结点
-void deleteFile(string fileName);	//删除文件
-//void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
+//void findSinglesfd(int inodeNo);		//遍历删除与待删除文件共享的文件目录
 
-//**************************文件的读写模块*****************************
-int findiNodeByName(string fileName);		//通过文件名，找它的i节点
-int findiNodeById(int std_pointer,string fileName);  //通过iNode_id，找它的i节点
-void tempToDiskBlock(string fileName);		//把temp文件里的内容写到磁盘块中
-string contentBuffer(int iNode_id);		//将索引块指向的磁盘块的内容写入buffer
-vector<int> ReadIndexBlock(string content);	//一级索引读取索引块
-void writeFile(string fileName);     //写指定文件名的文件
-void readFile(string fileName);     //读文件内容函数
-void renameFile(string fileName1, string fileName2);	//文件重命名
-void openFile(string fileName);		//打开文件
+void openFile(string fileName);			//打开文件
 void closeFIle(string fileName);		//关闭文件
-void initMEM_iNode(MEM_BFD_ITEM& m_iNode, int iNode_id);		//磁盘iNode放入内存，初始化内存iNode
+void initMEM_iNode(MEM_BFD_ITEM& m_iNode, int iNode_id);	//磁盘iNode放入内存，初始化内存iNode
 
-//**************************目录的创建与删除模块*****************************
+//************************** 文件的读写模块 *****************************
+int findiNodeByName(string fileName);		//通过文件名，找它的i节点
+int findiNodeByName(int std_pointer,string fileName);  //通过iNode_id，找它的i节点
+
+void writeFile(string fileName);			//写指定文件名的文件
+void readFile(string fileName);				//读文件内容函数
+void renameFile(string fileName1, string fileName2);	//文件重命名
+void tempToDiskBlock(string fileName);		//把temp文件里的内容写到磁盘块中
+string contentBuffer(int iNode_id);			//将索引块指向的磁盘块的内容写入buffer
+vector<int> ReadIndexBlock(string content);	//一级索引读取索引块
+
+//************************** 目录的创建与删除模块 *****************************
 int createDir(string fileName);		//创建一个目录
-void deleteDir(int id);			//级联删除一个目录及其子目录和子文件
-void deleteINodeOne(int useINode);	//删除一个i结点
-void deleteSFD(int iNode_id);//删除一个目录
+void deleteDir(int id);				//级联删除一个目录及其子目录和子文件
+void deleteSFD(int iNode_id);		//删除一整个SFD
 
 //************************** 保存文件系统 *****************************
 void saveFileSystem();	//保存文件系统

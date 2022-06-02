@@ -36,6 +36,7 @@ int createiNode(int type)
 	return iNode_id;
 }
 
+//分配SFD目录项
 void createSFD(int iNode_id, string name) {
 	SFD_ITEM temp;
 	temp.file_name = name;		//文件名输入
@@ -181,11 +182,14 @@ void openFile(string fileName) {		//打开文件
 	m_iNode.prev = m_iNode_pointer;		//双向链表插入prev指针
 
 }
+
 void checkOpen()
 {
 
 }
-void closeFIle(string fileName) {		//关闭文件
+
+//关闭文件
+void closeFIle(string fileName) {		
 	 
 }
 
@@ -207,5 +211,5 @@ void initMEM_iNode(MEM_BFD_ITEM& m_iNode, int iNode_id) {
 	m_iNode.status_mod = 0;//尚未被修改
 	m_iNode.shared_count = 0;//共享次数=0
 
-	m_iNode.next = NULL;		//
+	m_iNode.next = NULL;
 }
