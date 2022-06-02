@@ -30,7 +30,11 @@ void initSuperBlock(){
 	//————————————————————————————————————————
 	fileSystem.superBlock.diskblock_num = DISKBLOCK_NUM;//磁盘块数量
 	cin >> fileSystem.superBlock.free_diskblock_num;	//空闲磁盘块数量
-	fileSystem.superBlock.stack_size = 1;			//初始化栈内空闲块数量
+	fileSystem.superBlock.stack_size = 1;				//初始化栈内空闲块数量
+	fileSystem.superBlock.free_diskblock_id.clear();	//清空id数组
+	while (!fileSystem.superBlock.free_block_stack.empty()) {//清空栈
+		fileSystem.superBlock.free_block_stack.pop();
+	}
 	fileSystem.superBlock.free_block_stack.push(-1);	//最后一个组长块，底层元素为 -1（没有更多空闲资源）
 	for (int i = 0; i < fileSystem.superBlock.free_diskblock_num; i++) {//成组链接
 		int block_id;	//磁盘块号
@@ -59,6 +63,10 @@ void initSuperBlock(){
 //初始化SFD
 void initSFD() {
 
+	for (int i = 0; i < SFD_NUM; i++) {//清空SFD数组
+		fileSystem.SFD[i].sfd_num = 0;
+		fileSystem.SFD[i].sfd_list.clear();
+	}
 	for (int i = 1; i <= 8; i++) {		
 		SFD_ITEM sfd_item;	//单目录
 		sfd_item.file_name = "root" + to_string(i);
@@ -66,24 +74,19 @@ void initSFD() {
 		fileSystem.SFD[0].sfd_list.push_back(sfd_item);   //每个用户的文件目录下生成sfd动态数组
 		fileSystem.SFD[0].sfd_num++;
 	}
-	sfd_pointer = 0;
-	sfd_stack.push_back(sfd_pointer);
+	sfd_stack.push_back(0);
 
 	freopen_s(&stream, "Data\\SFD.txt", "r", stdin);
-	for (int i = 1; i < 512; i++)
-	{
-		if (fileSystem.superBlock.SFD_bitmap[i / SFD_BITMAP_COL][i % SFD_BITMAP_COL] != 0)//在SFD位示图中找到非空SFD_ITEM的块号
-		{
-			int sfd_num=0;
-			cin >> sfd_num; 
-			fileSystem.SFD[i].sfd_num = sfd_num;
-			for (int j = 0; j < fileSystem.SFD[i].sfd_num; j++) {
-				SFD_ITEM sfd_item;
-				cin >> sfd_item.file_name;
-				cin >> sfd_item.file_id;
-				fileSystem.SFD[i].sfd_list.push_back(sfd_item);		//再读取目录块的文件名
-			}
+	int SFD_id;
+	while (cin >> SFD_id) {
+		cin >> fileSystem.SFD[SFD_id].sfd_num;	//SFD子项的数量
+		for (int j = 0; j < fileSystem.SFD[SFD_id].sfd_num; j++) {	//SFD子项的具体信息
+			SFD_ITEM sfd_item;
+			cin >> sfd_item.file_name;
+			cin >> sfd_item.file_id;
+			fileSystem.SFD[SFD_id].sfd_list.push_back(sfd_item);	//再读取目录块的文件名
 		}
+
 	}
 	std::fclose(stdin);//关闭重定向输入
 	freopen_s(&stream, "CON", "r", stdin);//重定向到控制台
@@ -177,15 +180,15 @@ void format()
 
 	file.open("Data\\iNode.txt", ios::out | ios::trunc);	//格式化iNode
 	if (file.is_open()) {//打开文件成功
-		file << "0 1 0  0 0 0 0 0 0 0 0  8 0 2022-5-30,14:30\n";
-		file << "1 1 1  1 0 0 0 0 0 0 0  0 0 2022-5-30,14:31\n";
-		file << "2 1 2  0 1 0 0 0 0 0 0  0 0 2022-5-30,14:32\n";
-		file << "3 1 3  0 0 1 0 0 0 0 0  0 0 2022-5-30,14:33\n";
-		file << "4 1 4  0 0 0 1 0 0 0 0  0 0 2022-5-30,14:34\n";
-		file << "5 1 5  0 0 0 0 1 0 0 0  0 0 2022-5-30,14:35\n";
-		file << "6 1 6  0 0 0 0 0 1 0 0  0 0 2022-5-30,14:36\n";
-		file << "7 1 7  0 0 0 0 0 0 1 0  0 0 2022-5-30,14:37\n";
-		file << "8 1 8  0 0 0 0 0 0 0 1  0 0 2022-5-30,14:38\n";
+		file << "0 1 0  0 0 0 0 0 0 0 0  8 0 2022/5/30,14:21:30\n";
+		file << "1 1 1  1 0 0 0 0 0 0 0  0 0 2022/5/30,14:21:31\n";
+		file << "2 1 2  0 1 0 0 0 0 0 0  0 0 2022/5/30,14:21:32\n";
+		file << "3 1 3  0 0 1 0 0 0 0 0  0 0 2022/5/30,14:21:33\n";
+		file << "4 1 4  0 0 0 1 0 0 0 0  0 0 2022/5/30,14:21:34\n";
+		file << "5 1 5  0 0 0 0 1 0 0 0  0 0 2022/5/30,14:21:35\n";
+		file << "6 1 6  0 0 0 0 0 1 0 0  0 0 2022/5/30,14:21:36\n";
+		file << "7 1 7  0 0 0 0 0 0 1 0  0 0 2022/5/30,14:21:37\n";
+		file << "8 1 8  0 0 0 0 0 0 0 1  0 0 2022/5/30,14:21:38\n";
 
 	}
 	file.close();
@@ -217,8 +220,6 @@ void format()
 		exit(0);
 	}
 	file.close();
-
-
 }
 
 void initMEM_iNode_list() {

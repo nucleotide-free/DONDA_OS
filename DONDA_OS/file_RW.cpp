@@ -43,7 +43,7 @@ void writeFile(string fileName)
     string str = "vim Temp\\" + fileName + ".txt";      //vim 
     system(str.data());     
 
-    tempToDiskBlock(fileName);
+    tempToDiskBlock(fileName);//写回到磁盘块
 }
 
 //把temp文件里的内容写到磁盘块中
@@ -63,7 +63,7 @@ void tempToDiskBlock(string fileName)
     block_num = (content.size() - 1) / BLOCKSIZ + 1;
     for (int i = 0; i < block_num; i++)     //给文件分配磁盘快
     {
-        int block_id=AllocateOneBlock();        //分配的磁盘块号
+        int block_id = AllocateOneBlock();        //分配的磁盘块号
         fileSystem.iNode[findiNodeByName(fileName)].i_addr[i] = block_id;     //通过文件名找到将分配的磁盘块号写入该文件iNode的索引数组
         if (i != block_num - 1) {
             fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ, BLOCKSIZ);        //每个磁盘块的内容都来自于content对应位置的子串
