@@ -167,52 +167,50 @@ void openFile(string fileName)
 {
 	int diNode_id = findiNodeByName(fileName);		//找到磁盘iNode_id
 	if (checkOpen(diNode_id)) {
-		cout << "文件已经被打开" << endl;
-		return;
+		string user_list;
+		int flag=0;
+		for (int j = 0; j < user.file_Uopened.size(); j++) {
+			if (user.file_Uopened[j] == diNode_id) {
+				user_list += "user" + to_string(user.user_id) + " ";
+				cout << "文件已经被" << user_list << "打开" << endl;
+				return;
+			}
+		}
+		for (int i = 0 ;i < 8; i++)
+		{
+			for(int j=0;j< userList[i].file_Uopened.size();j++)
+				if (userList[i].file_Uopened[j] == diNode_id) {
+					user_list += "user" + to_string(userList[i].user_id)+" ";
+			}
+		}
+		cout << "文件已经被"<< user_list << "打开" << endl;
+		
 	}
 	if (fileSystem.iNode[diNode_id].type == 1)
 	{
 		cout << "目录文件不可打开" << endl;
 		return;
 	}
-	MEM_BFD_ITEM m_iNode;
-	initMEM_iNode(m_iNode, diNode_id);		//初始化内存i节点
-	MEM_BFD_ITEM* m_iNode_pointer = (MEM_BFD_ITEM*)malloc(sizeof(MEM_BFD_ITEM) * 1); //内存i节点指针
-	m_iNode_pointer = &mem_iNode[m_iNode.id % NHINO];		//指向要插入的iNode的hash链表中
-
-	while(m_iNode_pointer->next){
-		m_iNode_pointer = m_iNode_pointer->next;		//遍历到链表的最后
-	}
-	m_iNode_pointer->next = &m_iNode;	//插入iNode
-	m_iNode.prev = m_iNode_pointer;		//双向链表插入prev指针
+	MEM_BFD_ITEM m_iNode = initMEM_iNode(diNode_id);	//初始化内存i节点;
+	mem_iNode[m_iNode.id % NHINO]= m_iNode;		//指向要插入的iNode的hash链表中
 
 	updateFileOpened(m_iNode, fileName);//修改用户打开文件表和系统打开文件表
-	free(m_iNode_pointer);
 }
 
 //检查文件是否被打开
 int checkOpen(int iNode_id)		
 {
-	MEM_BFD_ITEM* temp = NULL;
-	MEM_BFD_ITEM* m_iNode_pointer= (MEM_BFD_ITEM*)malloc(sizeof(MEM_BFD_ITEM) * 1); //内存i节点指针
-	temp = m_iNode_pointer;
-	m_iNode_pointer = &mem_iNode[iNode_id % NHINO];		//指向要插入的iNode的hash链表中
-	while (m_iNode_pointer->next)
-	{
-		if (iNode_id == m_iNode_pointer->id)
+		if (iNode_id == mem_iNode[iNode_id % NHINO].id)
 		{
-			free(temp);
 			return 1;
 		}
-		m_iNode_pointer = m_iNode_pointer->next;		//遍历到链表的最后
-	}
-	free(temp);
 	return 0;
 }
 
 
 //初始化内存i节点
-void initMEM_iNode(MEM_BFD_ITEM m_iNode, int iNode_id) {
+MEM_BFD_ITEM  initMEM_iNode(int iNode_id) {
+	MEM_BFD_ITEM m_iNode;
 	m_iNode.id = fileSystem.iNode[iNode_id].id;//i节点的id，即在数组里的id
 	m_iNode.type = 0;		//文件类型 0-普通 1-目录
 	m_iNode.owner = fileSystem.iNode[iNode_id].owner;//文件创立者
@@ -230,14 +228,14 @@ void initMEM_iNode(MEM_BFD_ITEM m_iNode, int iNode_id) {
 	m_iNode.status_mod = 0;//尚未被修改
 	m_iNode.shared_count = 0;//共享次数=0
 
-	m_iNode.next = NULL;
+	return m_iNode;
 }
 
 //修改用户打开文件表和系统打开文件表
 void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName)
 {
-	user.file_Uopened.push_back(m_iNode.id);//用户打开文件表，里面放的是iNode_id
-
+	user.file_Uopened.push_back(m_iNode.id);//当前用户打开文件表，里面放的是iNode_id
+	userList[user.user_id].file_Uopened.push_back(m_iNode.id);//全体用户打开文件表，里面放的是iNode_id
 	FILE_OPEND file_opened;	//系统打开表
 	file_opened.fileName = fileName;//文件名
 	int f_count = 0;//访问次数 = 0

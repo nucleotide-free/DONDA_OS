@@ -108,8 +108,8 @@ struct MEM_BFD_ITEM {
 	int status_mod;			//0--unmod，1--mod
 	int shared_count;		//共享计数
 
-	struct MEM_BFD_ITEM* next;	//双向hash链表节点指针--下一个
-	struct MEM_BFD_ITEM* prev;	//双向hash链表节点指针--上一个
+	//struct MEM_BFD_ITEM* next;	//双向hash链表节点指针--下一个
+	//struct MEM_BFD_ITEM* prev;	//双向hash链表节点指针--上一个
 };
 
 //超级块
@@ -189,7 +189,7 @@ void deleteiNode(int iNode_id);			//回收i结点
 void openFile(string fileName);			//打开文件
 void closeFIle(string fileName);		//关闭文件
 int checkOpen(int iNode_id);			//检查文件是否被打开
-void initMEM_iNode(MEM_BFD_ITEM m_iNode, int iNode_id); 	 //磁盘iNode放入内存，初始化内存iNode
+MEM_BFD_ITEM initMEM_iNode(int iNode_id); 	 //磁盘iNode放入内存，初始化内存iNode
 void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName);//修改用户打开文件表和系统打开文件表
 
 //************************** 文件的读写模块 *****************************
