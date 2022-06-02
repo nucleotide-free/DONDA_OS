@@ -77,7 +77,7 @@ struct SFD {
 struct FILE_OPEND {
 	string fileName;	//文件名字		
 	int f_count;		//访问次数
-	struct MEM_BFD_ITEM* f_inode;		//对应的iNode
+	int f_inode;		//对应的iNode
 };
 
 //磁盘i节点
