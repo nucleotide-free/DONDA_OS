@@ -161,10 +161,14 @@ string getTime() {
 	return  ss.str();
 }
 
-void openFile(string fileName) {		//打开文件
 
+//打开文件
+void openFile(string fileName) {
 
+	  
 }
-void closeFIle() {		//关闭文件
+
+//关闭文件
+void closeFIle() {
 
 }
