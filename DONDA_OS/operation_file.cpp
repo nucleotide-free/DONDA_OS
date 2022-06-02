@@ -181,6 +181,10 @@ void openFile(string fileName) {		//打开文件
 	m_iNode.prev = m_iNode_pointer;		//双向链表插入prev指针
 
 }
+void checkOpen()
+{
+
+}
 void closeFIle(string fileName) {		//关闭文件
 	 
 }
