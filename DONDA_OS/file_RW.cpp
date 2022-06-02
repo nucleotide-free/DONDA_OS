@@ -86,18 +86,52 @@ void tempToDiskBlock(string fileName)
     fileSystem.iNode[findiNodeByName(fileName)].file_len = content.size();      //修改iNode节点中的文件长度
     int block_num;      //文件内容需要申请的磁盘块数量
     block_num = (content.size() - 1) / BLOCKSIZ + 1;
-    for (int i = 0; i < block_num; i++)     //给文件分配磁盘快
-    {
-        int block_id = AllocateOneBlock();        //分配的磁盘块号
-        fileSystem.iNode[findiNodeByName(fileName)].i_addr[i] = block_id;     //通过文件名找到将分配的磁盘块号写入该文件iNode的索引数组
-        if (i != block_num - 1) {
-            fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ, BLOCKSIZ);        //每个磁盘块的内容都来自于content对应位置的子串
-            fileSystem.diskBlock[block_id].content_len = BLOCKSIZ;        //每个磁盘块的内容大小都512，因为已经写满了
+    if (block_num < 10) {
+        for (int i = 0; i < block_num; i++)     //给文件分配磁盘快
+        {
+            int block_id = AllocateOneBlock();        //分配的磁盘块号
+            fileSystem.iNode[findiNodeByName(fileName)].i_addr[i] = block_id;     //通过文件名找到将分配的磁盘块号写入该文件iNode的索引数组
+            if (i != block_num - 1) {
+                fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ, BLOCKSIZ);        //每个磁盘块的内容都来自于content对应位置的子串
+                fileSystem.diskBlock[block_id].content_len = BLOCKSIZ;        //每个磁盘块的内容大小都512，因为已经写满了
+            }
+            else {
+                fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ);      //最后一个磁盘块的内容都来自于content对应位置的子串
+                fileSystem.diskBlock[block_id].content_len = content.length() - (i * BLOCKSIZ);      //最后一个磁盘块的内容大小不是512
+            }
         }
-        else {
-            fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ);      //最后一个磁盘块的内容都来自于content对应位置的子串
-            fileSystem.diskBlock[block_id].content_len = content.length()-(i * BLOCKSIZ);      //最后一个磁盘块的内容大小不是512
+    }
+    else if(block_num<138&&block_num>=10){
+        for (int i = 0; i < 10; i++)     //给文件分配磁盘快
+        {
+            int block_id = AllocateOneBlock();        //分配的磁盘块号
+            fileSystem.iNode[findiNodeByName(fileName)].i_addr[i] = block_id;     //通过文件名找到将分配的磁盘块号写入该文件iNode的索引数组
+            if (i != block_num - 1) {
+                fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ, BLOCKSIZ);        //每个磁盘块的内容都来自于content对应位置的子串
+                fileSystem.diskBlock[block_id].content_len = BLOCKSIZ;        //每个磁盘块的内容大小都512，因为已经写满了
+            }
+            else {
+                fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ);      //最后一个磁盘块的内容都来自于content对应位置的子串
+                fileSystem.diskBlock[block_id].content_len = content.length() - (i * BLOCKSIZ);      //最后一个磁盘块的内容大小不是512
+            }
         }
+        //一级索引块初始化
+        int index_block1= AllocateOneBlock();
+        for (int i = 0; i < block_num-10; i++)     //给文件分配磁盘快
+        {
+            int block_id = AllocateOneBlock();        //分配的磁盘块号
+            fileSystem.diskBlock[index_block1].content+= to_string(block_id)+" ";     //通过文件名找到将分配的磁盘块号写入该文件iNode的索引数组
+            fileSystem.diskBlock[index_block1].content_len++;
+            if (i != block_num - 11) {
+                fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ, BLOCKSIZ);        //每个磁盘块的内容都来自于content对应位置的子串
+                fileSystem.diskBlock[block_id].content_len = BLOCKSIZ;        //每个磁盘块的内容大小都512，因为已经写满了
+            }
+            else {
+                fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ);      //最后一个磁盘块的内容都来自于content对应位置的子串
+                fileSystem.diskBlock[block_id].content_len = content.length() - (i * BLOCKSIZ);      //最后一个磁盘块的内容大小不是512
+            }
+        }
+        fileSystem.iNode[findiNodeByName(fileName)].i_addr[10] = index_block1;
     }
 }
 
@@ -144,13 +178,21 @@ vector<int> ReadIndexBlock(string content) {
 
 string contentBuffer(int iNode_id) {
     string buffer;
-    for (int i = 0; i <= (fileSystem.iNode[iNode_id].file_len - 1) / BLOCKSIZ; i++) {       //读iNode的索引数组的直接索引
-        int block_addr = fileSystem.iNode[iNode_id].i_addr[i];      //索引数组取出来的地址，即存放文件的磁盘块号
-        buffer += fileSystem.diskBlock[block_addr].content;     //向buffer中不断加入磁盘块的内容
+    int block_num;      //文件内容需要申请的磁盘块数量
+    block_num = (fileSystem.iNode[iNode_id].file_len - 1) / BLOCKSIZ + 1;
+    if (block_num < 10) {
+        for (int i = 0; i < block_num; i++) {       //读iNode的索引数组的直接索引
+            int block_addr = fileSystem.iNode[iNode_id].i_addr[i];      //索引数组取出来的地址，即存放文件的磁盘块号
+            buffer += fileSystem.diskBlock[block_addr].content;     //向buffer中不断加入磁盘块的内容
+        }
     }
 
     //一级索引
-    if (fileSystem.iNode[iNode_id].file_len > BLOCKSIZ * 10) {
+    if (block_num>=10) {
+        for (int i = 0; i < 10; i++) {       //读iNode的索引数组的直接索引
+            int block_addr = fileSystem.iNode[iNode_id].i_addr[i];      //索引数组取出来的地址，即存放文件的磁盘块号
+            buffer += fileSystem.diskBlock[block_addr].content;     //向buffer中不断加入磁盘块的内容
+        }
         int block_addr = fileSystem.iNode[iNode_id].i_addr[10];
         vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[block_addr].content);       //读取一级索引中的磁盘块块号
         for (int i = 0; i < index_block_level1.size(); i++) {
@@ -158,27 +200,31 @@ string contentBuffer(int iNode_id) {
         }
 
     }
-    //二级索引
-    if (fileSystem.iNode[iNode_id].file_len > BLOCKSIZ * BLOCKSIZ / 4 + 10 * BLOCKSIZ) {
-        int block_addr = fileSystem.iNode[iNode_id].i_addr[11];
-        vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[block_addr].content);       //读取二级索引中的索引块号
-        for (int i = 0; i < index_block_level1.size(); i++) {
-            vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[index_block_level1[i]].content);       //读取二级索引中的一级索引中的磁盘块块号
-            for (int j = 0; j < index_block_level2.size(); j++) {
-                buffer += fileSystem.diskBlock[index_block_level2[j]].content;     //向buffer中不断加入索引块指向的磁盘块的内容
+    if (block_num > 138) {
+        //二级索引
+        if (fileSystem.iNode[iNode_id].file_len > BLOCKSIZ * BLOCKSIZ / 4 + 10 * BLOCKSIZ) {
+            int block_addr = fileSystem.iNode[iNode_id].i_addr[11];
+            vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[block_addr].content);       //读取二级索引中的索引块号
+            for (int i = 0; i < index_block_level1.size(); i++) {
+                vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[index_block_level1[i]].content);       //读取二级索引中的一级索引中的磁盘块块号
+                for (int j = 0; j < index_block_level2.size(); j++) {
+                    buffer += fileSystem.diskBlock[index_block_level2[j]].content;     //向buffer中不断加入索引块指向的磁盘块的内容
+                }
             }
         }
     }
-    //三级索引
-    if (fileSystem.iNode[iNode_id].file_len > BLOCKSIZ * BLOCKSIZ * BLOCKSIZ / 16 + BLOCKSIZ * BLOCKSIZ / 4 + 10 * BLOCKSIZ) {
-        int block_addr = fileSystem.iNode[iNode_id].i_addr[12];
-        vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[block_addr].content);       //读取二级索引中的索引块号
-        for (int i = 0; i < index_block_level1.size(); i++) {
-            vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[index_block_level1[i]].content);       //读取二级索引中的一级索引中的磁盘块块号
-            for (int j = 0; j < index_block_level2.size(); j++) {
-                vector<int> index_block_level3 = ReadIndexBlock(fileSystem.diskBlock[index_block_level2[j]].content);       //读取三级索引中的二级索引中的一级索引中的磁盘块块号
-                for (int k = 0; k < index_block_level3.size(); k++) {
-                    buffer += fileSystem.diskBlock[index_block_level3[k]].content;     //向buffer中不断加入索引块指向的磁盘块的内容
+    if (block_num > 1380) {
+        //三级索引
+        if (fileSystem.iNode[iNode_id].file_len > BLOCKSIZ * BLOCKSIZ * BLOCKSIZ / 16 + BLOCKSIZ * BLOCKSIZ / 4 + 10 * BLOCKSIZ) {
+            int block_addr = fileSystem.iNode[iNode_id].i_addr[12];
+            vector<int> index_block_level1 = ReadIndexBlock(fileSystem.diskBlock[block_addr].content);       //读取二级索引中的索引块号
+            for (int i = 0; i < index_block_level1.size(); i++) {
+                vector<int> index_block_level2 = ReadIndexBlock(fileSystem.diskBlock[index_block_level1[i]].content);       //读取二级索引中的一级索引中的磁盘块块号
+                for (int j = 0; j < index_block_level2.size(); j++) {
+                    vector<int> index_block_level3 = ReadIndexBlock(fileSystem.diskBlock[index_block_level2[j]].content);       //读取三级索引中的二级索引中的一级索引中的磁盘块块号
+                    for (int k = 0; k < index_block_level3.size(); k++) {
+                        buffer += fileSystem.diskBlock[index_block_level3[k]].content;     //向buffer中不断加入索引块指向的磁盘块的内容
+                    }
                 }
             }
         }

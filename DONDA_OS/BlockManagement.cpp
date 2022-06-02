@@ -6,13 +6,13 @@ int AllocateOneBlock() {
 	if (fileSystem.superBlock.stack_size == 1)
 	{
 		if (fileSystem.superBlock.free_block_stack.top() == -1) {
-			//cout << "分配失败,进程等待" << endl;
+			cout << "分配失败,进程等待" << endl;
 			return -1;
 		}
 		else {
 			free_block = ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
-			fileSystem.superBlock.free_block_stack.pop();
-			fileSystem.superBlock.free_diskblock_num--;		//空闲块数量--
+			//fileSystem.superBlock.free_block_stack.pop();
+			//fileSystem.superBlock.free_diskblock_num--;		//空闲块数量--
 			int index = 0;
 			for (int i = 0; i < fileSystem.superBlock.free_diskblock_id.size(); i++) {
 				if (free_block == fileSystem.superBlock.free_diskblock_id[i]) {
@@ -28,6 +28,7 @@ int AllocateOneBlock() {
 	else {
 		free_block = fileSystem.superBlock.free_block_stack.top();//取出栈顶元素
 		fileSystem.superBlock.free_block_stack.pop();	//弹栈
+		fileSystem.superBlock.stack_size--;
 		fileSystem.superBlock.free_diskblock_num--;		//空闲块数量--
 
 		int index=0;//修改空闲磁盘块的vector数组
@@ -46,18 +47,27 @@ int AllocateOneBlock() {
 int ReadABlock(stack<int> free_block_stack,int block_num) {		//读组长块中的内容
 	int temp=0;
 	fileSystem.superBlock.free_block_stack.pop();
-	for (int i = 0; i < fileSystem.diskBlock[block_num].content.size(); i++) {
-		if (fileSystem.diskBlock[block_num].content[i]!=' ')
-		{
-			temp *= 10;
-			temp = fileSystem.diskBlock[block_num].content[i] - '0';
-		}
-		else {
-			fileSystem.superBlock.free_block_stack.push(temp);
-			temp = 0;
-		}
+	stringstream st;//字符串流
+	st << fileSystem.diskBlock[block_num].content;
+	while (st >> temp)
+	{
+		fileSystem.superBlock.free_block_stack.push(temp);
+		fileSystem.superBlock.stack_size++;
 	}
-	return temp;
+
+	//for (int i = 0; i < fileSystem.diskBlock[block_num].content.size(); i++) {
+	//	stringstream st;//字符串流
+	//	if (fileSystem.diskBlock[block_num].content[i]!=' ')
+	//	{
+	//		temp *= 10;
+	//		temp = fileSystem.diskBlock[block_num].content[i] - '0';
+	//	}
+	//	else {
+	//		fileSystem.superBlock.free_block_stack.push(temp);
+	//		temp = 0;
+	//	}
+	//}
+	return block_num;
 }
 
 //成组链接--回收空闲块

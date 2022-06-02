@@ -47,6 +47,7 @@ void display() {
 	system("cls");
 	commandCategory();//输入提示信息（目录help）
 	string file_list;		//用于记录用户所打开的文件或目录的列表，组成链条，显示到输入前
+	string path;		//find显示文件路径
 	int command_type = -1;//指令类型
 	string instruction, fileName1, fileName2;//输入的 指令、文件名1、文件名2
 	while (1)
@@ -66,7 +67,9 @@ void display() {
 			createLink(fileName1);
 		}
 		else if (instruction == "find") {//查找
-
+			path.clear();
+			cout << "文件名" << "\t\t" << "文件路径"  << "\t\t" << "文件大小" << endl;
+			find(fileName1, path,0);
 		}
 		else if (instruction == "cut") {//剪切
 			if (checkValid(fileName1))continue;//文件失效

@@ -210,6 +210,7 @@ void tempToDiskBlock(string fileName);		//把temp文件里的内容写到磁盘块中
 string contentBuffer(int iNode_id);			//将索引块指向的磁盘块的内容写入buffer
 vector<int> ReadIndexBlock(string content);	//一级索引读取索引块
 void renameFile(string fileName1, string fileName2);	//文件重命名
+void find(string fileName1, string file_list,int temp);		//查找文件路径
 
 //************************** 目录的创建与删除模块 *****************************
 int createDir(string fileName);		//创建一个目录

@@ -292,3 +292,21 @@ void showSystemFileOpen()
 	cout << "└───────────────────────────────────────┘\n\n";
 	
 }
+void find(string fileName1,string file_list,int temp)
+{
+	for (int i = 0; i < fileSystem.SFD[temp].sfd_list.size(); ++i) {	//查找
+		if (fileSystem.SFD[temp].sfd_list[i].file_name == fileName1) {
+			cout << fileName1 << "\t\t" << file_list << "\\" << fileName1 <<"\t\t" << fileSystem.iNode[fileSystem.SFD[temp].sfd_list[i].file_id].file_len << endl;
+			break;
+		}
+	}
+	for (int i = 0; i < fileSystem.SFD[temp].sfd_list.size(); ++i) {	//往下一层接着查找
+		if (fileSystem.SFD[temp].sfd_list[i].file_id != 0) {	//如果有对应的i节点
+			int temp_pointer = temp;
+			temp = fileSystem.SFD[temp].sfd_list[i].file_id;
+			find(fileName1, file_list + "\\" + fileSystem.SFD[temp_pointer].sfd_list[i].file_name, temp);
+			temp = temp_pointer;
+		}
+	}
+
+}
