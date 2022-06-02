@@ -99,8 +99,6 @@ void tempToDiskBlock(string fileName)
             fileSystem.diskBlock[block_id].content_len = content.length()-(i * BLOCKSIZ);      //最后一个磁盘块的内容大小不是512
         }
     }
-
-
 }
 
 //读指定文件名的文件
@@ -193,7 +191,7 @@ void renameFile(string fileName1, string fileName2)
 {
     for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {//检查文件是否重名
         if (fileName2 == fileSystem.SFD[sfd_pointer].sfd_list[i].file_name) {
-            cout << "错误！文件名" + fileName2 + "已存在！";
+            cout << "错误！文件名" + fileName2 + "已存在！\n ";
             return;//文件名冲突
         }
     }

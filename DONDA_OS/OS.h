@@ -2,7 +2,6 @@
 #ifndef OS_H
 #define OS_H
 
-
 #define D_INODE_NUM  128	//´ÅÅÌi½Úµã£¬¹²Õ¼128¸öÎïÀí¿é
 #define INODE_BITMAP_ROW 8	//i½áµãÎ»Ê¾Í¼µÄĞĞÊı 8
 #define INODE_BITMAP_COL 16	//i½áµãÎ»Ê¾Í¼µÄÁĞÊı 16
@@ -141,6 +140,8 @@ struct FILE_SYSTEM {
 
 extern FILE_SYSTEM fileSystem;	//²Ù×÷´ÅÅÌÎÄ¼ş¾íµÄÈ«¾Ö±äÁ¿
 extern FILE* stream;
+extern string ClipBoard;		//¼ôÇĞ°å
+extern string clip_fileName;	//¼ôÇĞ°åÖĞÎÄ¼şµÄÃû×Ö
 extern int sfd_pointer;			//sfdÖ¸Õë--Ö¸Ïòµ±Ç°µÄsfdÄ¿Â¼
 extern USER user;				//µ±Ç°ÓÃ»§
 extern USER userList[9];		//ËùÓĞÓÃ»§
@@ -194,6 +195,7 @@ void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName);//ĞŞ¸ÄÓÃ»§´ò¿ªÎÄ¼ş±
 int checkUserOpen(int iNode_id);		//¼ì²éÎÄ¼şÊÇ·ñ±»Ä³¸öÓÃ»§´ò¿ª
 
 void showSystemFileOpen();
+
 //************************** ÎÄ¼şµÄ¶ÁĞ´Ä£¿é *****************************
 int findiNodeByName(string fileName);		//Í¨¹ıÎÄ¼şÃû£¬ÕÒËüµÄi½Úµã
 int findiNodeByName(int std_pointer,string fileName);  //Í¨¹ıiNode_id£¬ÕÒËüµÄi½Úµã
@@ -210,6 +212,10 @@ int createDir(string fileName);		//´´½¨Ò»¸öÄ¿Â¼
 void deleteDir(int id);				//¼¶ÁªÉ¾³ıÒ»¸öÄ¿Â¼¼°Æä×ÓÄ¿Â¼ºÍ×ÓÎÄ¼ş
 void deleteSFD(int iNode_id);		//É¾³ıÒ»Õû¸öSFD
 
+//************************** ¼ôÇĞ°å ********************************
+void cut(string fileName);		//¼ôÇĞÎÄ¼ş
+int copy(string fileName);		//¸´ÖÆÎÄ¼ş
+void paste();					//Õ³ÌùÎÄ¼ş
 //************************** ±£´æÎÄ¼şÏµÍ³ *****************************
 void saveFileSystem();	//±£´æÎÄ¼şÏµÍ³
 void saveUser();		//±£´æÓÃ»§ĞÅÏ¢

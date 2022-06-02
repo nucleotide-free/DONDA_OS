@@ -167,7 +167,7 @@ void openFile(string fileName)
 {
 	int diNode_id = findiNodeByName(fileName);		//找到磁盘iNode_id
 	if (fileSystem.iNode[diNode_id].type == 1){
-		cout << "目录文件不可打开" << endl;
+		cout << "目录文件不可打开！" << endl;
 		return;
 	}
 	MEM_BFD_ITEM m_iNode = initMEM_iNode(diNode_id);	//初始化内存i节点;
