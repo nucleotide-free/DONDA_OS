@@ -79,7 +79,7 @@ void display() {
 		else if (instruction == "paste") {//粘贴
 			paste();
 		}
-		else if (instruction == "paste") {//粘贴链接
+		else if (instruction == "lpaste") {//粘贴链接
 			pasteLink();
 		}
 		//*********************************目录操作 ********************************* 
@@ -194,8 +194,8 @@ void display() {
 				cout << "文件不存在！\n";
 				continue;
 			}
-			deleteLink(fileName1);//删除链接文件（含判断）
-			deleteFile(fileName1);
+			if(deleteLink(fileName1))//删除链接文件（含判断）
+				deleteFile(fileName1);
 			cout << "删除成功！\n";
 		}
 		else if (instruction == "open") {//打开文件
