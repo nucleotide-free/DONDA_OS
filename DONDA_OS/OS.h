@@ -77,7 +77,7 @@ struct SFD {
 struct FILE_OPEND {
 	string fileName;	//文件名字		
 	int f_count;		//访问次数
-	struct MEM_BFD_ITEM* f_inode;		//对应的iNode
+	int f_inode;		//对应的iNode
 };
 
 //磁盘i节点
@@ -104,7 +104,7 @@ struct MEM_BFD_ITEM {
 	int i_addr[ADDR_NUM];		//索引数组（物理地址--磁盘块号）
 
 	int index_num;			//索引节点编号--hash链表节点号
-	int status_lock;		//0--unlocked，1--locked
+	int status_lock;		//0--unlocked，1--写locked ,2--读locked
 	int status_mod;			//0--unmod，1--mod
 	int shared_count;		//共享计数
 

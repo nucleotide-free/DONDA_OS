@@ -158,7 +158,7 @@ string getTime() {
 	std::stringstream ss;
 	ss << now_time.tm_year + 1900 << "/" << now_time.tm_mon + 1 << "/"
 		<< now_time.tm_mday << "," << now_time.tm_hour << ":"
-		<< now_time.tm_min ;
+		<< now_time.tm_min << ":" << now_time.tm_sec;
 	return  ss.str();
 }
 
@@ -166,26 +166,7 @@ string getTime() {
 void openFile(string fileName) 
 {
 	int diNode_id = findiNodeByName(fileName);		//找到磁盘iNode_id
-	if (checkOpen(diNode_id)) {
-		string user_list;
-		int flag=0;
-		for (int j = 0; j < user.file_Uopened.size(); j++) {
-			if (user.file_Uopened[j] == diNode_id) {
-				user_list += "user" + to_string(user.user_id) + " ";
-				cout << "文件已经被" << user_list << "打开" << endl;
-				return;
-			}
-		}
-		for (int i = 0 ;i < 8; i++)
-		{
-			for(int j=0;j< userList[i].file_Uopened.size();j++)
-				if (userList[i].file_Uopened[j] == diNode_id) {
-					user_list += "user" + to_string(userList[i].user_id)+" ";
-			}
-		}
-		cout << "文件已经被"<< user_list << "打开" << endl;
-		
-	}
+
 	if (fileSystem.iNode[diNode_id].type == 1)
 	{
 		cout << "目录文件不可打开" << endl;
@@ -239,7 +220,7 @@ void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName)
 	FILE_OPEND file_opened;	//系统打开表
 	file_opened.fileName = fileName;//文件名
 	int f_count = 0;//访问次数 = 0
-	file_opened.f_inode = &m_iNode;//储存内存i节点的地址
+	file_opened.f_inode = m_iNode.id;//储存内存i节点的地址
 	file_opend_list.push_back(file_opened);
 }
 

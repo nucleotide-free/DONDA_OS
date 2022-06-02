@@ -32,6 +32,7 @@ void login() {
 	while (1) {
 		user.user_id = 0;//用户初始化
 		user.password = "";
+		user.file_Uopened.clear();
 		cout << "\n\t\t请登录文件系统：";
 		cin >> user.user_name;	//输入用户名
 		if (user.user_name == ":wq") {//退出系统

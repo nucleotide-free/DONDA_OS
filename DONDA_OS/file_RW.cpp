@@ -25,6 +25,30 @@ void writeFile(string fileName)
 {
     string buffer;      //用于存放读出来的内容
     int iNode_id = findiNodeByName(fileName);
+    if (!checkOpen(iNode_id))
+    {
+        cout << "文件未打开！\n";
+        return;
+    }
+ 
+    for (int i = 1; i < 9; i++)
+    {
+        for (int j = 0; j < userList[i].file_Uopened.size(); j++)
+        {
+            if (userList[i].file_Uopened[j] == iNode_id && i!=user.user_id) {
+                cout << "文件正在被其他用户占用！\n";
+                return;
+            }
+        }
+    }
+  
+    if (mem_iNode[iNode_id].status_lock == 0)
+    {
+        mem_iNode[iNode_id].status_lock = 1;
+    }
+    else {
+        cout << "文件正在被占用！！" << endl;
+    }
     if (iNode_id == -1) {
         cout << "文件不存在！\n";
         return;
@@ -43,7 +67,8 @@ void writeFile(string fileName)
     string str = "vim Temp\\" + fileName + ".txt";      //vim 
     system(str.data());     
 
-    tempToDiskBlock(fileName);
+    tempToDiskBlock(fileName);//写回到磁盘块
+    mem_iNode[iNode_id].status_lock = 0;
 }
 
 //把temp文件里的内容写到磁盘块中
@@ -63,7 +88,7 @@ void tempToDiskBlock(string fileName)
     block_num = (content.size() - 1) / BLOCKSIZ + 1;
     for (int i = 0; i < block_num; i++)     //给文件分配磁盘快
     {
-        int block_id=AllocateOneBlock();        //分配的磁盘块号
+        int block_id = AllocateOneBlock();        //分配的磁盘块号
         fileSystem.iNode[findiNodeByName(fileName)].i_addr[i] = block_id;     //通过文件名找到将分配的磁盘块号写入该文件iNode的索引数组
         if (i != block_num - 1) {
             fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ, BLOCKSIZ);        //每个磁盘块的内容都来自于content对应位置的子串
@@ -83,6 +108,13 @@ void readFile(string fileName)
 {
     string buffer;      //用于存放读出来的内容
     int iNode_id = findiNodeByName(fileName);
+    if (mem_iNode[iNode_id].status_lock != 1)
+    {
+        mem_iNode[iNode_id].status_lock = 2;
+    }
+    else {
+        cout << "文件正在被占用！！" << endl;
+    }
     if (iNode_id == -1) {
         cout << "文件不存在！\n";
         return;
@@ -97,6 +129,7 @@ void readFile(string fileName)
     tempFile.close();
     string str = "vim -M Temp\\" + fileName + ".txt";      //vim - M file :以只读的方式打开文件，不可以强制保存
     system(str.data());
+    mem_iNode[iNode_id].status_lock = 0;
 }
 
 //一级索引读取索引块

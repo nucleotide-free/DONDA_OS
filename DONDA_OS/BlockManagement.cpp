@@ -10,11 +10,14 @@ int AllocateOneBlock() {
 			return -1;
 		}
 		else {
-			free_block= ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
+			free_block = ReadABlock(fileSystem.superBlock.free_block_stack, fileSystem.superBlock.free_block_stack.top());
+			fileSystem.superBlock.free_block_stack.pop();
+			fileSystem.superBlock.free_diskblock_num--;		//空闲块数量--
 			int index = 0;
 			for (int i = 0; i < fileSystem.superBlock.free_diskblock_id.size(); i++) {
 				if (free_block == fileSystem.superBlock.free_diskblock_id[i]) {
 					index = i;
+					break;
 				}
 			}
 			fileSystem.superBlock.free_diskblock_id.erase(fileSystem.superBlock.free_diskblock_id.begin() + index);//删除该元素		fileSystem.superBlock.free_block_stack.pop();
@@ -23,13 +26,15 @@ int AllocateOneBlock() {
 		}
 	}
 	else {
-		free_block=fileSystem.superBlock.free_block_stack.top();
+		free_block = fileSystem.superBlock.free_block_stack.top();//取出栈顶元素
+		fileSystem.superBlock.free_block_stack.pop();	//弹栈
 		fileSystem.superBlock.free_diskblock_num--;		//空闲块数量--
 
-		int index=0;
+		int index=0;//修改空闲磁盘块的vector数组
 		for (int i = 0; i < fileSystem.superBlock.free_diskblock_id.size(); i++) {
 			if (free_block== fileSystem.superBlock.free_diskblock_id[i]) {
 				index = i;
+				break;
 			}
 		}
 		fileSystem.superBlock.free_diskblock_id.erase(fileSystem.superBlock.free_diskblock_id.begin() + index);//删除该元素		fileSystem.superBlock.free_block_stack.pop();
