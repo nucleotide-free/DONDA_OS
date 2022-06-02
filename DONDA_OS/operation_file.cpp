@@ -160,3 +160,11 @@ string getTime() {
 		<< now_time.tm_min ;
 	return  ss.str();
 }
+
+void openFile(string fileName) {		//打开文件
+
+
+}
+void closeFIle() {		//关闭文件
+
+}
