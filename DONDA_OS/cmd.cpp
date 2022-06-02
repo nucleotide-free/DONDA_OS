@@ -79,7 +79,7 @@ void display() {
 		else if (instruction == "paste") {//Õ³Ìù
 			paste();
 		}
-		else if (instruction == "paste") {//Õ³ÌùÁ´½Ó
+		else if (instruction == "l  paste") {//Õ³ÌùÁ´½Ó
 			pasteLink();
 		}
 		//*********************************Ä¿Â¼²Ù×÷ ********************************* 
