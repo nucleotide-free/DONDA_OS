@@ -22,18 +22,22 @@ char* getpassword(char* pasw)
 	return pasw;
 }
 
+
+
 void login() {    
 	system("cls");
 	textColor(11);
 	cout << "\t\t-------------------------------------------------------------------------------" << endl;
-	cout << "\t\t-----------               欢迎使用 DONDA_OS 文件系统                -----------" << endl;
+	cout << "\t\t-----------               \x1B[38;2;108;141;183m欢迎使用 DONDA_OS 文件系统                -----------" << endl;
 	cout << "\t\t-------------------------------------------------------------------------------" << endl;
 
 	while (1) {
 		user.user_id = 0;//用户初始化
 		user.password = "";
 		user.file_Uopened.clear();
+		textColor(11);
 		cout << "\n\t\t请登录文件系统：";
+		textColor(7);
 		cin >> user.user_name;	//输入用户名
 		if (user.user_name == ":wq") {//退出系统
 			return;
@@ -45,19 +49,20 @@ void login() {
 			}
 		}
 		if (user.user_id == 0) {
-			cout << "该用户不存在！";
+			textColor(4);
+			cout << "\n\t\t该用户不存在！\n";
 			continue;
 		}
-
+		textColor(11);
 		cout << "\n\t\t请输入密码：";
+		textColor(7);
 		char temp[30];
 		char* temp1 = temp;
-
 		string psw = getpassword(temp1);
+		textColor(4);
 		if (psw != user.password) 
 			cout << "\n\t\t密码错误！\n";
-		else {
-			cout << "\t\t登录成功！\n";
+		else {	//登录成功
 			getchar();//吸收回车
 			user.file_Uopened = userList[user.user_id].file_Uopened;//更新用户打开文件表
 			link_board.file_id = -1;//链接板清空

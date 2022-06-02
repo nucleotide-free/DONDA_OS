@@ -7,7 +7,7 @@ vector<string> command_2 = { "rename" };
 //显示命令目录
 void commandCategory()
 {
-	textColor(15);
+	textColor(7);
 	cout << "\nCOMMANDS:" << endl;
 	cout << "\t文件操作" << endl;
 	cout << "\t\t更名:\trename  [old name]  [new name]" << endl;
@@ -42,6 +42,19 @@ void commandCategory()
 	cout << "\t\t显示密码:\tshowpassword" << endl;
 };
 
+bool EnableVTMode(void) {
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD dwMode = 0;
+	if (!GetConsoleMode(hOut, &dwMode))
+		return false;
+	dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+	if (!SetConsoleMode(hOut, dwMode))
+		return false;
+	return true;
+}
+void SetPrintColor(unsigned char r, unsigned char g, unsigned char b,const char* s) {//必须在vt激活后才可用
+	printf("\x1B[38;2;%u;%u;%um%s", r, g, b,s);
+}
 //界面主函数，用来实现大部分输入输出功能
 void display() {
 	system("cls");
@@ -52,8 +65,12 @@ void display() {
 	while (1)
 	{
 		while (1) {
-			cout << user.user_name << "@DONDA_OS:";
-			cout << file_list << "$ ";
+			SetPrintColor(122, 193, 47, (user.user_name + "@DONDA_OS").data());
+			string c = ":"; 
+			SetPrintColor(243, 243, 243, c.data());
+			SetPrintColor(106, 141, 183, file_list.data());
+			c = "$ ";
+			SetPrintColor(255, 255, 255, c.data());
 			if (input_command(instruction, fileName1, fileName2) != -1)//指令有效
 				break;
 		}
@@ -85,27 +102,27 @@ void display() {
 		//*********************************目录操作 ********************************* 
 		else if (instruction == "mkdir") {//创建目录
 			if (fileSystem.iNode[sfd_pointer].auth[user.user_id] == 0) {
-				cout << "创建失败！该用户权限不足！\n";
+				textColor(4);
+				cout << "错误：创建失败，user"<<user.user_id<<"权限不足！\n";
 				continue;
 			}
 			int tips = createDir(fileName1);//返回创建情况的提示信息
 			if (tips == 1)
-				cout << "i节点或目录空间不足，创建失败！\n";
+				cout << "错误：i节点或目录空间不足，创建失败！\n";
 			else if (tips == 2)
-				cout << "目录名冲突！\n";
+				cout << "错误：目录名冲突！\n";
 			else if (tips == 3)
-				cout << "内存空间不足，分配i节点失败！\n";
-			else
+				cout << "错误：内存空间不足，分配i节点失败！\n";
+			else {
 				cout << "创建成功！\n";
-			//进入到改目录下
-
+			}
 		}
 		else if (instruction == "ls") {//显示目录
 			if (fileSystem.SFD[sfd_pointer].sfd_num==0) {
 				cout << "无内容" << endl;
 				continue;
 			}
-			cout << "名称\t\t修改日期\t\t类型\t大小\n";
+			textColor(7);cout << "名称\t\t修改日期\t\t类型\t大小\n";
 			for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {		//扫描当前sfd列表中对的sfd_item的filename并显示出来
 				cout << fileSystem.SFD[sfd_pointer].sfd_list[i].file_name+"\t\t";//文件名
 				int file_id = fileSystem.SFD[sfd_pointer].sfd_list[i].file_id;	//文件id(指向iNode)
@@ -157,7 +174,6 @@ void display() {
 			file_list.erase(file_list.find_last_of("\\"), file_list.length());		//文件显示字符串清空
 		}
 		else if (instruction == "deld") {//删除目录
-			
 			deleteDir(findiNodeByName(fileName1));
 		}
 		//********************************* 文件读写 ********************************
@@ -243,13 +259,16 @@ void display() {
 			login();
 		}
 		else if (instruction == "bitmap") {//位示图
-			cout << "\t[ i节点位示图 ]\n" << endl;
+			cout << "\n\t[ i节点位示图 ]\n" << endl;
+			cout << "┌─────────────────────────────────┐\n";
 			for (int i = 0; i < INODE_BITMAP_ROW; i++) {
+				cout << "│ ";
 				for (int j = 0; j < INODE_BITMAP_COL; j++) 
 					cout << fileSystem.superBlock.iNode_bitmap[i][j] << " ";
-				cout << endl;
+				cout << "│\n";
 			}
-			cout << "\n\t[ SFD位示图 ]\n" << endl;
+			cout << "└─────────────────────────────────┘\n";
+			cout << "\n\t\t[ SFD位示图 ]\n" << endl;
 			for (int i = 0; i < SFD_BITMAP_ROW; i++) {
 				for (int j = 0; j < SFD_BITMAP_COL; j++)
 					cout << fileSystem.superBlock.SFD_bitmap[i][j] << " ";
@@ -268,7 +287,7 @@ void display() {
 		else if (instruction == "help") {//显示帮助
 			commandCategory();
 		}
-		else if (instruction == "ushow") {//显示帮助
+		else if (instruction == "ushow") {//显示用户文件打开表
 			for (int i = 1; i < 9; i++){
 				cout << userList[i].user_name << ":\n";
 				for (int j = 0; j < userList[i].file_Uopened.size(); j++){
@@ -281,7 +300,7 @@ void display() {
 				cout << "\n";
 			}
 		}
-		else if (instruction == "fshow") {//显示帮助
+		else if (instruction == "fshow") {//显示系统文件打开表
 			showSystemFileOpen();
 		}
 		else if (instruction == "changepass") {//修改密码
