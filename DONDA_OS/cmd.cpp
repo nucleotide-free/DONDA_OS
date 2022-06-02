@@ -1,6 +1,6 @@
 #include "OS.h"
 
-vector<string> command_0 = { "paste", "ls", "cd/", "cd..", "cls", "format", "logout", "bitmap", "exit", "help", "changepass", "showpassword" };
+vector<string> command_0 = { "paste", "ls", "cd/", "cd..", "cls", "format", "logout", "bitmap", "exit", "help", "ushow","changepass", "showpassword"};
 vector<string> command_1 = { "link","find","cut","copy","mkdir","cd","deld","create","delf","write","read","open","close"};
 vector<string> command_2 = { "rename" };
 
@@ -37,6 +37,7 @@ void commandCategory()
 	cout << "\t\t位示图:\t\tbitmap" << endl;
 	cout << "\t\t关闭系统:\texit" << endl;
 	cout << "\t\t显示帮助:\thelp" << endl;
+	cout << "\t\t显示用户文件打开表:\tushow" << endl;
 	cout << "\t\t修改密码:\tchangepass" << endl;
 	cout << "\t\t显示密码:\tshowpassword" << endl;
 };
@@ -235,6 +236,21 @@ void display() {
 		}
 		else if (instruction == "help") {//显示帮助
 			commandCategory();
+		}
+		else if (instruction == "ushow") {//显示帮助
+		for (int i = 1; i < 9; i++)
+			{
+			cout << userList[i].user_name << ":\n";
+			for (int j = 0; j < userList[i].file_Uopened.size(); j++)
+				{
+				for (int k = 0; i < file_opend_list.size(); k++)
+				{
+					if (userList[i].file_Uopened[j] == file_opend_list[k].f_inode)
+						cout << file_opend_list[k].fileName << " ";
+				}
+				}
+			cout <<"\n";
+			}
 		}
 		else if (instruction == "changepass") {//修改密码
 			char temp[30];
