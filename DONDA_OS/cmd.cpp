@@ -337,42 +337,55 @@ void display() {
 //用户输入命令，及判断
 int input_command(string& instruction, string& fileName1, string& fileName2)
 {
-	char ch;
-	int i = 0;
-	instruction = "";//清理字符串
-	while (ch = getchar()) {//输入指令
-		if (i==0 && ch == '\n')return -1;//第一个字符读到回车？
-		else if (ch == ' ' || ch == '\n')break;
-		else instruction += ch;
-		i++;
-	}
+	string line;
+	getline(cin, line);//获取一行的输入
+
+	int flag = 1;
+	for (int i = 0; i < line.size(); i++) 
+		if (line[i] != ' ')flag = 0;
+	if (flag)return -1;//只有个空格或回车，直接返回
+
+	stringstream st;  //字符串流
+	st << line;  //输入s字符串到流（st）中
+
 	int command_type = -1;//判断指令的类型
-	for (int i = 0; i < command_0.size(); i++) {
-		if (command_0[i] == instruction) {//指令 没有操作数
-			command_type = 0; break;
-		}
-	}
-	if (command_type == -1)//没找到，继续找
-		for (int i = 0; i < command_1.size(); i++) {
-			if (command_1[i] == instruction) {//指令 一个操作数
-				command_type = 1; break;
+	if (st >> instruction) {
+		for (int i = 0; i < command_0.size(); i++) {
+			if (command_0[i] == instruction) {//指令 没有操作数
+				command_type = 0; break;
 			}
 		}
-	if (command_type == -1)//没找到，继续找
-		for (int i = 0; i < command_2.size(); i++) {
-			if (command_2[i] == instruction) {//指令 两个操作数
-				command_type = 2; break;
+		if (command_type == -1)//没找到，继续找
+			for (int i = 0; i < command_1.size(); i++) {
+				if (command_1[i] == instruction) {//指令 一个操作数
+					command_type = 1; break;
+				}
 			}
-		}
+		if (command_type == -1)//没找到，继续找
+			for (int i = 0; i < command_2.size(); i++) {
+				if (command_2[i] == instruction) {//指令 两个操作数
+					command_type = 2; break;
+				}
+			}
+	}	
 	switch (command_type)
 	{
-	case 1:cin >> fileName1; getchar(); break;//输入文件名1
-	case 2:cin >> fileName1 >> fileName2; getchar(); break;//输入文件名1、2
+	case 1:if(st >> fileName1);break;//输入文件名1
+	case 2:if(st >> fileName1 >> fileName2); break;//输入文件名1、2
 	case -1:cout << "无效指令，输入help获取帮助！\n"; break;
 	}
 	return command_type;
 }
 
+//char ch;
+//int i = 0;
+//instruction = "";//清理字符串
+//while (ch = getchar()) {//输入指令
+//	if (i==0 && ch == '\n')return -1;//第一个字符读到回车？
+//	else if (ch == ' ' || ch == '\n')break;
+//	else instruction += ch;
+//	i++;
+//}
 //设置字体颜色
 void textColor(int color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
