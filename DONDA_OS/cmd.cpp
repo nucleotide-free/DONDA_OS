@@ -184,7 +184,7 @@ void display() {
 		openFile(fileName1);
 		}
 		else if (instruction == "close") {//关闭文件
-		closeFile(fileName1);
+		closeFIle(fileName1);
 		}
 		else if (instruction == "write") {//改写文件
 			writeFile(fileName1);
