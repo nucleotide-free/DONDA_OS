@@ -169,7 +169,7 @@ char* getpassword(char* pasw);	//密码掩码化
 //************************** 界面模块 *****************************
 void commandCategory();		//显示命令目录
 void display();				//界面主函数，用来实现大部分输入输出功能
-void textColor(int color);	//设置字体颜色
+void RGBColor(int i);		//RGB颜色
 int input_command(string& instruction, string& fileName1, string& fileName2);//用户输入命令，及判断
 
 //************************** 块管理模块 *****************************

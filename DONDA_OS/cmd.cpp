@@ -1,13 +1,13 @@
 #include "OS.h"
 
-vector<string> command_0 = { "paste","lpaste", "ls", "cd/", "cd..", "cls", "format", "logout", "bitmap", "exit", "help", "ushow","fshow","changepass", "showpassword"};
-vector<string> command_1 = { "link","find","cut","copy","mkdir","cd","deld","create","delf","write","read","open","close"};
+vector<string> command_0 = { "paste","lpaste", "ls", "cd/", "cd..", "cls", "format", "logout", "bitmap", "exit", "help", "ushow","fshow","chpd", "shpd"};
+vector<string> command_1 = { "link","find","cut","copy","mkdir","cd","rmd","create","rmf","write","read","open","close"};
 vector<string> command_2 = { "rename" };
 
 //显示命令目录
 void commandCategory()
 {
-	textColor(7);
+	RGBColor(0);
 	cout << "\nCOMMANDS:" << endl;
 	cout << "\t文件操作" << endl;
 	cout << "\t\t更名:\trename  [old name]  [new name]" << endl;
@@ -21,11 +21,11 @@ void commandCategory()
 	cout << "\t\t显示目录:\tls" << endl;
 	cout << "\t\t切换目录:\tcd    [name]" << endl;
 	cout << "\t\t返回根目录:\tcd/" << endl;
-	cout << "\t\t删除目录:\tdeld  [name]" << endl;
+	cout << "\t\t删除目录:\trmd   [name]" << endl;
 	cout << "\t\t返回上级目录:\tcd.." << endl;
 	cout << "\t文件读写" << endl;
 	cout << "\t\t创建文件:\tcreate [name]" << endl;
-	cout << "\t\t删除文件:\tdelf   [name]" << endl;
+	cout << "\t\t删除文件:\trmf    [name]" << endl;
 	cout << "\t\t打开文件:\topen   [name]" << endl;
 	cout << "\t\t关闭文件:\tclose  [name]" << endl;
 	cout << "\t\t改写文件:\twrite  [name]" << endl;
@@ -37,9 +37,10 @@ void commandCategory()
 	cout << "\t\t位示图:\t\tbitmap" << endl;
 	cout << "\t\t关闭系统:\texit" << endl;
 	cout << "\t\t显示帮助:\thelp" << endl;
-	cout << "\t\t显示用户文件打开表:\tushow" << endl;
-	cout << "\t\t修改密码:\tchangepass" << endl;
-	cout << "\t\t显示密码:\tshowpassword" << endl;
+	cout << "\t\t显示用户打开文件表:\tushow" << endl;
+	cout << "\t\t显示系统打开文件表:\tfshow" << endl;
+	cout << "\t\t修改密码:\tchpd" << endl;
+	cout << "\t\t显示密码:\tshpdn\n" << endl;
 };
 
 bool EnableVTMode(void) {
@@ -52,9 +53,19 @@ bool EnableVTMode(void) {
 		return false;
 	return true;
 }
-void SetPrintColor(unsigned char r, unsigned char g, unsigned char b,const char* s) {//必须在vt激活后才可用
-	printf("\x1B[38;2;%u;%u;%um%s", r, g, b,s);
+
+//RGB颜色
+void RGBColor(int i) {
+	switch (i)
+	{
+	case 0:cout << "\x1B[38;2;243;243;243m"; break;//白色 122, 193, 47
+	case 1:cout << "\x1B[38;2;108;141;183m"; break;//蓝色 108, 141, 183
+	case 2:cout << "\x1B[38;2;122;193;47m"; break;//绿色 122, 193, 47
+	case 3:cout << "\x1B[38;2;255;0;0m"; break;//红色 255, 0, 0
+	case 4:cout << "\x1B[38;2;165;21;53m"; break;//红色2 165, 21, 53
+	}
 }
+
 //界面主函数，用来实现大部分输入输出功能
 void display() {
 	system("cls");
@@ -65,12 +76,10 @@ void display() {
 	while (1)
 	{
 		while (1) {
-			SetPrintColor(122, 193, 47, (user.user_name + "@DONDA_OS").data());
-			string c = ":"; 
-			SetPrintColor(243, 243, 243, c.data());
-			SetPrintColor(106, 141, 183, file_list.data());
-			c = "$ ";
-			SetPrintColor(255, 255, 255, c.data());
+			RGBColor(2); cout << user.user_name + "@DONDA_OS";
+			RGBColor(0); cout << ":";
+			RGBColor(1); cout << file_list;
+			RGBColor(0); cout << "$";
 			if (input_command(instruction, fileName1, fileName2) != -1)//指令有效
 				break;
 		}
@@ -102,7 +111,7 @@ void display() {
 		//*********************************目录操作 ********************************* 
 		else if (instruction == "mkdir") {//创建目录
 			if (fileSystem.iNode[sfd_pointer].auth[user.user_id] == 0) {
-				textColor(4);
+				RGBColor(3);
 				cout << "错误：创建失败，user"<<user.user_id<<"权限不足！\n";
 				continue;
 			}
@@ -122,7 +131,7 @@ void display() {
 				cout << "无内容" << endl;
 				continue;
 			}
-			textColor(7);cout << "名称\t\t修改日期\t\t类型\t大小\n";
+			RGBColor(1); cout << "名称\t\t修改日期\t\t类型\t大小\n";
 			for (int i = 0; i < fileSystem.SFD[sfd_pointer].sfd_num; i++) {		//扫描当前sfd列表中对的sfd_item的filename并显示出来
 				cout << fileSystem.SFD[sfd_pointer].sfd_list[i].file_name+"\t\t";//文件名
 				int file_id = fileSystem.SFD[sfd_pointer].sfd_list[i].file_id;	//文件id(指向iNode)
@@ -173,7 +182,7 @@ void display() {
 			sfd_pointer = sfd_stack.back();
 			file_list.erase(file_list.find_last_of("\\"), file_list.length());		//文件显示字符串清空
 		}
-		else if (instruction == "deld") {//删除目录
+		else if (instruction == "rmd") {//删除目录
 			deleteDir(findiNodeByName(fileName1));
 		}
 		//********************************* 文件读写 ********************************
@@ -204,7 +213,7 @@ void display() {
 				}
 			}	
 		}
-		else if (instruction == "delf") {//删除文件
+		else if (instruction == "rmf") {//删除文件
 			int iNode_id = findiNodeByName(fileName1);
 			if (iNode_id == -1) {
 				cout << "文件不存在！\n";
@@ -259,29 +268,36 @@ void display() {
 			login();
 		}
 		else if (instruction == "bitmap") {//位示图
-			cout << "\n\t[ i节点位示图 ]\n" << endl;
-			cout << "┌─────────────────────────────────┐\n";
+			RGBColor(1); cout << "\n\t    [ i节点位示图 ]\n" << endl; RGBColor(0);
+			cout << "┌──────────────────────────────────┐\n";
 			for (int i = 0; i < INODE_BITMAP_ROW; i++) {
-				cout << "│ ";
-				for (int j = 0; j < INODE_BITMAP_COL; j++) 
+				cout << "│  ";
+				for (int j = 0; j < INODE_BITMAP_COL; j++) {
+					if (fileSystem.superBlock.iNode_bitmap[i][j] == 1) RGBColor(4); 
+					else RGBColor(0);
 					cout << fileSystem.superBlock.iNode_bitmap[i][j] << " ";
+				}
 				cout << "│\n";
 			}
-			cout << "└─────────────────────────────────┘\n";
-			cout << "\n\t\t[ SFD位示图 ]\n" << endl;
+			cout << "└──────────────────────────────────┘\n";
+			RGBColor(1); cout << "\n\t\t\t[ SFD位示图 ]\n" << endl; RGBColor(0);
+			cout << "┌──────────────────────────────────────────────────────────────────┐\n";
 			for (int i = 0; i < SFD_BITMAP_ROW; i++) {
-				for (int j = 0; j < SFD_BITMAP_COL; j++)
+				cout << "│  ";
+				for (int j = 0; j < SFD_BITMAP_COL; j++) {
+					if (fileSystem.superBlock.SFD_bitmap[i][j] == 1) RGBColor(4);
+					else RGBColor(0);
 					cout << fileSystem.superBlock.SFD_bitmap[i][j] << " ";
-				cout << endl;
+				}	
+				cout << "│\n";
 			}
-			cout << "\n\n";
+			cout << "└──────────────────────────────────────────────────────────────────┘\n\n\n";
 		}
 		else if (instruction == "exit") {//关闭系统
 		sfd_pointer = 0;
 			saveFileSystem();
 			system("cls");
 			cout << "\n已成功退出 DONDA_OS 文件系统！\n";
-
 			exit(0);
 		}
 		else if (instruction == "help") {//显示帮助
@@ -293,7 +309,7 @@ void display() {
 				for (int j = 0; j < userList[i].file_Uopened.size(); j++){
 					for (int k = 0; k < file_opend_list.size(); k++){
 						if (userList[i].file_Uopened[j] == file_opend_list[k].f_inode) {
-							cout << file_opend_list[k].fileName << " ";
+							RGBColor(1); cout << file_opend_list[k].fileName << "   "; RGBColor(0);
 						}
 					}
 				}
@@ -303,7 +319,7 @@ void display() {
 		else if (instruction == "fshow") {//显示系统文件打开表
 			showSystemFileOpen();
 		}
-		else if (instruction == "changepass") {//修改密码
+		else if (instruction == "chpd") {//修改密码
 			char temp[30];
 			char* temp1 = temp;
 			cout << "用户名：" << user.user_name << endl;
@@ -345,7 +361,7 @@ void display() {
 				}
 			}
 		}
-		else if (instruction == "showpassword") {//显示密码
+		else if (instruction == "shdp") {//显示密码
 			cout << "用户名：" << user.user_name << endl;
 			cout << "密码：" << user.password << endl;
 		}
@@ -395,7 +411,3 @@ int input_command(string& instruction, string& fileName1, string& fileName2)
 	}
 	return command_type;
 }
-
-void textColor(int color) {
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-} 

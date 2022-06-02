@@ -22,17 +22,6 @@ char* getpassword(char* pasw)
 	return pasw;
 }
 
-void RGBColor(int i) {
-	switch (i)
-	{
-	case 1:cout << "\x1B[38;2;108;141;183m"; break;//蓝色
-	case 2:cout << "\x1B[38;2;108;141;183m"; break;
-	default:
-		break;
-	}
-	
-}
-
 void login() {    
 	system("cls");
 	RGBColor(1);
@@ -44,9 +33,9 @@ void login() {
 		user.user_id = 0;//用户初始化
 		user.password = "";
 		user.file_Uopened.clear();
-
+		RGBColor(1);
 		cout << "\n\t\t请登录文件系统：";
-		textColor(7);
+		RGBColor(0);
 		cin >> user.user_name;	//输入用户名
 		if (user.user_name == ":wq") {//退出系统
 			return;
@@ -58,17 +47,17 @@ void login() {
 			}
 		}
 		if (user.user_id == 0) {
-			textColor(4);
+			RGBColor(3);
 			cout << "\n\t\t该用户不存在！\n";
 			continue;
 		}
-		textColor(11);
+		RGBColor(1);
 		cout << "\n\t\t请输入密码：";
-		textColor(7);
+		RGBColor(0);
 		char temp[30];
 		char* temp1 = temp;
 		string psw = getpassword(temp1);
-		textColor(4);
+		RGBColor(3);
 		if (psw != user.password) 
 			cout << "\n\t\t密码错误！\n";
 		else {	//登录成功
