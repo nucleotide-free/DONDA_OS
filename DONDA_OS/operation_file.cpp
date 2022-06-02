@@ -41,6 +41,7 @@ void createSFD(int iNode_id, string name) {
 	SFD_ITEM temp;
 	temp.file_name = name;		//文件名输入
 	temp.file_id = iNode_id;			//SFD_ITEM的id等于i节点的id
+	temp.type = 0;				//生成的是普通目录项
 	fileSystem.SFD[sfd_pointer].sfd_list.push_back(temp);		//将这个sfd_item放入当前目录的SFD下的sfd_list当中
 	fileSystem.SFD[sfd_pointer].sfd_num++;		//当前目录的SFD下的sfd_item数量
 }
@@ -271,7 +272,7 @@ void closeFIle(string fileName)
 	fileSystem.iNode[diNode_id].last_visited_time = m_iNode.last_visited_time;//最后一次访问时间
 
 	for (int i = 0; i < file_opend_list.size(); i++) {//更新系统打开表
-		if (file_opend_list[i].fileName == fileName) {
+		if (file_opend_list[i].fileName == fileName&& diNode_id== file_opend_list[i].f_inode) {
 			file_opend_list.erase(file_opend_list.begin() + i);
 			break;
 		}
