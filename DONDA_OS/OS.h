@@ -140,7 +140,7 @@ struct FILE_SYSTEM {
 
 extern FILE_SYSTEM fileSystem;	//操作磁盘文件卷的全局变量
 extern FILE* stream;
-extern string ClipBoard;		//剪切板
+extern string clipBoard;		//剪切板
 extern string clip_fileName;	//剪切板中文件的名字
 extern int sfd_pointer;			//sfd指针--指向当前的sfd目录
 extern USER user;				//当前用户

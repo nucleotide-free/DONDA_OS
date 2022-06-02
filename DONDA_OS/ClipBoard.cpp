@@ -17,18 +17,13 @@ int copy(string fileName)
         return -1;
     }
     clip_fileName = fileName;   //剪切板中文件的名字
-    ClipBoard = contentBuffer(iNode_id);    //读取文件内容，放入剪切板
+    clipBoard = contentBuffer(iNode_id);    //读取文件内容，放入剪切板
     return 0;
 }
 
 //粘贴
 void paste()
 {
-    int iNode_id = findiNodeByName(clip_fileName);
-    if (fileSystem.iNode[iNode_id].auth[user.user_id] == 0) {
-        cout << "错误：用户权限不足，无法粘贴文件到当前目录！\n";
-        return;
-    }
     int res = createFile(clip_fileName);//新建一个同名文件
     if (res == 1) {
         cout << "错误：剩余内存空间不足，新建文件失败！\n";
@@ -38,9 +33,14 @@ void paste()
         cout << "错误：文件名冲突！\n";
         return;
     }
+    int iNode_id = findiNodeByName(clip_fileName);
+    if (fileSystem.iNode[iNode_id].auth[user.user_id] == 0) {
+        cout << "错误：用户权限不足，无法粘贴文件到当前目录！\n";
+        return;
+    }
 
     //把剪贴板的内容写到磁盘
-    string content = ClipBoard;
+    string content = clipBoard;
 
     fileSystem.iNode[findiNodeByName(clip_fileName)].file_len = content.size();      //修改iNode节点中的文件长度
     int block_num;      //文件内容需要申请的磁盘块数量
