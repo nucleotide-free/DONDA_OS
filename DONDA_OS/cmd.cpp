@@ -182,9 +182,11 @@ void display() {
 		}
 		else if (instruction == "open") {//打开文件
 			openFile(fileName1);
+			showSystemFileOpen();
 		}
 		else if (instruction == "close") {//关闭文件
 			closeFIle(fileName1);
+			showSystemFileOpen();
 		}
 		else if (instruction == "write") {//改写文件
 			writeFile(fileName1);

@@ -189,6 +189,7 @@ int checkOpen(int iNode_id)
 	return 0;
 }
 
+//检查用户打开文件表的被打开次数
 int checkUserOpen(int iNode_id)
 {
 	int count = 0;
@@ -203,7 +204,6 @@ int checkUserOpen(int iNode_id)
 	}
 	return count;
 }
-
 
 //初始化内存i节点
 MEM_BFD_ITEM  initMEM_iNode(int iNode_id) {
@@ -223,11 +223,10 @@ MEM_BFD_ITEM  initMEM_iNode(int iNode_id) {
 	m_iNode.index_num = m_iNode.id % NHINO;//hash索引节点编号
 	m_iNode.status_lock = 0;//未上锁
 	m_iNode.status_mod = 0;//尚未被修改
-	m_iNode.shared_count = 0;//共享次数=0
+	m_iNode.shared_count = 1;//共享次数=1，被一个用户打开
 
 	return m_iNode;
 }
-
 
 //关闭文件
 void closeFIle(string fileName)
@@ -238,14 +237,17 @@ void closeFIle(string fileName)
 		cout << "目录文件不可关闭" << endl;
 		return;
 	}
-	int flag = checkUserOpen(diNode_id);
-	for (int j = 0; j < userList[user.user_id].file_Uopened.size(); j++)
-	{
+	int count = checkUserOpen(diNode_id);//文件被打开的次数
+	if (count == 0) {
+		cout << "没有打开该文件！\n";
+		return;
+	}
+	for (int j = 0; j < userList[user.user_id].file_Uopened.size(); j++){
 		if (userList[user.user_id].file_Uopened[j] == diNode_id) {
 			userList[user.user_id].file_Uopened.erase(userList[user.user_id].file_Uopened.begin() + j);//用户列表中该用户的用户打开文件表
 			user.file_Uopened.erase(user.file_Uopened.begin() + j);//修改当前用户的用户打开文件表
 
-			if (flag > 1)return;//多个用户打开该文件，不需要进行下列操作
+			if (count > 1)return;//不是最后一个关闭该文件的人，不需要进行下列操作，直接返回
 		}
 	}
 	//仅当前用户打开了该文件
@@ -262,4 +264,17 @@ void closeFIle(string fileName)
 		}
 	}
 	mem_iNode[diNode_id % NHINO].id = 0;//清除hash表中的该数据
+}
+
+//展示系统打开文件表
+void showSystemFileOpen()
+{
+	cout << "\n\t\t系统打开文件表\n";
+	cout << "┌───────────────────────────────────────┐\n"; 
+	cout << "│ 文件名        访问次数      i节点号   │\n";
+	for (int i = 0; i < file_opend_list.size(); i++) {
+		cout << "│ " + file_opend_list[i].fileName + "\t\t    " << file_opend_list[i].f_count << "\t\t" << file_opend_list[i].f_inode << "\t│\n";
+	}
+	cout << "└───────────────────────────────────────┘\n\n";
+	
 }

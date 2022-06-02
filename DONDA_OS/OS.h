@@ -193,6 +193,7 @@ MEM_BFD_ITEM initMEM_iNode(int iNode_id); 	 //磁盘iNode放入内存，初始化内存iNode
 void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName);//修改用户打开文件表和系统打开文件表
 int checkUserOpen(int iNode_id);		//检查文件是否被某个用户打开
 
+void showSystemFileOpen();
 //************************** 文件的读写模块 *****************************
 int findiNodeByName(string fileName);		//通过文件名，找它的i节点
 int findiNodeByName(int std_pointer,string fileName);  //通过iNode_id，找它的i节点
