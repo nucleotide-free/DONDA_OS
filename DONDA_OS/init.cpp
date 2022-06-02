@@ -71,6 +71,7 @@ void initSFD() {
 		SFD_ITEM sfd_item;	//单目录
 		sfd_item.file_name = "root" + to_string(i);
 		sfd_item.file_id = i;
+		sfd_item.type = 0;
 		fileSystem.SFD[0].sfd_list.push_back(sfd_item);   //每个用户的文件目录下生成sfd动态数组
 		fileSystem.SFD[0].sfd_num++;
 	}
@@ -83,6 +84,7 @@ void initSFD() {
 		for (int j = 0; j < fileSystem.SFD[SFD_id].sfd_num; j++) {	//SFD子项的具体信息
 			SFD_ITEM sfd_item;
 			cin >> sfd_item.file_name;
+			cin>> sfd_item.type;
 			cin >> sfd_item.file_id;
 			fileSystem.SFD[SFD_id].sfd_list.push_back(sfd_item);	//再读取目录块的文件名
 		}
@@ -220,6 +222,8 @@ void format()
 		exit(0);
 	}
 	file.close();
+
+	file_opend_list.clear();
 }
 
 void initMEM_iNode_list() {

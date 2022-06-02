@@ -64,7 +64,7 @@ struct DISK_BLOCK
 //文件目录项
 struct SFD_ITEM {
 	string file_name;	//文件名
-	int type;
+	int type;		//0--普通类型，1--链接类型
 	int file_id;		//索引节点编号ID
 };
 

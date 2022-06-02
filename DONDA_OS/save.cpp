@@ -88,6 +88,7 @@ void saveSFD()
 			file << i << "  " << fileSystem.SFD[i].sfd_num << endl;		//SFD_id、目录项个数
 			for (int j = 0; j < fileSystem.SFD[i].sfd_num; j++) {
 				file << fileSystem.SFD[i].sfd_list[j].file_name << "  ";	//目录名
+				file << fileSystem.SFD[i].sfd_list[j].type << "  ";	//类型
 				file << fileSystem.SFD[i].sfd_list[j].file_id << endl;	//指向的id
 			}
 		}
