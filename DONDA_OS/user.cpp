@@ -59,7 +59,10 @@ void login() {
 		else {
 			cout << "\t\t登录成功！\n";
 			getchar();//吸收回车
-			user.file_Uopened = userList[user.user_id].file_Uopened;
+			user.file_Uopened = userList[user.user_id].file_Uopened;//更新用户打开文件表
+			link_board.file_id = -1;//链接板清空
+			clip_fileName = "";//剪切板清空
+			clipBoard = "";
 			display();//登录成功后，进入系统界面
 		}
 	}

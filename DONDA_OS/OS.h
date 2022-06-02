@@ -202,6 +202,7 @@ void showSystemFileOpen();
 //************************** 文件的读写模块 *****************************
 int findiNodeByName(string fileName);		//通过文件名，找它的i节点
 int findiNodeByName(int std_pointer,string fileName);  //通过iNode_id，找它的i节点
+int findSFD_item_idByName(string fileName);	//通过文件名，找它的sfd_item_id
 
 void writeFile(string fileName);			//写指定文件名的文件
 void readFile(string fileName);				//读文件内容函数
@@ -219,6 +220,13 @@ void deleteSFD(int iNode_id);		//删除一整个SFD
 void cut(string fileName);		//剪切文件
 int copy(string fileName);		//复制文件
 void paste();					//粘贴文件
+
+//************************* link ******************************
+void createLink(string fileName);//新建连接
+void pasteLink();//粘贴链接文件到当前目录
+void deleteLink(string fileName);	//删除连接，判断是否是链接文件
+int checkValid(string fileName);	//检查文件是否失效,1-失效，0-正常
+
 //************************** 保存文件系统 *****************************
 void saveFileSystem();	//保存文件系统
 void saveUser();		//保存用户信息
