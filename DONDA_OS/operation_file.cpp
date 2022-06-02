@@ -188,6 +188,21 @@ int checkOpen(int iNode_id)
 	return 0;
 }
 
+int checkUserOpen(int iNode_id)
+{
+	int count = 0;
+	for (int i = 1; i < 9; i++)
+	{
+		for (int j = 0; j < userList[i].file_Uopened.size(); j++)
+		{
+			if (userList[i].file_Uopened[j] == iNode_id) {
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 
 //初始化内存i节点
 MEM_BFD_ITEM  initMEM_iNode(int iNode_id) {
@@ -228,12 +243,24 @@ void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName)
 //关闭文件
 void closeFIle(string fileName)
 {
-	int diNode_id = findiNodeByName(fileName);//找到磁盘iNode_id
-	if (fileSystem.iNode[diNode_id].type == 1)
-	{
+	int diNode_id = findiNodeByName(fileName);	//找到磁盘iNode_id
+
+	if (fileSystem.iNode[diNode_id].type == 1){	//试图关闭目录文件
 		cout << "目录文件不可关闭" << endl;
 		return;
 	}
+	int flag = checkUserOpen(diNode_id);
+	for (int j = 0; j < userList[user.user_id].file_Uopened.size(); j++)
+	{
+		if (userList[user.user_id].file_Uopened[j] == diNode_id) {
+			userList[user.user_id].file_Uopened.erase(userList[user.user_id].file_Uopened.begin() + j);//用户列表中该用户的用户打开文件表
+			user.file_Uopened.erase(user.file_Uopened.begin() + j);//修改当前用户的用户打开文件表
+
+			if (flag > 1)return;//多个用户打开该文件，不需要进行下列操作
+		}
+	}
+	//仅当前用户打开了该文件
+	
 	MEM_BFD_ITEM m_iNode = mem_iNode[diNode_id % NHINO];//找到该iNode_id对应的hash表中的内存iNode
 
 	//放入磁盘，更新磁盘i Node的数据
@@ -245,6 +272,5 @@ void closeFIle(string fileName)
 			break;
 		}
 	}
-
 	mem_iNode[diNode_id % NHINO].id = 0;//清除hash表中的该数据
 }
