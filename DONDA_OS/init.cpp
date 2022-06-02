@@ -159,6 +159,7 @@ void init()
 	initSFD();
 	initINode();
 	initDiskBlock();
+	initMEM_iNode_list();
 }
 
 //格式化
@@ -176,22 +177,23 @@ void format()
 
 	file.open("Data\\iNode.txt", ios::out | ios::trunc);	//格式化iNode
 	if (file.is_open()) {//打开文件成功
-		for (int i = 0; i < 9; i++) {
-			file << i << " 1 " << i << "  ";//ID、文件类型、文件拥有着
-			for (int j = 1; j <= 8; j++)
-				file << fileSystem.iNode[i].auth[j] << " ";//authorization
-			if(i==0)	
-				file << "8 0 2022-5-30,23:0" << i << endl;	//文件长度、文件链接次数、最近一次存取时间
-			else
-			file << " 0 0 2022-5-30,23:0" << i << endl;	//文件长度、文件链接次数、最近一次存取时间
-		}
+		file << "0 1 0  0 0 0 0 0 0 0 0  8 0 2022-5-30,14:30\n";
+		file << "1 1 1  1 0 0 0 0 0 0 0  0 0 2022-5-30,14:31\n";
+		file << "2 1 2  0 1 0 0 0 0 0 0  0 0 2022-5-30,14:32\n";
+		file << "3 1 3  0 0 1 0 0 0 0 0  0 0 2022-5-30,14:33\n";
+		file << "4 1 4  0 0 0 1 0 0 0 0  0 0 2022-5-30,14:34\n";
+		file << "5 1 5  0 0 0 0 1 0 0 0  0 0 2022-5-30,14:35\n";
+		file << "6 1 6  0 0 0 0 0 1 0 0  0 0 2022-5-30,14:36\n";
+		file << "7 1 7  0 0 0 0 0 0 1 0  0 0 2022-5-30,14:37\n";
+		file << "8 1 8  0 0 0 0 0 0 0 1  0 0 2022-5-30,14:38\n";
+
 	}
 	file.close();
 
 	file.open("Data\\superBlock.txt", ios::out | ios::trunc);	//超级块 - 格式化
 	if (file.is_open()) {//打开文件成功
 		file << "119\n";
-		for (int i = 9; i < D_INODE_NUM; i++)//空闲i节点
+		for (int i = 9; i < 128; i++)//空闲i节点
 			file << i << "    ";
 		file << "\n503\n";
 		for (int i = 9; i < 512; i++)//空闲SFD
@@ -217,4 +219,15 @@ void format()
 	file.close();
 
 
+}
+
+void initMEM_iNode_list() {
+	for (int i = 0; i < NHINO; i++) {
+		MEM_BFD_ITEM m_iNode;
+		m_iNode.id = 0;
+		m_iNode.type = 99;		//文件类型 0-普通 1-目录
+		m_iNode.next = NULL;
+		m_iNode.prev = NULL;
+		mem_iNode[i] = &m_iNode;
+	}
 }

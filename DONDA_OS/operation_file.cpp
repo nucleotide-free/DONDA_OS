@@ -117,7 +117,7 @@ void deleteDiskBlock(int iNode_id)
 	}
 }
 
-//删除待删除文件对应的i结点及其指向的磁盘块
+//删除待i结点
 void deleteiNode(int iNode_id)      
 {	
 	
@@ -173,7 +173,7 @@ void openFile(string fileName) {		//打开文件
 	MEM_BFD_ITEM* m_iNode_pointer;		//内存i节点指针
 	m_iNode_pointer = mem_iNode[m_iNode.id % NHINO];		//指向要插入的iNode的hash链表中
 
-	while(m_iNode_pointer)
+	while(m_iNode_pointer->next)
 	{
 		m_iNode_pointer = m_iNode_pointer->next;		//遍历到链表的最后
 	}
