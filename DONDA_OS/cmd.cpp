@@ -199,6 +199,10 @@ void display() {
 		else if (instruction == "format") {//格式化
 			format();
 			init();
+			sfd_pointer = 0;		//根目录sfd的sfd指针
+			sfd_stack.clear();		//清空目录栈
+			sfd_stack.push_back(sfd_pointer);	//向栈中压入根目录
+			file_list.clear();		//文件显示字符串清空
 			cout << "格式化成功！\n";
 		}
 		else if (instruction == "logout") {//注销登录
