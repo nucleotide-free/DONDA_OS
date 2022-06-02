@@ -117,7 +117,7 @@ void deleteDiskBlock(int iNode_id)
 	}
 }
 
-//删除待删除文件对应的i结点及其指向的磁盘块
+//删除待i结点
 void deleteiNode(int iNode_id)      
 {	
 	
