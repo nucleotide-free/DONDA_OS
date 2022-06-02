@@ -41,6 +41,7 @@
 #include <stack>
 #include <fstream>
 #include <sstream>
+#include <direct.h>
 
 
 using namespace std;

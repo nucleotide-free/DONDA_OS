@@ -49,7 +49,7 @@ void writeFile(string fileName)
     else {
         cout << "文件正在被占用！！" << endl;
     }
-    if (iNode_id == -1) {
+    if (iNode_id == -1 || mem_iNode[iNode_id].type == 1) {
         cout << "文件不存在！\n";
         return;
     }
@@ -113,7 +113,7 @@ void readFile(string fileName)
     else {
         cout << "文件正在被占用！！" << endl;
     }
-    if (iNode_id == -1) {
+    if (iNode_id == -1|| fileSystem.iNode[iNode_id].type==1) {
         cout << "文件不存在！\n";
         return;
     }

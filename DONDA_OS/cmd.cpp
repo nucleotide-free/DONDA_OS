@@ -1,6 +1,6 @@
 #include "OS.h"
 
-vector<string> command_0 = { "paste", "ls", "cd/", "cd..", "cls", "format", "logout", "bitmap", "exit", "help", "ushow","changepass", "showpassword"};
+vector<string> command_0 = { "paste", "ls", "cd/", "cd..", "cls", "format", "logout", "bitmap", "exit", "help", "ushow","fshow","changepass", "showpassword"};
 vector<string> command_1 = { "link","find","cut","copy","mkdir","cd","deld","create","delf","write","read","open","close"};
 vector<string> command_2 = { "rename" };
 
@@ -141,6 +141,10 @@ void display() {
 			file_list.clear();		//文件显示字符串清空
 		}
 		else if (instruction == "cd..") {//返回上级目录
+			if (sfd_stack.size() == 1)
+			{
+				continue;
+			}
 			if(sfd_stack.size()!=1)
 				sfd_stack.pop_back();		//弹出目录栈
 			sfd_pointer = sfd_stack.back();
@@ -169,6 +173,7 @@ void display() {
 					if (ch == 'N' || ch == 'n')//不写，直接退出
 						break;
 					else if (ch == 'Y' || ch == 'y') {//写文件
+						openFile(fileName1);
 						writeFile(fileName1);
 						break;
 					}
@@ -182,12 +187,20 @@ void display() {
 			cout << "删除成功！\n";
 		}
 		else if (instruction == "open") {//打开文件
+			int iNode_id = findiNodeByName(fileName1);
+			if (iNode_id == -1) {
+				cout << "文件不存在！\n";
+				continue;
+			}
 			openFile(fileName1);
-			showSystemFileOpen();
 		}
 		else if (instruction == "close") {//关闭文件
+			int iNode_id = findiNodeByName(fileName1);
+			if (iNode_id == -1) {
+				cout << "文件不存在！\n";
+				continue;
+			}
 			closeFIle(fileName1);
-			showSystemFileOpen();
 		}
 		else if (instruction == "write") {//改写文件
 			writeFile(fileName1);
@@ -234,6 +247,8 @@ void display() {
 			saveFileSystem();
 			system("cls");
 			cout << "\n已成功退出 DONDA_OS 文件系统！\n";
+			system("rd Temp");
+			system("md Temp");
 			exit(0);
 		}
 		else if (instruction == "help") {//显示帮助
@@ -254,6 +269,9 @@ void display() {
 				}
 			cout <<"\n";
 			}
+		}
+		else if (instruction == "fshow") {//显示帮助
+		showSystemFileOpen();
 		}
 		else if (instruction == "changepass") {//修改密码
 			char temp[30];

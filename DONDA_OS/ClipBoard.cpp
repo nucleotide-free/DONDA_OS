@@ -24,6 +24,7 @@ int copy(string fileName)
 //粘贴
 void paste()
 {
+
     int res = createFile(clip_fileName);//新建一个同名文件
     if (res == 1) {
         cout << "错误：剩余内存空间不足，新建文件失败！\n";
@@ -38,7 +39,6 @@ void paste()
         cout << "错误：用户权限不足，无法粘贴文件到当前目录！\n";
         return;
     }
-
     //把剪贴板的内容写到磁盘
     string content = clipBoard;
 
