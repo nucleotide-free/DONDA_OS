@@ -162,9 +162,47 @@ string getTime() {
 }
 
 void openFile(string fileName) {		//打开文件
+	int diNode_id = findiNodeByName(fileName);		//找到磁盘iNode_id
+	if (fileSystem.iNode[diNode_id].type == 1)
+	{
+		cout << "目录文件不可打开" << endl;
+		return;
+	}
+	MEM_BFD_ITEM m_iNode;
+	initMEM_iNode(m_iNode, diNode_id);		//初始化内存i节点
+	MEM_BFD_ITEM* m_iNode_pointer;		//内存i节点指针
+	m_iNode_pointer = mem_iNode[m_iNode.id % NHINO];		//指向要插入的iNode的hash链表中
+
+	while(m_iNode_pointer)
+	{
+		m_iNode_pointer = m_iNode_pointer->next;		//遍历到链表的最后
+	}
+	m_iNode_pointer->next = &m_iNode;		//插入iNode
+	m_iNode.prev = m_iNode_pointer;		//双向链表插入prev指针
 
 
 }
-void closeFIle() {		//关闭文件
+void closeFIle(string fileName) {		//关闭文件
+	 
+}
 
+void initMEM_iNode(MEM_BFD_ITEM& m_iNode, int iNode_id) {
+	m_iNode.id = fileSystem.iNode[iNode_id].id;//i节点的id，即在数组里的id
+	m_iNode.type = 0;		//文件类型 0-普通 1-目录
+	m_iNode.owner = fileSystem.iNode[iNode_id].owner;//文件创立者
+	for (int i = 1; i <= 8; i++)
+		m_iNode.auth[i] = fileSystem.iNode[iNode_id].auth[i];//权限
+
+	m_iNode.file_len = fileSystem.iNode[iNode_id].file_len; // 文件长度
+	m_iNode.link_count = fileSystem.iNode[iNode_id].link_count;//链接次数
+	m_iNode.last_visited_time = getTime();//最后一次存取时间（当前时间）
+	for (int i = 0; i < ADDR_NUM; i++)
+		m_iNode.i_addr[i] = fileSystem.iNode[iNode_id].i_addr[i];//使用的磁盘资源
+
+	m_iNode.index_num = m_iNode.id % NHINO;//hash索引节点编号
+	m_iNode.status_lock = 0;//未上锁
+	m_iNode.status_mod = 0;//尚未被修改
+	m_iNode.shared_count = 0;//共享次数=0
+
+	m_iNode.next = NULL;		//
 }

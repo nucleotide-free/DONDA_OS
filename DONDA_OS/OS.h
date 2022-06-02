@@ -145,7 +145,7 @@ extern USER user;				//当前用户
 extern USER userList[9];		//所有用户
 extern vector<int> sfd_stack;	//目录栈
 extern vector<FILE_OPEND> file_opend_list;		//系统打开文件表
-extern MEM_BFD_ITEM mem_iNode[NHINO];	//内存i节点区，数量为128块
+extern MEM_BFD_ITEM* mem_iNode[NHINO];	//内存i节点区，数量为128块
 
 //**************************初始化模块***************************
 void initSuperBlock();	//初始化超级块
@@ -193,8 +193,9 @@ vector<int> ReadIndexBlock(string content);	//一级索引读取索引块
 void writeFile(string fileName);     //写指定文件名的文件
 void readFile(string fileName);     //读文件内容函数
 void renameFile(string fileName1, string fileName2);	//文件重命名
-void openFile();		//打开文件
+void openFile(string fileName);		//打开文件
 void closeFIle();		//关闭文件
+void initMEM_iNode(MEM_BFD_ITEM& m_iNode, int iNode_id);		//磁盘iNode放入内存，初始化内存iNode
 
 //**************************目录的创建与删除模块*****************************
 int createDir(string fileName);		//创建一个目录
