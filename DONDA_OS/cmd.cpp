@@ -1,7 +1,7 @@
 #include "OS.h"
 
 vector<string> command_0 = { "paste", "ls", "cd/", "cd..", "cls", "format", "logout", "bitmap", "exit", "help", "changepass", "showpassword" };
-vector<string> command_1 = { "link","find","cut","copy","mkdir","cd","deld","create","delf","write","read" };
+vector<string> command_1 = { "link","find","cut","copy","mkdir","cd","deld","create","delf","write","read","open","close"};
 vector<string> command_2 = { "rename" };
 
 //显示命令目录
@@ -321,4 +321,4 @@ int input_command(string& instruction, string& fileName1, string& fileName2)
 //设置字体颜色
 void textColor(int color) {
 	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
+} 
