@@ -197,7 +197,7 @@ void renameFile(string fileName1, string fileName2);	//文件重命名
 void openFile(string fileName);		//打开文件
 void closeFIle(string fileName);		//关闭文件
 void initMEM_iNode(MEM_BFD_ITEM& m_iNode, int iNode_id);		//磁盘iNode放入内存，初始化内存iNode
-
+int checkOpen(int iNode_id);		//检查文件是否被打开
 //**************************目录的创建与删除模块*****************************
 int createDir(string fileName);		//创建一个目录
 void deleteDir(int id);			//级联删除一个目录及其子目录和子文件
