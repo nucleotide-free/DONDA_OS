@@ -3,6 +3,7 @@
 FILE* stream;           //输入重定向
 string clip_fileName;   //剪切板中文件的名字
 string clipBoard;		//剪切板
+SFD_ITEM link_board;    //保存需要连接的数据
 FILE_SYSTEM fileSystem; //文件系统
 USER user;              //当前用户
 USER userList[9];       //所有用户

@@ -145,6 +145,7 @@
     <ClCompile Include="DONDA_OS.cpp" />
     <ClCompile Include="file_RW.cpp" />
     <ClCompile Include="init.cpp" />
+    <ClCompile Include="link.cpp" />
     <ClCompile Include="operation_dir.cpp" />
     <ClCompile Include="operation_file.cpp" />
     <ClCompile Include="save.cpp" />

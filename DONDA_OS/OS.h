@@ -64,6 +64,7 @@ struct DISK_BLOCK
 //文件目录项
 struct SFD_ITEM {
 	string file_name;	//文件名
+	int type;
 	int file_id;		//索引节点编号ID
 };
 
@@ -143,6 +144,7 @@ extern FILE_SYSTEM fileSystem;	//操作磁盘文件卷的全局变量
 extern FILE* stream;
 extern string clipBoard;		//剪切板
 extern string clip_fileName;	//剪切板中文件的名字
+extern SFD_ITEM link_board;     //保存需要连接的数据
 extern int sfd_pointer;			//sfd指针--指向当前的sfd目录
 extern USER user;				//当前用户
 extern USER userList[9];		//所有用户
