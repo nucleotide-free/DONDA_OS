@@ -51,7 +51,7 @@ struct USER {
 	int user_id;		//用户id
 	string password;	//用户密码
 	string user_name;	//登陆用的用户名
-	int file_Uopend[NOFILE];		//用户打开文件表，里面放的是iNode_id
+	vector<int> file_Uopened;		//用户打开文件表，里面放的是iNode_id
 };
 
 //普通磁盘块，放文件
@@ -73,8 +73,9 @@ struct SFD {
 	vector<SFD_ITEM> sfd_list;		//目录下的目录（SFD_ITEM）
 };
 
-struct FILE_OPEND {		//系统文件打开表表项
-	string fileName;		//文件名字		
+//系统文件打开表表项
+struct FILE_OPEND {
+	string fileName;	//文件名字		
 	int f_count;		//访问次数
 	struct MEM_BFD_ITEM* f_inode;		//对应的iNode
 };

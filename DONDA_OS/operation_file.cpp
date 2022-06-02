@@ -162,7 +162,9 @@ string getTime() {
 	return  ss.str();
 }
 
-void openFile(string fileName) {		//打开文件
+//打开文件
+void openFile(string fileName) 
+{
 	int diNode_id = findiNodeByName(fileName);		//找到磁盘iNode_id
 	if (fileSystem.iNode[diNode_id].type == 1)
 	{
@@ -188,12 +190,15 @@ void checkOpen()
 
 }
 
+
 //关闭文件
-void closeFIle(string fileName) {		
+void closeFIle(string fileName) 
+{		
 	 
 }
 
-void initMEM_iNode(MEM_BFD_ITEM& m_iNode, int iNode_id) {
+//初始化内存i节点
+void initMEM_iNode(MEM_BFD_ITEM m_iNode, int iNode_id) {
 	m_iNode.id = fileSystem.iNode[iNode_id].id;//i节点的id，即在数组里的id
 	m_iNode.type = 0;		//文件类型 0-普通 1-目录
 	m_iNode.owner = fileSystem.iNode[iNode_id].owner;//文件创立者
@@ -212,4 +217,16 @@ void initMEM_iNode(MEM_BFD_ITEM& m_iNode, int iNode_id) {
 	m_iNode.shared_count = 0;//共享次数=0
 
 	m_iNode.next = NULL;
+}
+
+//修改用户打开文件表和系统打开文件表
+void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName)
+{
+	user.file_Uopened.push_back(m_iNode.id);//用户打开文件表，里面放的是iNode_id
+
+	FILE_OPEND file_opened;	//系统打开表
+	file_opened.fileName = fileName;//文件名
+	int f_count = 0;//访问次数 = 0
+	file_opened.f_inode = &m_iNode;//储存内存i节点的地址
+	file_opend_list.push_back(file_opened);
 }
