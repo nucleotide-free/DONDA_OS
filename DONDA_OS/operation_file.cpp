@@ -170,13 +170,26 @@ void openFile(string fileName)
 		cout << "目录文件不可打开！" << endl;
 		return;
 	}
+	if (checkOpen(diNode_id))
+	{
+		for (int i = 0; i < user.file_Uopened.size(); i++)//当前用户的用户打开表下有没有该iNode_id
+		{
+			if (diNode_id == user.file_Uopened[i])//该用户打开过这个文件
+			{
+				return;
+			}
+		}
+		user.file_Uopened.push_back(diNode_id);//当前用户打开文件表，里面放的是iNode_id
+		userList[user.user_id].file_Uopened.push_back(diNode_id);//全体用户打开文件表，里面放的是iNode_id
+	}
+	else{
 	MEM_BFD_ITEM m_iNode = initMEM_iNode(diNode_id);	//初始化内存i节点;
-	mem_iNode[m_iNode.id % NHINO]= m_iNode;		//指向要插入的iNode的hash链表中
-
+	mem_iNode[m_iNode.id % NHINO] = m_iNode;		//指向要插入的iNode的hash链表中
 	user.file_Uopened.push_back(m_iNode.id);//当前用户打开文件表，里面放的是iNode_id
 	userList[user.user_id].file_Uopened.push_back(m_iNode.id);//全体用户打开文件表，里面放的是iNode_id
 	FILE_OPEND file_opened = { fileName ,0,m_iNode.id };	//修改系统打开文件表
 	file_opend_list.push_back(file_opened);
+	}
 }
 
 //检查文件是否被打开
