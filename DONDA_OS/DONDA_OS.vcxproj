@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BlockManagement.cpp" />
+    <ClCompile Include="ClipBoard.cpp" />
     <ClCompile Include="cmd.cpp" />
     <ClCompile Include="DONDA_OS.cpp" />
     <ClCompile Include="file_RW.cpp" />
