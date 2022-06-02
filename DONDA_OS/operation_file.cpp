@@ -188,6 +188,21 @@ int checkOpen(int iNode_id)
 	return 0;
 }
 
+int checkUserOpen(int iNode_id)
+{
+	int count = 0;
+	for (int i = 1; i < 9; i++)
+	{
+		for (int j = 0; j < userList[i].file_Uopened.size(); j++)
+		{
+			if (userList[i].file_Uopened[j] == iNode_id) {
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
 
 //初始化内存i节点
 MEM_BFD_ITEM  initMEM_iNode(int iNode_id) {
@@ -228,5 +243,24 @@ void updateFileOpened(MEM_BFD_ITEM m_iNode, string fileName)
 //关闭文件
 void closeFIle(string fileName)
 {
-
+	int diNode_id = findiNodeByName(fileName);		//找到磁盘iNode_id
+	if (checkUserOpen(diNode_id)>1) {
+			for (int j = 0; j < userList[user.user_id].file_Uopened.size(); j++)
+			{
+				if (userList[user.user_id].file_Uopened[j] == diNode_id&& i==user.user_id) {
+					userList[user.user_id].file_Uopened.erase(userList[user.user_id].file_Uopened.begin()+ j);
+					user.file_Uopened.erase(user.file_Uopened.begin() + j);
+					return;
+				}
+			}
+	}
+	else {
+		for (int j = 0; j < userList[user.user_id].file_Uopened.size(); j++)
+		{
+			if (userList[user.user_id].file_Uopened[j] == diNode_id && i == user.user_id) {
+				userList[user.user_id].file_Uopened.erase(userList[user.user_id].file_Uopened.begin() + j);
+				user.file_Uopened.erase(user.file_Uopened.begin() + j);
+			}
+		}
+	}
 }
