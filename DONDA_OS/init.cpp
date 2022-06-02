@@ -70,7 +70,7 @@ void initSFD() {
 	sfd_stack.push_back(sfd_pointer);
 
 	freopen_s(&stream, "Data\\SFD.txt", "r", stdin);
-	for (int i = 0; i < 512; i++)
+	for (int i = 1; i < 512; i++)
 	{
 		if (fileSystem.superBlock.SFD_bitmap[i / SFD_BITMAP_COL][i % SFD_BITMAP_COL] != 0)//在SFD位示图中找到非空SFD_ITEM的块号
 		{
@@ -180,6 +180,9 @@ void format()
 			file << i << " 1 " << i << "  ";//ID、文件类型、文件拥有着
 			for (int j = 1; j <= 8; j++)
 				file << fileSystem.iNode[i].auth[j] << " ";//authorization
+			if(i==0)	
+				file << "8 0 2022-5-30,23:0" << i << endl;	//文件长度、文件链接次数、最近一次存取时间
+			else
 			file << " 0 0 2022-5-30,23:0" << i << endl;	//文件长度、文件链接次数、最近一次存取时间
 		}
 	}

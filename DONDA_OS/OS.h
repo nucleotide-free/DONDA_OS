@@ -51,6 +51,7 @@ struct USER {
 	int user_id;		//用户id
 	string password;	//用户密码
 	string user_name;	//登陆用的用户名
+	int file_Uopend[NOFILE];		//用户打开文件表，里面放的是iNode_id
 };
 
 //普通磁盘块，放文件
@@ -70,6 +71,12 @@ struct SFD_ITEM {
 struct SFD {
 	int sfd_num;		//SFD_ITEM的数量
 	vector<SFD_ITEM> sfd_list;		//目录下的目录（SFD_ITEM）
+};
+
+struct FILE_OPEND {		//系统文件打开表表项
+	string fileName;		//文件名字		
+	int f_count;		//访问次数
+	struct MEM_BFD_ITEM* f_inode;		//对应的iNode
 };
 
 //磁盘i节点
@@ -137,6 +144,8 @@ extern int sfd_pointer;			//sfd指针--指向当前的sfd目录
 extern USER user;				//当前用户
 extern USER userList[9];		//所有用户
 extern vector<int> sfd_stack;	//目录栈
+extern vector<FILE_OPEND> file_opend_list;		//系统打开文件表
+extern MEM_BFD_ITEM mem_iNode[NHINO];	//内存i节点区，数量为128块
 
 //**************************初始化模块***************************
 void initSuperBlock();	//初始化超级块
@@ -170,24 +179,28 @@ int createFile(string fileName);			//创建文件
 string getTime();
 
 void deleteDiskBlock(int iNode_id);	//回收磁盘块
-void deleteSFD(int file_id);		//回收SFD子项
+void deleteSFD_ITEM(int file_id);		//回收SFD子项
 void deleteiNode(int iNode_id);			//回收i结点
 void deleteFile(string fileName);	//删除文件
 //void findSinglesfd(int inodeNo);	//遍历删除与待删除文件共享的文件目录
 
 //**************************文件的读写模块*****************************
 int findiNodeByName(string fileName);		//通过文件名，找它的i节点
+int findiNodeById(int std_pointer,string fileName);  //通过iNode_id，找它的i节点
 void tempToDiskBlock(string fileName);		//把temp文件里的内容写到磁盘块中
 string contentBuffer(int iNode_id);		//将索引块指向的磁盘块的内容写入buffer
 vector<int> ReadIndexBlock(string content);	//一级索引读取索引块
 void writeFile(string fileName);     //写指定文件名的文件
 void readFile(string fileName);     //读文件内容函数
 void renameFile(string fileName1, string fileName2);	//文件重命名
+void openFile();		//打开文件
+void closeFIle();		//关闭文件
 
 //**************************目录的创建与删除模块*****************************
 int createDir(string fileName);		//创建一个目录
-int deleteDir(string name);			//级联删除一个目录及其子目录和子文件
+void deleteDir(int id);			//级联删除一个目录及其子目录和子文件
 void deleteINodeOne(int useINode);	//删除一个i结点
+void deleteSFD(int iNode_id);//删除一个目录
 
 //************************** 保存文件系统 *****************************
 void saveFileSystem();	//保存文件系统
