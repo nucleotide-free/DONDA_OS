@@ -62,19 +62,19 @@ void display() {
 			renameFile(fileName1, fileName2);
 		}
 		else if (instruction == "link") {//链接
-			//openFile(fileName1);
+
 		}
 		else if (instruction == "find") {//查找
 
 		}
 		else if (instruction == "cut") {//剪切
-
+			cut(fileName1);
 		}
 		else if (instruction == "copy") {//复制
-
+			copy(fileName1);
 		}
 		else if (instruction == "paste") {//粘贴
-
+			paste();
 		}
 		//*********************************目录操作 ********************************* 
 		else if (instruction == "mkdir") {//创建目录
