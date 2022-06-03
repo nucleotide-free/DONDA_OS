@@ -25,8 +25,9 @@ void pasteLink()
 	if (link_board.file_id != -1) {
 		fileSystem.SFD[sfd_pointer].sfd_list.push_back(link_board);//将这个sfd_item放入当前目录的SFD下的sfd_list当中
 		fileSystem.SFD[sfd_pointer].sfd_num++;//当前目录的SFD下的sfd_item数量
+		fileSystem.iNode[link_board.file_id].link_count++;//链接次数+1
 		link_board.file_id = -1;//清空链接数据
-		cout << "创建连接文件成功！\n";
+		cout << "创建链接文件成功！\n";
 	}
 }
 
