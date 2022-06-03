@@ -54,19 +54,6 @@ int ReadABlock(stack<int> free_block_stack,int block_num) {		//读组长块中的内容
 		fileSystem.superBlock.free_block_stack.push(temp);
 		fileSystem.superBlock.stack_size++;
 	}
-
-	//for (int i = 0; i < fileSystem.diskBlock[block_num].content.size(); i++) {
-	//	stringstream st;//字符串流
-	//	if (fileSystem.diskBlock[block_num].content[i]!=' ')
-	//	{
-	//		temp *= 10;
-	//		temp = fileSystem.diskBlock[block_num].content[i] - '0';
-	//	}
-	//	else {
-	//		fileSystem.superBlock.free_block_stack.push(temp);
-	//		temp = 0;
-	//	}
-	//}
 	return block_num;
 }
 
