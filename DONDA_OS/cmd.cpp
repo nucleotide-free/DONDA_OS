@@ -11,10 +11,10 @@ void commandCategory()
 	cout << "\nCOMMANDS:" << endl;
 	cout << "\t文件操作" << endl;
 	cout << "\t\t更名:\trename  [old name]  [new name]" << endl;
-	cout << "\t\t链接:\tlink  [name]" << endl;
-	cout << "\t\t查找:\tfind  [name]" << endl;
-	cout << "\t\t剪切:\tcut   [name]" << endl;
-	cout << "\t\t复制:\tcopy  [name]" << endl;
+	cout << "\t\t链接:\tlink    [name]" << endl;
+	cout << "\t\t查找:\tfind    [name]" << endl;
+	cout << "\t\t剪切:\tcut     [name]" << endl;
+	cout << "\t\t复制:\tcopy    [name]" << endl;
 	cout << "\t\t粘贴:\tpaste" << endl;
 	cout << "\t\t粘贴链接:\tlpaste" << endl;
 	cout << "\t目录操作" << endl;
@@ -38,8 +38,8 @@ void commandCategory()
 	cout << "\t\t位示图:\t\tbitmap" << endl;
 	cout << "\t\t关闭系统:\texit" << endl;
 	cout << "\t\t显示帮助:\thelp" << endl;
-	cout << "\t\t显示用户打开文件表:\tushow" << endl;
-	cout << "\t\t显示系统打开文件表:\tfshow" << endl;
+	cout << "\t\t用户打开文件表:\tushow" << endl;
+	cout << "\t\t系统打开文件表:\tfshow" << endl;
 	cout << "\t\t修改密码:\tchpd" << endl;
 	cout << "\t\t显示密码:\tshpd\n" << endl;
 };
@@ -411,9 +411,22 @@ int input_command(string& instruction, string& fileName1, string& fileName2)
 	}	
 	switch (command_type)
 	{
-	case 1:if(st >> fileName1);break;//输入文件名1
-	case 2:if(st >> fileName1 >> fileName2); break;//输入文件名1、2
-	case -1:cout << "无效指令，输入help获取帮助！\n"; break;
+	case 1:
+		if (st >> fileName1)//输入文件名1
+			break;
+		else {
+			cout << instruction + "：参数格式不正确\n";
+			return -1;
+		}		
+	case 2:
+		if(st >> fileName1 >> fileName2)//输入文件名1、2
+			break;
+		else {
+			cout << instruction + "：参数格式不正确\n";
+			return -1;
+		}
+	case -1:
+		cout << "无效指令，输入help获取帮助！\n";
 	}
 	return command_type;
 }
