@@ -16,7 +16,6 @@ void main()
 { 
     init();
     login();
-    //format();
 }
 
 

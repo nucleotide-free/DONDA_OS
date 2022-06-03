@@ -65,6 +65,7 @@ void writeFile(string fileName)
     system(str.data());     
 
     tempToDiskBlock(fileName);//写回到磁盘块
+    fileSystem.iNode[iNode_id].last_visited_time = getTime();//更新最后一次修改时间
     mem_iNode[iNode_id].status_lock = 0;
 }
 
