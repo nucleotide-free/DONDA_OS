@@ -117,16 +117,18 @@ void tempToDiskBlock(string fileName)
         }
         //一级索引块初始化
         int index_block1= AllocateOneBlock();
-        for (int i = 0; i < block_num-10; i++)     //给文件分配磁盘快
+        for (int i = 10; i < block_num; i++)     //给文件分配磁盘快
         {
             int block_id = AllocateOneBlock();        //分配的磁盘块号
             fileSystem.diskBlock[index_block1].content+= to_string(block_id)+" ";     //通过文件名找到将分配的磁盘块号写入该文件iNode的索引数组
             fileSystem.diskBlock[index_block1].content_len++;
-            if (i != block_num - 11) {
+            if (i != block_num - 1) {
+                fileSystem.diskBlock[block_id].content = "";
                 fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ, BLOCKSIZ);        //每个磁盘块的内容都来自于content对应位置的子串
                 fileSystem.diskBlock[block_id].content_len = BLOCKSIZ;        //每个磁盘块的内容大小都512，因为已经写满了
             }
             else {
+                fileSystem.diskBlock[block_id].content = "";
                 fileSystem.diskBlock[block_id].content = content.substr(i * BLOCKSIZ);      //最后一个磁盘块的内容都来自于content对应位置的子串
                 fileSystem.diskBlock[block_id].content_len = content.length() - (i * BLOCKSIZ);      //最后一个磁盘块的内容大小不是512
             }

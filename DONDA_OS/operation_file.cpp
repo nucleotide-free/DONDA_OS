@@ -180,6 +180,13 @@ void openFile(string fileName)
 				return;
 			}
 		}
+		for (int j = 0; j < file_opend_list.size(); j++)
+		{
+			if (file_opend_list[j].f_inode == diNode_id % NHINO)
+			{
+				file_opend_list[j].f_count++;		//打开文件时 访问次数++
+			}
+		}
 		user.file_Uopened.push_back(diNode_id);//当前用户打开文件表，里面放的是iNode_id
 		userList[user.user_id].file_Uopened.push_back(diNode_id);//全体用户打开文件表，里面放的是iNode_id
 	}
@@ -188,7 +195,7 @@ void openFile(string fileName)
 	mem_iNode[m_iNode.id % NHINO] = m_iNode;		//指向要插入的iNode的hash链表中
 	user.file_Uopened.push_back(m_iNode.id);//当前用户打开文件表，里面放的是iNode_id
 	userList[user.user_id].file_Uopened.push_back(m_iNode.id);//全体用户打开文件表，里面放的是iNode_id
-	FILE_OPEND file_opened = { fileName ,0,m_iNode.id };	//修改系统打开文件表
+	FILE_OPEND file_opened = { fileName ,1,m_iNode.id };	//修改系统打开文件表
 	file_opend_list.push_back(file_opened);
 	}
 }
