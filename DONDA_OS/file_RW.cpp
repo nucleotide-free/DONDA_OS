@@ -25,6 +25,14 @@ void writeFile(string fileName)
 {
     string buffer;      //用于存放读出来的内容
     int iNode_id = findiNodeByName(fileName);
+    if (iNode_id == -1 || mem_iNode[iNode_id].type == 1) {//不存在或者是目录文件
+        cout << "文件不存在！\n";
+        return;
+    }
+    if (fileSystem.iNode[iNode_id].auth[user.user_id] == 0) {
+        cout << "权限不足，无法修改文件！\n";
+        return;
+    }
     if (!checkOpen(iNode_id))
     {
         cout << "文件未打开！\n";
@@ -40,18 +48,11 @@ void writeFile(string fileName)
                 return;
             }
         }
-    }
-  
+    } 
     if (mem_iNode[iNode_id].status_lock == 0) //上写锁
         mem_iNode[iNode_id].status_lock = 1;
-    else 
+    else {
         cout << "文件正在被占用！！" << endl;
-    if (iNode_id == -1 || mem_iNode[iNode_id].type == 1) {
-        cout << "文件不存在！\n";
-        return;
-    }
-    if (fileSystem.iNode[iNode_id].auth[user.user_id] == 0) {
-        cout << "权限不足，无法修改文件！\n";
         return;
     }
     buffer = contentBuffer(iNode_id);
@@ -140,18 +141,19 @@ void readFile(string fileName)
 {
     string buffer;      //用于存放读出来的内容
     int iNode_id = findiNodeByName(fileName);
-    if (mem_iNode[iNode_id].status_lock != 1)
+    if (iNode_id == -1 || fileSystem.iNode[iNode_id].type == 1) {
+        cout << "文件不存在！\n";
+        return;
+    }
+    if (mem_iNode[iNode_id].status_lock != 1)//没有被上写锁
     {
         mem_iNode[iNode_id].status_lock = 2;
     }
     else {
         cout << "文件正在被占用！！" << endl;
-    }
-    if (iNode_id == -1|| fileSystem.iNode[iNode_id].type==1) {
-        cout << "文件不存在！\n";
         return;
     }
-
+    
     buffer = contentBuffer(iNode_id);
     ofstream tempFile;
     tempFile.open("Temp\\" + fileName + ".txt", ios::out | ios::trunc);

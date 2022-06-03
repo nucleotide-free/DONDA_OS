@@ -16,6 +16,7 @@ void commandCategory()
 	cout << "\t\t剪切:\tcut   [name]" << endl;
 	cout << "\t\t复制:\tcopy  [name]" << endl;
 	cout << "\t\t粘贴:\tpaste" << endl;
+	cout << "\t\t粘贴链接:\tlpaste" << endl;
 	cout << "\t目录操作" << endl;
 	cout << "\t\t创建目录:\tmkdir [name]" << endl;
 	cout << "\t\t显示目录:\tls" << endl;
