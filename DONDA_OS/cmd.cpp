@@ -40,7 +40,7 @@ void commandCategory()
 	cout << "\t\t显示用户打开文件表:\tushow" << endl;
 	cout << "\t\t显示系统打开文件表:\tfshow" << endl;
 	cout << "\t\t修改密码:\tchpd" << endl;
-	cout << "\t\t显示密码:\tshpdn\n" << endl;
+	cout << "\t\t显示密码:\tshpd\n" << endl;
 };
 
 bool EnableVTMode(void) {
@@ -364,7 +364,7 @@ void display() {
 				}
 			}
 		}
-		else if (instruction == "shdp") {//显示密码
+		else if (instruction == "shpd") {//显示密码
 			cout << "用户名：" << user.user_name << endl;
 			cout << "密码：" << user.password << endl;
 		}
