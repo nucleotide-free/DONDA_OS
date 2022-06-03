@@ -38,8 +38,7 @@ int AllocateOneBlock() {
 				break;
 			}
 		}
-		fileSystem.superBlock.free_diskblock_id.erase(fileSystem.superBlock.free_diskblock_id.begin() + index);//删除该元素		
-		fileSystem.superBlock.free_block_stack.pop();
+		fileSystem.superBlock.free_diskblock_id.erase(fileSystem.superBlock.free_diskblock_id.begin() + index);//删除该元素		fileSystem.superBlock.free_block_stack.pop();
 
 		return free_block;
 	}
