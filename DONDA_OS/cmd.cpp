@@ -378,7 +378,7 @@ void display() {
 //用户输入命令，及判断
 int input_command(string& instruction, string& fileName1, string& fileName2)
 {
-	string line;
+	string line, more = "";
 	getline(cin, line);//获取一行的输入
 
 	int flag = 1;
@@ -411,16 +411,32 @@ int input_command(string& instruction, string& fileName1, string& fileName2)
 	}	
 	switch (command_type)
 	{
+	case 0:
+		if (st >> more) {//输入了多余参数
+			cout << instruction + "：参数格式不正确\n";
+			return -1;
+		}
+		break;
 	case 1:
-		if (st >> fileName1)//输入文件名1
+		if (st >> fileName1) {//输入文件名1
+			if (st >> more) {//输入了多余参数
+				cout << instruction + "：参数格式不正确\n";
+				return -1;
+			}
 			break;
+		}
 		else {
 			cout << instruction + "：参数格式不正确\n";
 			return -1;
 		}		
 	case 2:
-		if(st >> fileName1 >> fileName2)//输入文件名1、2
+		if (st >> fileName1 >> fileName2) {//输入文件名1、2
+			if (st >> more) {//输入了多余参数
+				cout << instruction + "：参数格式不正确\n";
+				return -1;
+			}
 			break;
+		}
 		else {
 			cout << instruction + "：参数格式不正确\n";
 			return -1;
