@@ -145,11 +145,6 @@ void deleteSFD_ITEM(int file_id)
 	}
 }
 
-//遍历删除与待删除文件共享的文件目录
-void findSinglesfd(int inodeNo) {
-
-}
-
 //获取当前时间
 string getTime() {		
 	time_t time_seconds = time(0);

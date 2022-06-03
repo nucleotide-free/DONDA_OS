@@ -223,6 +223,8 @@ void display() {
 				cout << "文件不存在！\n";
 				continue;
 			}
+			openFile(fileName1);
+			closeFIle(fileName1);
 			if(deleteLink(fileName1))//删除链接文件（含判断）
 				deleteFile(fileName1);
 			cout << "删除成功！\n";
